@@ -10,3 +10,5 @@ internal object ScryptParameters {
 }
 
 internal expect fun sha256(message: ByteArray): ByteArray
+
+internal expect fun hmacSha256(key: ByteArray, message: ByteArray): ByteArray
