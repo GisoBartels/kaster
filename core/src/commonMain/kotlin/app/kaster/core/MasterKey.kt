@@ -1,17 +1,11 @@
 package app.kaster.core
 
-class MasterKey(username: String, masterPassword: String, scope: Scope) {
+class MasterKey(username: String, masterPassword: String) {
 
-    val key = scrypt(masterPassword, salt(username, scope))
-
-    enum class Scope(internal val id: String) {
-        Authentication("com.lyndir.masterpassword"),
-        Identification("com.lyndir.masterpassword.login"),
-        Recovery("com.lyndir.masterpassword.answer"),
-    }
+    val key: ByteArray = scrypt(masterPassword, salt(username))
 
     companion object {
-        internal fun salt(username: String, scope: Scope): ByteArray =
-            scope.id.toByteArray() + username.length.toBigEndianBytes() + username.toByteArray()
+        internal fun salt(username: String): ByteArray =
+            "com.lyndir.masterpassword".toByteArray() + username.length.toBigEndianBytes() + username.toByteArray()
     }
 }
