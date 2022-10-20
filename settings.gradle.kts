@@ -2,18 +2,19 @@ rootProject.name = "Kaster"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(":core")
+include(
+    ":core",
+    ":UI:android",
+    ":UI:desktop",
+    ":UI:common"
+)
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
-    }
-
-    versionCatalogs {
-        create("libs") {
-
-        }
+        google()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -23,9 +24,5 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    }
-
-    plugins {
-        kotlin("multiplatform") version "1.7.20"
     }
 }
