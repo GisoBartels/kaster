@@ -1,12 +1,26 @@
 package app.kaster.common
 
+import app.cash.turbine.test
+import app.kaster.common.login.LoginInput.*
+import app.kaster.common.login.LoginViewModel
+import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class LoginSpec {
 
     @Test
-    fun `User can log in with name and master password`() {
-        TODO()
+    fun `User can log in with name and master password`() = runTest {
+        val vm = LoginViewModel()
+
+        vm.onInput(Username("Bender"))
+        vm.onInput(MasterPassword("BiteMyShinyMetalAss!"))
+
+        vm.viewState.test {
+            expectMostRecentItem().loginEnabled shouldBe true
+        }
     }
 
     @Test
@@ -36,6 +50,11 @@ class LoginSpec {
 
     @Test
     fun `User can login via biometric authentication`() {
+        TODO()
+    }
+
+    @Test
+    fun `App navigates to domain list on successful login`() {
         TODO()
     }
 
