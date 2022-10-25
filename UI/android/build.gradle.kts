@@ -20,6 +20,8 @@ dependencies {
     implementation("androidx.compose.material:material:1.2.1")
     implementation("androidx.compose.material:material-icons-core:1.2.1")
     implementation("androidx.compose.material:material-icons-extended:1.2.1")
+
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 }
 
 @Suppress("UnstableApiUsage")
