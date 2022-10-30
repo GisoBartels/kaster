@@ -32,8 +32,14 @@ class LoginSpec {
     }
 
     @Test
-    fun `Master password is be revealed on user request`() {
-        TODO()
+    fun `Master password is be revealed on user request`() = runTest {
+        val vm = LoginViewModel().apply { inputCredentials() }
+
+        vm.onInput(UnmaskPassword)
+
+        vm.viewState.test {
+            expectMostRecentItem().passwordMasked shouldBe false
+        }
     }
 
     @Test
