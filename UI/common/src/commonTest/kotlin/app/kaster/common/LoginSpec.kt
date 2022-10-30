@@ -43,6 +43,18 @@ class LoginSpec {
     }
 
     @Test
+    fun `Master password is be hidden on user request`() = runTest {
+        val vm = LoginViewModel().apply { inputCredentials() }
+        vm.onInput(UnmaskPassword)
+
+        vm.onInput(MaskPassword)
+
+        vm.viewState.test {
+            expectMostRecentItem().passwordMasked shouldBe true
+        }
+    }
+
+    @Test
     fun `Username and password are persisted when user enabled persistence`() {
         TODO()
     }

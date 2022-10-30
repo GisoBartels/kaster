@@ -33,7 +33,7 @@ class LoginViewModel {
             is Username -> usernameState.value = input.value
             is MasterPassword -> masterPasswordState.value = input.value
             Login -> TODO()
-            MaskPassword -> TODO()
+            MaskPassword -> maskPasswordState.value = true
             UnmaskPassword -> maskPasswordState.value = false
         }
     }
