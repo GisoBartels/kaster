@@ -15,8 +15,7 @@ class LoginSpec {
     fun `User can log in with name and master password`() = runTest {
         val vm = LoginViewModel()
 
-        vm.onInput(Username("Bender"))
-        vm.onInput(MasterPassword("BiteMyShinyMetalAss!"))
+        vm.inputCredentials()
 
         vm.viewState.test {
             expectMostRecentItem().loginEnabled shouldBe true
@@ -24,8 +23,12 @@ class LoginSpec {
     }
 
     @Test
-    fun `Master password is obscured by default`() {
-        TODO()
+    fun `Master password is obscured by default`() = runTest {
+        val vm = LoginViewModel().apply { inputCredentials() }
+
+        vm.viewState.test {
+            expectMostRecentItem().passwordMasked shouldBe true
+        }
     }
 
     @Test
@@ -56,6 +59,11 @@ class LoginSpec {
     @Test
     fun `App navigates to domain list on successful login`() {
         TODO()
+    }
+
+    private fun LoginViewModel.inputCredentials() {
+        onInput(Username("Bender"))
+        onInput(MasterPassword("BiteMyShinyMetalAss!"))
     }
 
 }
