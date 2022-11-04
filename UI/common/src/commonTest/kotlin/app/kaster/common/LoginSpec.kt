@@ -84,7 +84,12 @@ class LoginSpec {
     }
 
     @Test
-    fun `Username and password are cleared after 5 min, when user disabled persistence`() {
+    fun `App navigates to domain list on successful login`() {
+        TODO()
+    }
+
+    @Test
+    fun `User is logged out after 5 minutes`() {
         TODO()
     }
 
@@ -98,10 +103,6 @@ class LoginSpec {
         TODO()
     }
 
-    @Test
-    fun `App navigates to domain list on successful login`() {
-        TODO()
-    }
 
     private fun LoginViewModel.inputCredentials() {
         onInput(Username("Bender"))
