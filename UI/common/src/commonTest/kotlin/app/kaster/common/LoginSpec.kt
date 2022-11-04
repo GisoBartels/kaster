@@ -1,8 +1,10 @@
 package app.kaster.common
 
 import app.cash.turbine.test
+import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.login.LoginInput.*
 import app.kaster.common.login.LoginViewModel
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -13,7 +15,7 @@ class LoginSpec {
 
     @Test
     fun `User can log in with name and master password`() = runTest {
-        val vm = LoginViewModel()
+        val vm = LoginViewModel(LoginPersistenceInMemory())
 
         vm.inputCredentials()
 
@@ -24,7 +26,7 @@ class LoginSpec {
 
     @Test
     fun `Master password is obscured by default`() = runTest {
-        val vm = LoginViewModel().apply { inputCredentials() }
+        val vm = LoginViewModel(LoginPersistenceInMemory()).apply { inputCredentials() }
 
         vm.viewState.test {
             expectMostRecentItem().passwordMasked shouldBe true
@@ -32,8 +34,8 @@ class LoginSpec {
     }
 
     @Test
-    fun `Master password is be revealed on user request`() = runTest {
-        val vm = LoginViewModel().apply { inputCredentials() }
+    fun `Master password is revealed on user request`() = runTest {
+        val vm = LoginViewModel(LoginPersistenceInMemory()).apply { inputCredentials() }
 
         vm.onInput(UnmaskPassword)
 
@@ -44,7 +46,7 @@ class LoginSpec {
 
     @Test
     fun `Master password is be hidden on user request`() = runTest {
-        val vm = LoginViewModel().apply { inputCredentials() }
+        val vm = LoginViewModel(LoginPersistenceInMemory()).apply { inputCredentials() }
         vm.onInput(UnmaskPassword)
 
         vm.onInput(MaskPassword)
@@ -55,8 +57,30 @@ class LoginSpec {
     }
 
     @Test
-    fun `Username and password are persisted when user enabled persistence`() {
-        TODO()
+    fun `Username and password are restored from persistence if enabled`() = runTest {
+        val storedUsername = "storedUsername"
+        val storedPassword = "storedPassword"
+        val vm = LoginViewModel(LoginPersistenceInMemory(storedUsername, storedPassword))
+
+        vm.viewState.test {
+            expectMostRecentItem() should { viewState ->
+                viewState.username shouldBe storedUsername
+                viewState.password shouldBe storedPassword
+            }
+        }
+    }
+
+    @Test
+    fun `Username and password are persisted when user enabled persistence`() = runTest {
+        val persistence = LoginPersistenceInMemory()
+        val vm = LoginViewModel(persistence)
+
+        vm.inputCredentials()
+
+        vm.onInput(Login)
+
+        persistence.loadUsername() shouldBe "Bender"
+        persistence.loadMasterPassword() shouldBe "BiteMyShinyMetalAss!"
     }
 
     @Test

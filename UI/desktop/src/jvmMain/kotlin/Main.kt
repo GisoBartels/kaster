@@ -1,23 +1,24 @@
-import androidx.compose.material.MaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import app.kaster.common.KasterContent
 import app.kaster.common.KasterTheme
-import app.kaster.common.KasterUi
 import app.kaster.common.KasterViewState
+import app.kaster.common.login.LoginPersistenceInMemory
+import app.kaster.common.login.LoginUi
 
 fun main() = application {
+    val persistence = remember { LoginPersistenceInMemory() }
     KasterTheme {
         Window(title = "Password Kaster", onCloseRequest = ::exitApplication) {
-            KasterUi()
+            Surface(modifier = Modifier.fillMaxSize()) {
+                LoginUi(persistence)
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
                 implementation("app.cash.turbine:turbine:0.12.0")
-                implementation("io.kotest:kotest-assertions:4.0.7")
+                implementation("io.kotest:kotest-assertions-core:5.5.3")
             }
         }
     }

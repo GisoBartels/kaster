@@ -13,6 +13,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.5.1")
 
     implementation("androidx.activity:activity-compose:1.6.0")
+    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha03")
 
     implementation("androidx.compose.ui:ui:1.2.1")
     implementation("androidx.compose.ui:ui-tooling:1.2.1")

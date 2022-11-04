@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
-class LoginViewModel {
+class LoginViewModel(private val persistence: LoginPersistence) {
 
-    private val usernameState = MutableStateFlow("")
-    private val masterPasswordState = MutableStateFlow("")
+    private val usernameState = MutableStateFlow(persistence.loadUsername())
+    private val masterPasswordState = MutableStateFlow(persistence.loadMasterPassword())
     private val maskPasswordState = MutableStateFlow(true)
 
     val viewState: Flow<LoginViewState> = combine(
@@ -32,10 +32,15 @@ class LoginViewModel {
         when (input) {
             is Username -> usernameState.value = input.value
             is MasterPassword -> masterPasswordState.value = input.value
-            Login -> TODO()
+            Login -> login(usernameState.value, masterPasswordState.value)
             MaskPassword -> maskPasswordState.value = true
             UnmaskPassword -> maskPasswordState.value = false
         }
+    }
+
+    private fun login(username: String, password: String) {
+        persistence.storeCredentials(username, password)
+        // TODO: nav to next page
     }
 
 }
