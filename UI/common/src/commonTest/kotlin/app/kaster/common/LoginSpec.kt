@@ -1,9 +1,11 @@
 package app.kaster.common
 
 import app.cash.turbine.test
-import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.login.LoginInput.*
+import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.login.LoginViewModel
+import app.kaster.common.navigation.Navigator
+import app.kaster.common.navigation.Screen
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -85,7 +87,11 @@ class LoginSpec {
 
     @Test
     fun `App navigates to domain list on successful login`() {
-        TODO()
+        val vm = LoginViewModel(LoginPersistenceInMemory()).apply { inputCredentials() }
+
+        vm.onInput(Login)
+
+        Navigator.currentScreen.value shouldBe Screen.DomainList
     }
 
     @Test

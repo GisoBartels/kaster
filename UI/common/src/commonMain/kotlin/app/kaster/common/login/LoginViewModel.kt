@@ -5,6 +5,8 @@ import app.kaster.common.login.LoginInput.MaskPassword
 import app.kaster.common.login.LoginInput.MasterPassword
 import app.kaster.common.login.LoginInput.UnmaskPassword
 import app.kaster.common.login.LoginInput.Username
+import app.kaster.common.navigation.Navigator
+import app.kaster.common.navigation.Screen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -40,7 +42,7 @@ class LoginViewModel(private val persistence: LoginPersistence) {
 
     private fun login(username: String, password: String) {
         persistence.storeCredentials(username, password)
-        // TODO: nav to next page
+        Navigator.navTo(Screen.DomainList)
     }
 
 }

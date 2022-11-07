@@ -21,10 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import app.kaster.common.KasterContent
+import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
 import app.kaster.common.KasterUi
 import app.kaster.common.KasterViewState
-import app.kaster.common.login.LoginUi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -55,7 +55,7 @@ fun KasterAndroidUi() {
                 })
             Surface(modifier = Modifier.fillMaxSize()) {
                 if (showNewUi) {
-                    LoginUi(loginPersistence)
+                    KasterRoot(loginPersistence)
                 } else {
                     KasterUi()
                 }

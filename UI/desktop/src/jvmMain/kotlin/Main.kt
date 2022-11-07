@@ -7,17 +7,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import app.kaster.common.KasterContent
+import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
 import app.kaster.common.KasterViewState
 import app.kaster.common.login.LoginPersistenceInMemory
-import app.kaster.common.login.LoginUi
 
 fun main() = application {
     val persistence = remember { LoginPersistenceInMemory() }
     KasterTheme {
         Window(title = "Password Kaster", onCloseRequest = ::exitApplication) {
             Surface(modifier = Modifier.fillMaxSize()) {
-                LoginUi(persistence)
+                KasterRoot(persistence)
             }
         }
     }
