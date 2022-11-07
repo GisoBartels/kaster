@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -25,11 +26,14 @@ import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
 import app.kaster.common.KasterUi
 import app.kaster.common.KasterViewState
+import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun KasterAndroidUi() {
-    val loginPersistence = LoginPersistenceAndroid(LocalContext.current)
+    val context = LocalContext.current
+    val loginPersistence = remember { LoginPersistenceAndroid(context) }
+    val domainListPersistence = remember { DomainListPersistenceInMemory(listOf("dummy")) } // TODO
 
     KasterTheme {
         val systemUiController = rememberSystemUiController()
@@ -55,7 +59,7 @@ fun KasterAndroidUi() {
                 })
             Surface(modifier = Modifier.fillMaxSize()) {
                 if (showNewUi) {
-                    KasterRoot(loginPersistence)
+                    KasterRoot(loginPersistence, domainListPersistence)
                 } else {
                     KasterUi()
                 }

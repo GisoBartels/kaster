@@ -10,14 +10,18 @@ import app.kaster.common.KasterContent
 import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
 import app.kaster.common.KasterViewState
+import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import app.kaster.common.login.LoginPersistenceInMemory
 
 fun main() = application {
-    val persistence = remember { LoginPersistenceInMemory() }
+    // TODO implement real persistence
+    val loginPersistence = remember { LoginPersistenceInMemory() }
+    val domainListPersistence = remember { DomainListPersistenceInMemory(listOf("dummy")) }
+
     KasterTheme {
         Window(title = "Password Kaster", onCloseRequest = ::exitApplication) {
             Surface(modifier = Modifier.fillMaxSize()) {
-                KasterRoot(persistence)
+                KasterRoot(loginPersistence, domainListPersistence)
             }
         }
     }
