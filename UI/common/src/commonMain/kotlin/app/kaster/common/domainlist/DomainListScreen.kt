@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,17 +24,23 @@ import kotlinx.collections.immutable.persistentListOf
 fun DomainListScreen(persistence: DomainListPersistence) {
     val viewModel = remember { DomainListViewModel(persistence) }
     val viewState by viewModel.viewState.collectAsState(DomainListViewState(persistentListOf()))
-    DomainListContent(viewState)
+    DomainListContent(viewState, viewModel::onInput)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DomainListContent(viewState: DomainListViewState) {
+fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -> Unit) {
     Box {
         LazyColumn {
             items(viewState.domainList.size) { i ->
                 ListItem(text = { Text(viewState.domainList[i].domain) })
             }
+        }
+        FloatingActionButton(
+            modifier = Modifier.align(Alignment.BottomEnd),
+            onClick = { input(DomainListInput.AddDomain) }
+        ) {
+            Icon(Icons.Filled.Add, "Add")
         }
         ExtendedFloatingActionButton(
             modifier = Modifier.align(Alignment.BottomStart),

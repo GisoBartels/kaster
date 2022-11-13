@@ -9,3 +9,7 @@ data class DomainListViewState(
 data class DomainEntry(
     val domain: String
 )
+
+sealed interface DomainListInput {
+    object AddDomain : DomainListInput
+}

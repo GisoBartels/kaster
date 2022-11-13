@@ -1,5 +1,6 @@
 package app.kaster.common
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,5 +17,7 @@ fun KasterRoot(loginPersistence: LoginPersistence, domainListPersistence: Domain
     when (currentScreen) {
         Screen.Login -> LoginScreen(loginPersistence)
         Screen.DomainList -> DomainListScreen(domainListPersistence)
+        is Screen.EditDomainEntry ->
+            Text("Placeholder for Edit Domain Entry:\n${(currentScreen as Screen.EditDomainEntry).domain}")
     }
 }

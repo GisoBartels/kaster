@@ -2,9 +2,13 @@ package app.kaster.common
 
 import app.cash.turbine.test
 import app.kaster.common.domainlist.DomainEntry
+import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import app.kaster.common.domainlist.DomainListViewModel
+import app.kaster.common.navigation.Navigator
+import app.kaster.common.navigation.Screen
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -24,8 +28,12 @@ class DomainListSpec {
     }
 
     @Test
-    fun `A logged in user can add new domain entries`() {
-        TODO()
+    fun `A logged in user can add new domain entries`() = runTest {
+        val viewModel = DomainListViewModel(DomainListPersistenceInMemory())
+
+        viewModel.onInput(AddDomain)
+
+        Navigator.currentScreen.value shouldBe Screen.EditDomainEntry(null)
     }
 
     @Test
