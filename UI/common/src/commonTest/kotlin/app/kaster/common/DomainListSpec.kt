@@ -33,7 +33,7 @@ class DomainListSpec {
 
         viewModel.onInput(AddDomain)
 
-        Navigator.currentScreen.value shouldBe Screen.EditDomainEntry(null)
+        Navigator.currentScreen.value shouldBe Screen.DomainEntry(null)
     }
 
     @Test

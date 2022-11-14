@@ -12,7 +12,7 @@ class DomainListViewModel(persistence: DomainListPersistence) {
 
     fun onInput(input: DomainListInput) {
         when (input) {
-            is AddDomain -> Navigator.navTo(Screen.EditDomainEntry(null))
+            is AddDomain -> Navigator.navTo(Screen.DomainEntry(null))
         }
     }
 }
