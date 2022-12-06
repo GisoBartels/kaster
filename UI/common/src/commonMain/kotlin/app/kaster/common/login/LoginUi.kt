@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
-import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -54,6 +54,7 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
 
         LoginButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
+            enabled = viewState.loginEnabled,
             onClick = { input(LoginInput.Login) }
         )
     }
@@ -93,9 +94,11 @@ fun PasswordField(modifier: Modifier = Modifier, password: String, maskPassword:
 }
 
 @Composable
-fun LoginButton(modifier: Modifier = Modifier, onClick: () -> Unit) = ExtendedFloatingActionButton(
+fun LoginButton(modifier: Modifier = Modifier, enabled: Boolean, onClick: () -> Unit) = Button(
     modifier = modifier,
-    text = { Text("Login") },
-    icon = { Icon(Icons.Outlined.Login, "Login") },
+    enabled = enabled,
     onClick = onClick
-)
+) {
+    Icon(Icons.Outlined.Login, "Login", Modifier.padding(end = 8.dp))
+    Text("Login")
+}

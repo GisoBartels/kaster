@@ -23,6 +23,14 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.3.0")
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0")
+
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.0")
+    androidTestImplementation("io.mockk:mockk-android:1.13.2")
 }
 
 @Suppress("UnstableApiUsage")
@@ -34,6 +42,8 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0-SNAPSHOT"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -42,6 +52,13 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+        }
+    }
+    testOptions {
+        packagingOptions {
+            // https://github.com/mockk/mockk/issues/297#issuecomment-901924678
+            jniLibs.useLegacyPackaging = true
+            resources.excludes += "META-INF/LICENSE*"
         }
     }
 }
