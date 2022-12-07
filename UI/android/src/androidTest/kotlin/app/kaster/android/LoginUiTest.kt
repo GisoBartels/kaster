@@ -1,4 +1,4 @@
-package login
+package app.kaster.android
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertTextContains

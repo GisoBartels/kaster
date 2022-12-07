@@ -1,4 +1,4 @@
-package login
+package app.kaster.android
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
