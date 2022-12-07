@@ -1,7 +1,6 @@
 package app.kaster.common
 
 import app.cash.turbine.test
-import app.kaster.common.domainlist.DomainEntry
 import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListPersistenceInMemory
@@ -24,7 +23,7 @@ class DomainListSpec {
         val viewModel = DomainListViewModel(persistence)
 
         viewModel.viewState.test {
-            expectMostRecentItem().domainList.shouldContainExactly(domainFixtures.map { DomainEntry(it) })
+            expectMostRecentItem().domainList.shouldContainExactly(domainFixtures)
         }
     }
 

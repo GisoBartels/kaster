@@ -33,7 +33,7 @@ fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -
     Box {
         LazyColumn {
             items(viewState.domainList.size) { i ->
-                ListItem(text = { Text(viewState.domainList[i].domain) })
+                ListItem(text = { Text(viewState.domainList[i]) })
             }
         }
         FloatingActionButton(

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 
 class DomainListViewModel(persistence: DomainListPersistence) {
 
-    val viewState = persistence.domainList.map { DomainListViewState(it.map { DomainEntry(it) }.toImmutableList()) }
+    val viewState = persistence.domainList.map { DomainListViewState(it.toImmutableList()) }
 
     fun onInput(input: DomainListInput) {
         when (input) {
