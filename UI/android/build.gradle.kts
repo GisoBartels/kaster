@@ -24,6 +24,8 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.1")
 
     androidTestImplementation("androidx.test:core:1.5.0")

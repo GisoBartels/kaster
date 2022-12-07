@@ -1,7 +1,9 @@
 package app.kaster.common.domainlist
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.FloatingActionButton
@@ -32,8 +34,11 @@ fun DomainListScreen(persistence: DomainListPersistence) {
 fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -> Unit) {
     Box {
         LazyColumn {
-            items(viewState.domainList.size) { i ->
-                ListItem(text = { Text(viewState.domainList[i]) })
+            items(viewState.domainList) { domain ->
+                ListItem(
+                    text = { Text(domain) },
+                    modifier = Modifier.clickable { input(DomainListInput.EditDomain(domain)) }
+                )
             }
         }
         FloatingActionButton(
