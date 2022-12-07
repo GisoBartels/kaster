@@ -41,6 +41,7 @@ kotlin {
 
 @Suppress("UnstableApiUsage")
 android {
+    namespace = "app.kaster.common"
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {

@@ -35,6 +35,7 @@ dependencies {
 
 @Suppress("UnstableApiUsage")
 android {
+    namespace = "app.kaster.android"
     compileSdk = 33
     defaultConfig {
         applicationId = "app.kaster.android"
