@@ -51,7 +51,7 @@ fun KasterContent(viewState: KasterViewState, input: (KasterInput) -> Unit) {
             }
         )
 
-        TextInput("Domain", viewState.domain) { input(Domain(it)) }
+        TextInput("Domain", viewState.domain, KeyboardType.Uri) { input(Domain(it)) }
         DropDown(
             label = "Scope",
             values = Scope.values().toList(),
@@ -101,8 +101,20 @@ fun KasterContent(viewState: KasterViewState, input: (KasterInput) -> Unit) {
 }
 
 @Composable
-fun TextInput(label: String, input: String, modifier: Modifier = Modifier, onValueChange: (String) -> Unit) {
-    OutlinedTextField(input, onValueChange, label = { Text(label) }, modifier = modifier.fillMaxWidth())
+fun TextInput(
+    label: String,
+    input: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        input,
+        onValueChange,
+        label = { Text(label) },
+        modifier = modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+    )
 }
 
 @Composable
