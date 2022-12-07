@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -39,12 +40,12 @@ fun LoginScreen(persistence: LoginPersistence) {
 fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth().padding(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         UsernameField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("username"),
             username = viewState.username,
             onUsernameChange = { input(LoginInput.Username(it)) }
         )
         PasswordField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("password"),
             password = viewState.password,
             maskPassword = viewState.passwordMasked,
             onInput = input
@@ -53,7 +54,7 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
         Divider(modifier = Modifier.padding(vertical = 8.dp))
 
         LoginButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally).testTag("login"),
             enabled = viewState.loginEnabled,
             onClick = { input(LoginInput.Login) }
         )

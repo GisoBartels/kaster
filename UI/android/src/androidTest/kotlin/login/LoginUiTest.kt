@@ -1,9 +1,11 @@
 package login
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import app.kaster.common.KasterTheme
 import app.kaster.common.login.LoginContent
@@ -29,7 +31,7 @@ class LoginUiTest {
             )
         )
 
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("login").performClick()
 
         verify { inputMock(LoginInput.Login) }
     }
@@ -42,7 +44,7 @@ class LoginUiTest {
             )
         )
 
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("login").performClick()
 
         verify(exactly = 0) { inputMock(LoginInput.Login) }
     }
@@ -61,8 +63,8 @@ class LoginUiTest {
             )
         )
 
-        composeTestRule.onNodeWithText(expectedUsername).assertIsDisplayed()
-        composeTestRule.onNodeWithText(expectedPassword).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("username").assertTextContains(expectedUsername)
+        composeTestRule.onNodeWithTag("password").assertTextContains(expectedPassword)
     }
 
     @Test
@@ -78,7 +80,7 @@ class LoginUiTest {
             )
         )
 
-        composeTestRule.onNodeWithText(password).assertDoesNotExist()
+        composeTestRule.onNodeWithTag("password").assert(hasTextExactly(password).not())
     }
 
     @Test
