@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -27,7 +28,7 @@ fun DomainEntryContent(viewState: DomainEntryViewState) {
             value = viewState.domain,
             onValueChange = { TODO() },
             label = { Text("Domain") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("domain")
         )
     }
 }

@@ -21,8 +21,13 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Existing domain entry displays persisted values`() {
-        TODO()
+    fun `Existing domain entry displays persisted values`() = runTest {
+        val expectedDomain = "www.example.com"
+        val viewModel = DomainEntryViewModel(expectedDomain)
+
+        viewModel.viewState.test {
+            expectMostRecentItem() shouldBe DomainEntryViewState(expectedDomain)
+        }
     }
 
     @Test
