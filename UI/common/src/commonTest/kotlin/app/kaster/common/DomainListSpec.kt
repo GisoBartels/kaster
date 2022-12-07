@@ -2,6 +2,7 @@ package app.kaster.common
 
 import app.cash.turbine.test
 import app.kaster.common.domainlist.DomainEntry
+import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import app.kaster.common.domainlist.DomainListViewModel
@@ -43,7 +44,12 @@ class DomainListSpec {
 
     @Test
     fun `A logged in user can modify domain entries`() {
-        TODO()
+        val domainFixture = "www.example.org"
+        val viewModel = DomainListViewModel(DomainListPersistenceInMemory(listOf(domainFixture)))
+
+        viewModel.onInput(DomainListInput.EditDomain(domainFixture))
+
+        Navigator.currentScreen.value shouldBe Screen.DomainEntry(domainFixture)
     }
 
     @Test

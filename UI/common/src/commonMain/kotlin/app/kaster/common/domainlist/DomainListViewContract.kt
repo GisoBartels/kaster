@@ -12,4 +12,5 @@ data class DomainEntry(
 
 sealed interface DomainListInput {
     object AddDomain : DomainListInput
+    data class EditDomain(val domain: String) : DomainListInput
 }
