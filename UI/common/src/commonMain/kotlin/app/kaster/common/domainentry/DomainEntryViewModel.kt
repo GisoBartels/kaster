@@ -1,7 +1,6 @@
 package app.kaster.common.domainentry
 
-import app.kaster.common.domainentry.DomainEntryInput.Domain
-import app.kaster.common.domainentry.DomainEntryInput.Save
+import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainlist.DomainListPersistence
 import app.kaster.common.navigation.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +16,7 @@ class DomainEntryViewModel(private val originalDomain: String?, private val pers
         when (input) {
             is Domain -> domain.value = input.value
             Save -> saveAndClose()
+            Dismiss -> Navigator.goBack()
         }
     }
 

@@ -7,4 +7,5 @@ data class DomainEntryViewState(
 sealed interface DomainEntryInput {
     data class Domain(val value: String) : DomainEntryInput
     object Save : DomainEntryInput
+    object Dismiss : DomainEntryInput
 }

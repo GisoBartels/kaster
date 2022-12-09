@@ -7,6 +7,7 @@ import androidx.compose.ui.test.performClick
 import app.kaster.common.KasterTheme
 import app.kaster.common.domainentry.DomainEntryContent
 import app.kaster.common.domainentry.DomainEntryInput
+import app.kaster.common.domainentry.DomainEntryInput.Dismiss
 import app.kaster.common.domainentry.DomainEntryInput.Save
 import app.kaster.common.domainentry.DomainEntryViewState
 import io.mockk.mockk
@@ -36,6 +37,15 @@ class DomainEntryUiTest {
         composeTestRule.onNodeWithTag("save").performClick()
 
         verify { inputMock(Save) }
+    }
+
+    @Test
+    fun dismissChangesRequest() {
+        givenDomainEntry(DomainEntryViewState("www.example.org"))
+
+        composeTestRule.onNodeWithTag("dismiss").performClick()
+
+        verify { inputMock(Dismiss) }
     }
 
     private fun givenDomainEntry(viewState: DomainEntryViewState) {

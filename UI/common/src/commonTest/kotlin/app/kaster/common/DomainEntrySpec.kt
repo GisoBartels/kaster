@@ -48,7 +48,15 @@ class DomainEntrySpec {
 
     @Test
     fun `Changes to domain entry can be dismissed`() {
-        TODO()
+        val originalDomain = "original.com"
+        val changedDomain = "new.com"
+        val persistence = DomainListPersistenceInMemory(listOf(originalDomain))
+        val viewModel = DomainEntryViewModel(originalDomain, persistence)
+
+        viewModel.onInput(DomainEntryInput.Domain(changedDomain))
+        viewModel.onInput(DomainEntryInput.Dismiss)
+
+        persistence.domainList.value.shouldContainExactly(originalDomain)
     }
 
     @Test

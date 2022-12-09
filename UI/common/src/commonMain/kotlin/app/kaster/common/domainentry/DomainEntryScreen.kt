@@ -11,6 +11,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,8 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import app.kaster.common.domainentry.DomainEntryInput.Domain
-import app.kaster.common.domainentry.DomainEntryInput.Save
+import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainlist.DomainListPersistence
 
 @Composable
@@ -36,6 +36,11 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
         TopAppBar(
             title = { Text("Password Kaster") },
             backgroundColor = MaterialTheme.colors.primary,
+            navigationIcon = {
+                IconButton(onClick = { input(Dismiss) }, modifier = Modifier.testTag("dismiss")) {
+                    Icon(Icons.Outlined.Close, "Dismiss")
+                }
+            },
             actions = {
                 IconButton(onClick = { input(Save) }, modifier = Modifier.testTag("save")) {
                     Icon(Icons.Outlined.Save, "Save")
