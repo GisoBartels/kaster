@@ -2,14 +2,19 @@ package app.kaster.common.domainlist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Logout
@@ -19,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import app.kaster.common.navigation.Navigator
 import kotlinx.collections.immutable.persistentListOf
 
@@ -32,26 +38,31 @@ fun DomainListScreen(persistence: DomainListPersistence) {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -> Unit) {
-    Box {
-        LazyColumn {
-            items(viewState.domainList) { domain ->
-                ListItem(
-                    text = { Text(domain) },
-                    modifier = Modifier.clickable { input(DomainListInput.EditDomain(domain)) }
-                )
+    Column {
+        TopAppBar(
+            title = { Text("Password Kaster") },
+            backgroundColor = MaterialTheme.colors.primary,
+            actions = {
+                IconButton(onClick = { Navigator.goBack() }) { // TODO send click event to view model
+                    Icon(Icons.Outlined.Logout, "Log out")
+                }
+            }
+        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn {
+                items(viewState.domainList) { domain ->
+                    ListItem(
+                        text = { Text(domain) },
+                        modifier = Modifier.clickable { input(DomainListInput.EditDomain(domain)) }
+                    )
+                }
+            }
+            FloatingActionButton(
+                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                onClick = { input(DomainListInput.AddDomain) }
+            ) {
+                Icon(Icons.Filled.Add, "Add")
             }
         }
-        FloatingActionButton(
-            modifier = Modifier.align(Alignment.BottomEnd),
-            onClick = { input(DomainListInput.AddDomain) }
-        ) {
-            Icon(Icons.Filled.Add, "Add")
-        }
-        ExtendedFloatingActionButton(
-            modifier = Modifier.align(Alignment.BottomStart),
-            text = { Text("Log out") },
-            icon = { Icon(Icons.Outlined.Logout, "Log out") },
-            onClick = { Navigator.goBack() }
-        )
     }
 }

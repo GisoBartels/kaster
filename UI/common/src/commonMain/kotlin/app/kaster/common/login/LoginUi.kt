@@ -9,8 +9,10 @@ import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -38,26 +40,32 @@ fun LoginScreen(persistence: LoginPersistence) {
 
 @Composable
 fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth().padding(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        UsernameField(
-            modifier = Modifier.fillMaxWidth().testTag("username"),
-            username = viewState.username,
-            onUsernameChange = { input(LoginInput.Username(it)) }
+    Column {
+        TopAppBar(
+            title = { Text("Password Kaster") },
+            backgroundColor = MaterialTheme.colors.primary,
         )
-        PasswordField(
-            modifier = Modifier.fillMaxWidth().testTag("password"),
-            password = viewState.password,
-            maskPassword = viewState.passwordMasked,
-            onInput = input
-        )
+        Column(modifier = Modifier.fillMaxWidth().padding(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            UsernameField(
+                modifier = Modifier.fillMaxWidth().testTag("username"),
+                username = viewState.username,
+                onUsernameChange = { input(LoginInput.Username(it)) }
+            )
+            PasswordField(
+                modifier = Modifier.fillMaxWidth().testTag("password"),
+                password = viewState.password,
+                maskPassword = viewState.passwordMasked,
+                onInput = input
+            )
 
-        Divider(modifier = Modifier.padding(vertical = 8.dp))
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
 
-        LoginButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally).testTag("login"),
-            enabled = viewState.loginEnabled,
-            onClick = { input(LoginInput.Login) }
-        )
+            LoginButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally).testTag("login"),
+                enabled = viewState.loginEnabled,
+                onClick = { input(LoginInput.Login) }
+            )
+        }
     }
 }
 
@@ -72,7 +80,12 @@ fun UsernameField(modifier: Modifier = Modifier, username: String, onUsernameCha
 }
 
 @Composable
-fun PasswordField(modifier: Modifier = Modifier, password: String, maskPassword: Boolean, onInput: (LoginInput) -> Unit) {
+fun PasswordField(
+    modifier: Modifier = Modifier,
+    password: String,
+    maskPassword: Boolean,
+    onInput: (LoginInput) -> Unit
+) {
     OutlinedTextField(
         value = password,
         onValueChange = { onInput(MasterPassword(it)) },

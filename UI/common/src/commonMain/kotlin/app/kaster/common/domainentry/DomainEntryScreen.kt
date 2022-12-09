@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,12 +25,18 @@ fun DomainEntryScreen(domain: String?) {
 
 @Composable
 fun DomainEntryContent(viewState: DomainEntryViewState) {
-    Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-        OutlinedTextField(
-            value = viewState.domain,
-            onValueChange = { TODO() },
-            label = { Text("Domain") },
-            modifier = Modifier.fillMaxWidth().testTag("domain")
+    Column {
+        TopAppBar(
+            title = { Text("Password Kaster") },
+            backgroundColor = MaterialTheme.colors.primary,
         )
+        Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+            OutlinedTextField(
+                value = viewState.domain,
+                onValueChange = { TODO() },
+                label = { Text("Domain") },
+                modifier = Modifier.fillMaxWidth().testTag("domain")
+            )
+        }
     }
 }
