@@ -67,17 +67,17 @@ class DomainEntrySpec {
 
     @Test
     fun `Password is generated when domain is entered`() = runTest {
-        val domain = "benderbrau.robot"
-        val username = "Bender"
-        val masterPassword = "BiteMyShinyMetalAss!"
         val viewModel = DomainEntryViewModel(
-            domain,
-            DomainListPersistenceInMemory(listOf(domain)),
-            LoginPersistenceInMemory(username, masterPassword)
+            null,
+            DomainListPersistenceInMemory(),
+            LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!")
         )
 
+        viewModel.onInput(DomainEntryInput.Domain("benderbrau.robot"))
+
         viewModel.viewState.test {
-            expectMostRecentItem().generatedPassword shouldBe GeneratedPassword.Result("X@CPl2wOm0RgIWu#lC7/")
+            skipItems(1)
+            awaitItem().generatedPassword shouldBe GeneratedPassword.Result("X@CPl2wOm0RgIWu#lC7/")
         }
     }
 
