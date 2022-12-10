@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.kaster.common.domainentry.DomainEntryInput.*
+import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.domainlist.DomainListPersistence
 import app.kaster.common.login.LoginPersistence
 
@@ -34,7 +36,7 @@ fun DomainEntryScreen(
     loginPersistence: LoginPersistence
 ) {
     val viewModel = remember { DomainEntryViewModel(domain, domainListPersistence, loginPersistence) }
-    val viewState by viewModel.viewState.collectAsState(DomainEntryViewState("", null))
+    val viewState by viewModel.viewState.collectAsState(DomainEntryViewState())
     DomainEntryContent(viewState, viewModel::onInput)
 }
 
@@ -65,11 +67,16 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = { TODO() },
-                modifier = Modifier.fillMaxWidth().testTag("password"),
-                enabled = viewState.password.isNullOrEmpty().not()
+                modifier = Modifier.fillMaxWidth().height(56.dp).testTag("password"),
+                enabled = viewState.generatedPassword is GeneratedPassword.Result
             ) {
-                Icon(Icons.Outlined.ContentCopy, "Copy password", modifier = Modifier.padding(end = 8.dp))
-                Text(viewState.password ?: "")
+                when (viewState.generatedPassword) {
+                    GeneratedPassword.NotEnoughData -> Text("""¯\_(ツ)_/¯""", modifier = Modifier.testTag("noData"))
+                    is GeneratedPassword.Result -> {
+                        Icon(Icons.Outlined.ContentCopy, "Copy password", modifier = Modifier.padding(end = 8.dp))
+                        Text(viewState.generatedPassword.password)
+                    }
+                }
             }
         }
     }

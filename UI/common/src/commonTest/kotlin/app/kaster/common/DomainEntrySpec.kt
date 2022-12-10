@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import app.kaster.common.domainentry.DomainEntryInput
 import app.kaster.common.domainentry.DomainEntryViewModel
 import app.kaster.common.domainentry.DomainEntryViewState
+import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import app.kaster.common.login.LoginPersistenceInMemory
 import io.kotest.matchers.collections.shouldContainExactly
@@ -20,14 +21,18 @@ class DomainEntrySpec {
         val viewModel = DomainEntryViewModel(null, DomainListPersistenceInMemory(), LoginPersistenceInMemory())
 
         viewModel.viewState.test {
-            expectMostRecentItem() shouldBe DomainEntryViewState("", null)
+            expectMostRecentItem() shouldBe DomainEntryViewState("", GeneratedPassword.NotEnoughData)
         }
     }
 
     @Test
     fun `Existing domain entry displays persisted values`() = runTest {
         val expectedDomain = "www.example.com"
-        val viewModel = DomainEntryViewModel(expectedDomain, DomainListPersistenceInMemory(listOf(expectedDomain)), LoginPersistenceInMemory())
+        val viewModel = DomainEntryViewModel(
+            expectedDomain,
+            DomainListPersistenceInMemory(listOf(expectedDomain)),
+            LoginPersistenceInMemory()
+        )
 
         viewModel.viewState.test {
             expectMostRecentItem().domain shouldBe expectedDomain
@@ -72,7 +77,20 @@ class DomainEntrySpec {
         )
 
         viewModel.viewState.test {
-            expectMostRecentItem().password shouldBe "X@CPl2wOm0RgIWu#lC7/"
+            expectMostRecentItem().generatedPassword shouldBe GeneratedPassword.Result("X@CPl2wOm0RgIWu#lC7/")
+        }
+    }
+
+    @Test
+    fun `Show empty state when domain is empty`() = runTest {
+        val viewModel = DomainEntryViewModel(
+            "",
+            DomainListPersistenceInMemory(),
+            LoginPersistenceInMemory("username", "masterPassword")
+        )
+
+        viewModel.viewState.test {
+            expectMostRecentItem().generatedPassword shouldBe GeneratedPassword.NotEnoughData
         }
     }
 

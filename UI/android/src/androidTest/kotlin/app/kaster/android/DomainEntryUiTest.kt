@@ -1,5 +1,7 @@
 package app.kaster.android
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -10,6 +12,7 @@ import app.kaster.common.domainentry.DomainEntryInput
 import app.kaster.common.domainentry.DomainEntryInput.Dismiss
 import app.kaster.common.domainentry.DomainEntryInput.Save
 import app.kaster.common.domainentry.DomainEntryViewState
+import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Rule
@@ -26,15 +29,23 @@ class DomainEntryUiTest {
     fun viewStateIsDisplayed() {
         val expectedDomain = "www.example.org"
         val expectedPassword = "secret"
-        givenDomainEntry(DomainEntryViewState(expectedDomain, expectedPassword))
+        givenDomainEntry(DomainEntryViewState(expectedDomain, GeneratedPassword.Result(expectedPassword)))
 
         composeTestRule.onNodeWithTag("domain").assertTextContains(expectedDomain)
         composeTestRule.onNodeWithTag("password").assertTextContains(expectedPassword)
     }
 
     @Test
+    fun notEnoughDataHintIsDisplayedIsDisplayed() {
+        givenDomainEntry(DomainEntryViewState("", GeneratedPassword.NotEnoughData))
+
+        composeTestRule.onNodeWithTag("password").assertIsNotEnabled()
+        composeTestRule.onNodeWithTag("noData", useUnmergedTree = true).assertIsDisplayed()
+    }
+
+    @Test
     fun entrySaveRequest() {
-        givenDomainEntry(DomainEntryViewState("www.example.org", "secret"))
+        givenDomainEntry(DomainEntryViewState())
 
         composeTestRule.onNodeWithTag("save").performClick()
 
@@ -43,7 +54,7 @@ class DomainEntryUiTest {
 
     @Test
     fun dismissChangesRequest() {
-        givenDomainEntry(DomainEntryViewState("www.example.org", "secret"))
+        givenDomainEntry(DomainEntryViewState())
 
         composeTestRule.onNodeWithTag("dismiss").performClick()
 

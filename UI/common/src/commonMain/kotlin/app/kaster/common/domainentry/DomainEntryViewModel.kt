@@ -1,6 +1,7 @@
 package app.kaster.common.domainentry
 
 import app.kaster.common.domainentry.DomainEntryInput.*
+import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.domainlist.DomainListPersistence
 import app.kaster.common.login.LoginPersistence
 import app.kaster.common.navigation.Navigator
@@ -28,11 +29,11 @@ class DomainEntryViewModel(
     private val domain = MutableStateFlow(originalDomain ?: "")
 
     @OptIn(FlowPreview::class)
-    private val password: Flow<String?> = domain
+    private val password: Flow<GeneratedPassword> = domain
         .debounce(250)
         .map { domain -> generatePassword(domain) }
         .flowOn(Dispatchers.Default)
-        .onStart { emit(null) }
+        .onStart { emit(GeneratedPassword.NotEnoughData) }
 
     val viewState = combine(domain, password) { domain, password ->
         DomainEntryViewState(domain, password)
@@ -47,10 +48,20 @@ class DomainEntryViewModel(
     }
 
     private fun generatePassword(domain: String) =
-        if (domain.isEmpty())
-            null
-        else
-            Kaster.generatePassword(username, masterPassword, domain, 1, PasswordType.Maximum, Scope.Authentication)
+        if (domain.isEmpty()) {
+            GeneratedPassword.NotEnoughData
+        } else {
+            GeneratedPassword.Result(
+                Kaster.generatePassword(
+                    username = username,
+                    masterPassword = masterPassword,
+                    domain = domain,
+                    counter = 1,
+                    type = PasswordType.Maximum,
+                    scope = Scope.Authentication
+                )
+            )
+        }
 
     private fun saveAndClose() {
         save()
