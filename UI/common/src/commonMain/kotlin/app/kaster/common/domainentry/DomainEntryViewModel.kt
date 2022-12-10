@@ -2,15 +2,41 @@ package app.kaster.common.domainentry
 
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainlist.DomainListPersistence
+import app.kaster.common.login.LoginPersistence
 import app.kaster.common.navigation.Navigator
+import app.kaster.core.Kaster
+import app.kaster.core.Kaster.PasswordType
+import app.kaster.core.Kaster.Scope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 
-class DomainEntryViewModel(private val originalDomain: String?, private val persistence: DomainListPersistence) {
+class DomainEntryViewModel(
+    private val originalDomain: String?,
+    private val domainListPersistence: DomainListPersistence,
+    loginPersistence: LoginPersistence
+) {
+    private val username = loginPersistence.loadUsername()
+    private val masterPassword = loginPersistence.loadMasterPassword()
     private val domain = MutableStateFlow(originalDomain ?: "")
 
-    val viewState = domain.map { DomainEntryViewState(domain.value) }
+    @OptIn(FlowPreview::class)
+    private val password: Flow<String?> = domain
+        .debounce(250)
+        .map { domain -> generatePassword(domain) }
+        .flowOn(Dispatchers.Default)
+        .onStart { emit(null) }
+
+    val viewState = combine(domain, password) { domain, password ->
+        DomainEntryViewState(domain, password)
+    }
 
     fun onInput(input: DomainEntryInput) {
         when (input) {
@@ -20,6 +46,12 @@ class DomainEntryViewModel(private val originalDomain: String?, private val pers
         }
     }
 
+    private fun generatePassword(domain: String) =
+        if (domain.isEmpty())
+            null
+        else
+            Kaster.generatePassword(username, masterPassword, domain, 1, PasswordType.Maximum, Scope.Authentication)
+
     private fun saveAndClose() {
         save()
         Navigator.goBack()
@@ -28,7 +60,7 @@ class DomainEntryViewModel(private val originalDomain: String?, private val pers
     private fun save() {
         require(domain.value.isNotEmpty()) { "Saving empty domains not allowed" }
         if (domain.value != originalDomain)
-            persistence.domainList.update {
+            domainListPersistence.domainList.update {
                 if (originalDomain == null)
                     it.add(domain.value)
                 else

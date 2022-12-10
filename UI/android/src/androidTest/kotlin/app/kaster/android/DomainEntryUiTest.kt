@@ -23,16 +23,18 @@ class DomainEntryUiTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun domainIsDisplayed() {
-        val domainFixture = "www.example.org"
-        givenDomainEntry(DomainEntryViewState(domainFixture))
+    fun viewStateIsDisplayed() {
+        val expectedDomain = "www.example.org"
+        val expectedPassword = "secret"
+        givenDomainEntry(DomainEntryViewState(expectedDomain, expectedPassword))
 
-        composeTestRule.onNodeWithTag("domain").assertTextContains(domainFixture)
+        composeTestRule.onNodeWithTag("domain").assertTextContains(expectedDomain)
+        composeTestRule.onNodeWithTag("password").assertTextContains(expectedPassword)
     }
 
     @Test
     fun entrySaveRequest() {
-        givenDomainEntry(DomainEntryViewState("www.example.org"))
+        givenDomainEntry(DomainEntryViewState("www.example.org", "secret"))
 
         composeTestRule.onNodeWithTag("save").performClick()
 
@@ -41,7 +43,7 @@ class DomainEntryUiTest {
 
     @Test
     fun dismissChangesRequest() {
-        givenDomainEntry(DomainEntryViewState("www.example.org"))
+        givenDomainEntry(DomainEntryViewState("www.example.org", "secret"))
 
         composeTestRule.onNodeWithTag("dismiss").performClick()
 

@@ -1,9 +1,11 @@
 package app.kaster.common.domainentry
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -12,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,11 +25,16 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainlist.DomainListPersistence
+import app.kaster.common.login.LoginPersistence
 
 @Composable
-fun DomainEntryScreen(domain: String?, persistence: DomainListPersistence) {
-    val viewModel = remember { DomainEntryViewModel(domain, persistence) }
-    val viewState by viewModel.viewState.collectAsState(DomainEntryViewState(""))
+fun DomainEntryScreen(
+    domain: String?,
+    domainListPersistence: DomainListPersistence,
+    loginPersistence: LoginPersistence
+) {
+    val viewModel = remember { DomainEntryViewModel(domain, domainListPersistence, loginPersistence) }
+    val viewState by viewModel.viewState.collectAsState(DomainEntryViewState("", null))
     DomainEntryContent(viewState, viewModel::onInput)
 }
 
@@ -54,6 +62,15 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
                 label = { Text("Domain") },
                 modifier = Modifier.fillMaxWidth().testTag("domain")
             )
+            Spacer(Modifier.weight(1f))
+            Button(
+                onClick = { TODO() },
+                modifier = Modifier.fillMaxWidth().testTag("password"),
+                enabled = viewState.password.isNullOrEmpty().not()
+            ) {
+                Icon(Icons.Outlined.ContentCopy, "Copy password", modifier = Modifier.padding(end = 8.dp))
+                Text(viewState.password ?: "")
+            }
         }
     }
 }

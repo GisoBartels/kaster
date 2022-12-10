@@ -1,7 +1,8 @@
 package app.kaster.common.domainentry
 
 data class DomainEntryViewState(
-    val domain: String
+    val domain: String,
+    val password: String?
 )
 
 sealed interface DomainEntryInput {
