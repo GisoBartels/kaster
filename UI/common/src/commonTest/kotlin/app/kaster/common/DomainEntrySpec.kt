@@ -21,7 +21,7 @@ class DomainEntrySpec {
         val viewModel = DomainEntryViewModel(null, DomainListPersistenceInMemory(), LoginPersistenceInMemory())
 
         viewModel.viewState.test {
-            expectMostRecentItem() shouldBe DomainEntryViewState("", GeneratedPassword.NotEnoughData)
+            awaitItem() shouldBe DomainEntryViewState("", GeneratedPassword.NotEnoughData)
         }
     }
 
@@ -35,7 +35,7 @@ class DomainEntrySpec {
         )
 
         viewModel.viewState.test {
-            expectMostRecentItem().domain shouldBe expectedDomain
+            awaitItem().domain shouldBe expectedDomain
         }
     }
 
@@ -76,7 +76,7 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Domain("benderbrau.robot"))
 
         viewModel.viewState.test {
-            skipItems(1)
+            awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
             awaitItem().generatedPassword shouldBe GeneratedPassword.Result("X@CPl2wOm0RgIWu#lC7/")
         }
     }
@@ -90,7 +90,22 @@ class DomainEntrySpec {
         )
 
         viewModel.viewState.test {
-            expectMostRecentItem().generatedPassword shouldBe GeneratedPassword.NotEnoughData
+            awaitItem().generatedPassword shouldBe GeneratedPassword.NotEnoughData
+        }
+    }
+
+    @Test
+    fun `Show loadings state while password is generated`() = runTest {
+        val viewModel = DomainEntryViewModel(
+            "",
+            DomainListPersistenceInMemory(),
+            LoginPersistenceInMemory("username", "masterPassword")
+        )
+
+        viewModel.onInput(DomainEntryInput.Domain("www.example.com"))
+
+        viewModel.viewState.test {
+            awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
         }
     }
 

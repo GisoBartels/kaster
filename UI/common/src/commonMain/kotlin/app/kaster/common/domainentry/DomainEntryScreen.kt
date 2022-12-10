@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -71,6 +72,7 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
                 enabled = viewState.generatedPassword is GeneratedPassword.Result
             ) {
                 when (viewState.generatedPassword) {
+                    GeneratedPassword.Generating -> LinearProgressIndicator(Modifier.testTag("generating"))
                     GeneratedPassword.NotEnoughData -> Text("""¯\_(ツ)_/¯""", modifier = Modifier.testTag("noData"))
                     is GeneratedPassword.Result -> {
                         Icon(Icons.Outlined.ContentCopy, "Copy password", modifier = Modifier.padding(end = 8.dp))

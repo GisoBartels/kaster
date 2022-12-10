@@ -9,14 +9,14 @@ import app.kaster.core.Kaster
 import app.kaster.core.Kaster.PasswordType
 import app.kaster.core.Kaster.Scope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 
 class DomainEntryViewModel(
@@ -28,12 +28,18 @@ class DomainEntryViewModel(
     private val masterPassword = loginPersistence.loadMasterPassword()
     private val domain = MutableStateFlow(originalDomain ?: "")
 
-    @OptIn(FlowPreview::class)
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private val password: Flow<GeneratedPassword> = domain
         .debounce(250)
-        .map { domain -> generatePassword(domain) }
+        .transformLatest { domain ->
+            if (domain.isEmpty()) {
+                emit(GeneratedPassword.NotEnoughData)
+            } else {
+                emit(GeneratedPassword.Generating)
+                emit(generatePassword(domain))
+            }
+        }
         .flowOn(Dispatchers.Default)
-        .onStart { emit(GeneratedPassword.NotEnoughData) }
 
     val viewState = combine(domain, password) { domain, password ->
         DomainEntryViewState(domain, password)
@@ -48,20 +54,16 @@ class DomainEntryViewModel(
     }
 
     private fun generatePassword(domain: String) =
-        if (domain.isEmpty()) {
-            GeneratedPassword.NotEnoughData
-        } else {
-            GeneratedPassword.Result(
-                Kaster.generatePassword(
-                    username = username,
-                    masterPassword = masterPassword,
-                    domain = domain,
-                    counter = 1,
-                    type = PasswordType.Maximum,
-                    scope = Scope.Authentication
-                )
+        GeneratedPassword.Result(
+            Kaster.generatePassword(
+                username = username,
+                masterPassword = masterPassword,
+                domain = domain,
+                counter = 1,
+                type = PasswordType.Maximum,
+                scope = Scope.Authentication
             )
-        }
+        )
 
     private fun saveAndClose() {
         save()

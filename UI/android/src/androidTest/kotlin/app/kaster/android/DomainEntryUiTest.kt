@@ -44,6 +44,14 @@ class DomainEntryUiTest {
     }
 
     @Test
+    fun progressWhileGeneratingIsDisplayed() {
+        givenDomainEntry(DomainEntryViewState("www.example.org", GeneratedPassword.Generating))
+
+        composeTestRule.onNodeWithTag("password").assertIsNotEnabled()
+        composeTestRule.onNodeWithTag("generating").assertIsDisplayed()
+    }
+
+    @Test
     fun entrySaveRequest() {
         givenDomainEntry(DomainEntryViewState())
 
