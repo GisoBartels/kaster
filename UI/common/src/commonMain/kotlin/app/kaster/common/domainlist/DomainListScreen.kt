@@ -25,11 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.kaster.common.domainentry.DomainEntryPersistence
 import app.kaster.common.navigation.Navigator
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun DomainListScreen(persistence: DomainListPersistence) {
+fun DomainListScreen(persistence: DomainEntryPersistence) {
     val viewModel = remember { DomainListViewModel(persistence) }
     val viewState by viewModel.viewState.collectAsState(DomainListViewState(persistentListOf()))
     DomainListContent(viewState, viewModel::onInput)

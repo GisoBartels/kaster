@@ -1,13 +1,13 @@
 package app.kaster.common
 
 import app.cash.turbine.test
+import app.kaster.common.domainentry.DomainEntry
 import app.kaster.common.domainentry.DomainEntryInput
+import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainentry.DomainEntryViewModel
 import app.kaster.common.domainentry.DomainEntryViewState
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import app.kaster.common.login.LoginPersistenceInMemory
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -18,7 +18,7 @@ class DomainEntrySpec {
 
     @Test
     fun `New domain entry displays empty values`() = runTest {
-        val viewModel = DomainEntryViewModel(null, DomainListPersistenceInMemory(), LoginPersistenceInMemory())
+        val viewModel = DomainEntryViewModel(null, DomainEntryPersistenceInMemory(), LoginPersistenceInMemory())
 
         viewModel.viewState.test {
             awaitItem() shouldBe DomainEntryViewState("", GeneratedPassword.NotEnoughData)
@@ -30,7 +30,7 @@ class DomainEntrySpec {
         val expectedDomain = "www.example.com"
         val viewModel = DomainEntryViewModel(
             expectedDomain,
-            DomainListPersistenceInMemory(listOf(expectedDomain)),
+            DomainEntryPersistenceInMemory(DomainEntry(expectedDomain)),
             LoginPersistenceInMemory()
         )
 
@@ -43,33 +43,33 @@ class DomainEntrySpec {
     fun `Changes to domain entry can be saved`() {
         val originalDomain = "original.com"
         val changedDomain = "new.com"
-        val persistence = DomainListPersistenceInMemory(listOf(originalDomain))
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry(originalDomain))
         val viewModel = DomainEntryViewModel(originalDomain, persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Domain(changedDomain))
         viewModel.onInput(DomainEntryInput.Save)
 
-        persistence.domainList.value.shouldContainExactly(changedDomain)
+        persistence.entries.value.single().domain shouldBe changedDomain
     }
 
     @Test
     fun `Changes to domain entry can be dismissed`() {
         val originalDomain = "original.com"
         val changedDomain = "new.com"
-        val persistence = DomainListPersistenceInMemory(listOf(originalDomain))
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry(originalDomain))
         val viewModel = DomainEntryViewModel(originalDomain, persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Domain(changedDomain))
         viewModel.onInput(DomainEntryInput.Dismiss)
 
-        persistence.domainList.value.shouldContainExactly(originalDomain)
+        persistence.entries.value.single().domain shouldBe originalDomain
     }
 
     @Test
     fun `Password is generated when domain is entered`() = runTest {
         val viewModel = DomainEntryViewModel(
             null,
-            DomainListPersistenceInMemory(),
+            DomainEntryPersistenceInMemory(),
             LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!")
         )
 
@@ -85,7 +85,7 @@ class DomainEntrySpec {
     fun `Show empty state when domain is empty`() = runTest {
         val viewModel = DomainEntryViewModel(
             "",
-            DomainListPersistenceInMemory(),
+            DomainEntryPersistenceInMemory(),
             LoginPersistenceInMemory("username", "masterPassword")
         )
 
@@ -98,7 +98,7 @@ class DomainEntrySpec {
     fun `Show loadings state while password is generated`() = runTest {
         val viewModel = DomainEntryViewModel(
             "",
-            DomainListPersistenceInMemory(),
+            DomainEntryPersistenceInMemory(),
             LoginPersistenceInMemory("username", "masterPassword")
         )
 

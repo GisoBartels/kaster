@@ -2,12 +2,9 @@ package app.kaster.common.domainentry
 
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.domainlist.DomainListPersistence
 import app.kaster.common.login.LoginPersistence
 import app.kaster.common.navigation.Navigator
 import app.kaster.core.Kaster
-import app.kaster.core.Kaster.PasswordType
-import app.kaster.core.Kaster.Scope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -21,49 +18,42 @@ import kotlinx.coroutines.flow.update
 
 class DomainEntryViewModel(
     private val originalDomain: String?,
-    private val domainListPersistence: DomainListPersistence,
+    private val domainEntryPersistence: DomainEntryPersistence,
     loginPersistence: LoginPersistence
 ) {
     private val username = loginPersistence.loadUsername()
     private val masterPassword = loginPersistence.loadMasterPassword()
-    private val domain = MutableStateFlow(originalDomain ?: "")
+    private val originalEntry =
+        originalDomain?.let { domainEntryPersistence.entries.value.find { it.domain == originalDomain } }
+    private val workingCopy = MutableStateFlow(originalEntry ?: DomainEntry(originalDomain ?: ""))
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    private val password: Flow<GeneratedPassword> = domain
+    private val password: Flow<GeneratedPassword> = workingCopy
         .debounce(250)
-        .transformLatest { domain ->
-            if (domain.isEmpty()) {
+        .transformLatest { domainEntry ->
+            if (domainEntry.domain.isEmpty()) {
                 emit(GeneratedPassword.NotEnoughData)
             } else {
                 emit(GeneratedPassword.Generating)
-                emit(generatePassword(domain))
+                emit(domainEntry.generatePassword())
             }
         }
         .flowOn(Dispatchers.Default)
 
-    val viewState = combine(domain, password) { domain, password ->
-        DomainEntryViewState(domain, password)
+    val viewState = combine(workingCopy, password) { domainEntry, password ->
+        DomainEntryViewState(domainEntry.domain, password)
     }
 
     fun onInput(input: DomainEntryInput) {
         when (input) {
-            is Domain -> domain.value = input.value
+            is Domain -> workingCopy.update { it.copy(domain = input.value) }
             Save -> saveAndClose()
             Dismiss -> Navigator.goBack()
         }
     }
 
-    private fun generatePassword(domain: String) =
-        GeneratedPassword.Result(
-            Kaster.generatePassword(
-                username = username,
-                masterPassword = masterPassword,
-                domain = domain,
-                counter = 1,
-                type = PasswordType.Maximum,
-                scope = Scope.Authentication
-            )
-        )
+    private fun DomainEntry.generatePassword() =
+        GeneratedPassword.Result(Kaster.generatePassword(username, masterPassword, domain, counter, type, scope))
 
     private fun saveAndClose() {
         save()
@@ -71,13 +61,13 @@ class DomainEntryViewModel(
     }
 
     private fun save() {
-        require(domain.value.isNotEmpty()) { "Saving empty domains not allowed" }
-        if (domain.value != originalDomain)
-            domainListPersistence.domainList.update {
-                if (originalDomain == null)
-                    it.add(domain.value)
-                else
-                    it.remove(originalDomain).add(domain.value)
-            }
+        workingCopy.value.let { changedEntry ->
+            require(changedEntry.domain.isNotEmpty()) { "Saving empty domains not allowed" }
+            if (changedEntry != originalEntry)
+                domainEntryPersistence.entries.update {
+                    it.removeAll { entry -> entry.domain == originalDomain }
+                        .add(changedEntry)
+                }
+        }
     }
 }

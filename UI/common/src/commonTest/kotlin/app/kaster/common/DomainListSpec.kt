@@ -1,9 +1,10 @@
 package app.kaster.common
 
 import app.cash.turbine.test
+import app.kaster.common.domainentry.DomainEntry
+import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
-import app.kaster.common.domainlist.DomainListPersistenceInMemory
 import app.kaster.common.domainlist.DomainListViewModel
 import app.kaster.common.navigation.Navigator
 import app.kaster.common.navigation.Screen
@@ -19,7 +20,7 @@ class DomainListSpec {
     @Test
     fun `A logged in user sees the list of previously added domains`() = runTest {
         val domainFixtures = listOf("d1", "d2", "d3")
-        val persistence = DomainListPersistenceInMemory(domainFixtures)
+        val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())
         val viewModel = DomainListViewModel(persistence)
 
         viewModel.viewState.test {
@@ -29,7 +30,7 @@ class DomainListSpec {
 
     @Test
     fun `A logged in user can add new domain entries`() = runTest {
-        val viewModel = DomainListViewModel(DomainListPersistenceInMemory())
+        val viewModel = DomainListViewModel(DomainEntryPersistenceInMemory())
 
         viewModel.onInput(AddDomain)
 
@@ -44,7 +45,7 @@ class DomainListSpec {
     @Test
     fun `A logged in user can modify domain entries`() {
         val domainFixture = "www.example.org"
-        val viewModel = DomainListViewModel(DomainListPersistenceInMemory(listOf(domainFixture)))
+        val viewModel = DomainListViewModel(DomainEntryPersistenceInMemory(DomainEntry(domainFixture)))
 
         viewModel.onInput(DomainListInput.EditDomain(domainFixture))
 

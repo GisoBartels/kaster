@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
-import app.kaster.common.domainlist.DomainListPersistenceInMemory
+import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun KasterAndroidUi() {
     val context = LocalContext.current
     val loginPersistence = remember { LoginPersistenceAndroid(context) }
-    val domainListPersistence = remember { DomainListPersistenceInMemory(listOf("dummy")) } // TODO
+    val domainListPersistence = remember { DomainEntryPersistenceInMemory() } // TODO real persistence
 
     KasterTheme {
         val systemUiController = rememberSystemUiController()

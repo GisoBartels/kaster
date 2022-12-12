@@ -27,16 +27,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.domainlist.DomainListPersistence
 import app.kaster.common.login.LoginPersistence
 
 @Composable
 fun DomainEntryScreen(
     domain: String?,
-    domainListPersistence: DomainListPersistence,
+    domainEntryPersistence: DomainEntryPersistence,
     loginPersistence: LoginPersistence
 ) {
-    val viewModel = remember { DomainEntryViewModel(domain, domainListPersistence, loginPersistence) }
+    val viewModel = remember { DomainEntryViewModel(domain, domainEntryPersistence, loginPersistence) }
     val viewState by viewModel.viewState.collectAsState(DomainEntryViewState())
     DomainEntryContent(viewState, viewModel::onInput)
 }
