@@ -4,6 +4,7 @@ plugins {
     val compose = "1.2.1"
 
     kotlin("multiplatform") version kotlin apply false
+    kotlin("plugin.serialization") version kotlin apply false
     kotlin("android") version kotlin apply false
     id("com.android.application") version agp apply false
     id("com.android.library") version agp apply false

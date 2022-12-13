@@ -14,6 +14,8 @@ dependencies {
 
     implementation("androidx.activity:activity-compose:1.6.1")
     implementation("androidx.security:security-crypto-ktx:1.1.0-alpha04")
+    implementation("androidx.datastore:datastore:1.1.0-alpha01")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     implementation("androidx.compose.ui:ui:1.3.1")
     implementation("androidx.compose.ui:ui-tooling:1.3.1")
