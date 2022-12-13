@@ -30,7 +30,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -76,20 +79,7 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
 
             Spacer(Modifier.weight(1f))
 
-            Button(
-                onClick = { TODO() },
-                modifier = Modifier.fillMaxWidth().height(56.dp).testTag("password"),
-                enabled = viewState.generatedPassword is GeneratedPassword.Result
-            ) {
-                when (viewState.generatedPassword) {
-                    GeneratedPassword.Generating -> LinearProgressIndicator(Modifier.testTag("generating"))
-                    GeneratedPassword.NotEnoughData -> Text("""¯\_(ツ)_/¯""", modifier = Modifier.testTag("noData"))
-                    is GeneratedPassword.Result -> {
-                        Icon(Icons.Outlined.ContentCopy, "Copy password", modifier = Modifier.padding(end = 8.dp))
-                        Text(viewState.generatedPassword.password)
-                    }
-                }
-            }
+            PasswordButton(viewState.generatedPassword)
         }
     }
 }
@@ -149,5 +139,27 @@ private fun Label(text: String, content: @Composable () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text, Modifier.padding(end = 16.dp))
         content()
+    }
+}
+
+@Composable
+private fun PasswordButton(generatedPassword: GeneratedPassword) {
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    Button(
+        onClick = {
+            if (generatedPassword is GeneratedPassword.Result)
+                clipboardManager.setText(AnnotatedString(generatedPassword.password))
+        },
+        modifier = Modifier.fillMaxWidth().height(56.dp).testTag("password"),
+        enabled = generatedPassword is GeneratedPassword.Result
+    ) {
+        when (generatedPassword) {
+            GeneratedPassword.Generating -> LinearProgressIndicator(Modifier.testTag("generating"))
+            GeneratedPassword.NotEnoughData -> Text("""¯\_(ツ)_/¯""", modifier = Modifier.testTag("noData"))
+            is GeneratedPassword.Result -> {
+                Icon(Icons.Outlined.ContentCopy, "Copy password", modifier = Modifier.padding(end = 8.dp))
+                Text(generatedPassword.password)
+            }
+        }
     }
 }

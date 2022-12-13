@@ -154,11 +154,6 @@ class DomainEntrySpec {
         }
     }
 
-    @Test
-    fun `User can copy generated password to clipboard`() {
-        TODO()
-    }
-
     private class TestHarness(
         val originalDomainEntry: DomainEntry? = null,
         testCoroutineScheduler: TestCoroutineScheduler

@@ -1,5 +1,8 @@
 package app.kaster.android
 
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -12,6 +15,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.text.AnnotatedString
 import app.kaster.common.KasterTheme
 import app.kaster.common.domainentry.DomainEntry
 import app.kaster.common.domainentry.DomainEntryContent
@@ -142,6 +146,26 @@ class DomainEntryUiTest {
         composeTestRule.onNodeWithTag("dismiss").performClick()
 
         verify { inputMock(Dismiss) }
+    }
+
+    @Test
+    fun testCopyPasswordToClipboard() {
+        val clipboardMock = mockk<ClipboardManager>(relaxUnitFun = true)
+        val expectedPassword = "subba secret"
+        composeTestRule.setContent {
+            KasterTheme {
+                CompositionLocalProvider(LocalClipboardManager provides clipboardMock) {
+                    DomainEntryContent(
+                        DomainEntryViewState(generatedPassword = GeneratedPassword.Result(expectedPassword)),
+                        inputMock
+                    )
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithTag("password").performClick()
+
+        verify { clipboardMock.setText(AnnotatedString(expectedPassword)) }
     }
 
     private fun givenDomainEntry(viewState: DomainEntryViewState) {
