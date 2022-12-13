@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 
 class DomainEntryViewModel(
     private val originalDomain: String?,
@@ -35,20 +35,30 @@ class DomainEntryViewModel(
                 emit(GeneratedPassword.NotEnoughData)
             } else {
                 emit(GeneratedPassword.Generating)
-                emit(domainEntry.generatePassword())
+                emit(withContext(Dispatchers.Default) { domainEntry.generatePassword() })
             }
         }
-        .flowOn(Dispatchers.Default)
 
     val viewState = combine(workingCopy, password) { domainEntry, password ->
-        DomainEntryViewState(domainEntry.domain, password)
+        DomainEntryViewState(domainEntry, password)
     }
 
     fun onInput(input: DomainEntryInput) {
         when (input) {
             is Domain -> workingCopy.update { it.copy(domain = input.value) }
+            is Scope -> workingCopy.update { it.copy(scope = input.value) }
+            is Counter -> updateCounterIfValid(input.value)
+            IncreaseCounter -> updateCounterIfValid(workingCopy.value.counter + 1)
+            DecreaseCounter -> updateCounterIfValid(workingCopy.value.counter - 1)
+            is Type -> workingCopy.update { it.copy(type = input.value) }
             Save -> saveAndClose()
             Dismiss -> Navigator.goBack()
+        }
+    }
+
+    private fun updateCounterIfValid(newValue: Int) {
+        if (newValue > 0) {
+            workingCopy.update { it.copy(counter = newValue) }
         }
     }
 

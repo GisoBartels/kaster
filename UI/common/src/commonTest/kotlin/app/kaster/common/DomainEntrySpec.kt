@@ -8,6 +8,7 @@ import app.kaster.common.domainentry.DomainEntryViewModel
 import app.kaster.common.domainentry.DomainEntryViewState
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.login.LoginPersistenceInMemory
+import app.kaster.core.Kaster
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -17,11 +18,11 @@ import org.junit.Test
 class DomainEntrySpec {
 
     @Test
-    fun `New domain entry displays empty values`() = runTest {
+    fun `New domain entry displays default values`() = runTest {
         val viewModel = DomainEntryViewModel(null, DomainEntryPersistenceInMemory(), LoginPersistenceInMemory())
 
         viewModel.viewState.test {
-            awaitItem() shouldBe DomainEntryViewState("", GeneratedPassword.NotEnoughData)
+            awaitItem() shouldBe DomainEntryViewState(DomainEntry(), GeneratedPassword.NotEnoughData)
         }
     }
 
@@ -35,7 +36,7 @@ class DomainEntrySpec {
         )
 
         viewModel.viewState.test {
-            awaitItem().domain shouldBe expectedDomain
+            awaitItem().domainEntry.domain shouldBe expectedDomain
         }
     }
 
@@ -63,6 +64,82 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Dismiss)
 
         persistence.entries.value.single().domain shouldBe originalDomain
+    }
+
+    @Test
+    fun `Changes to scope are saved`() {
+        val expectedScope = Kaster.Scope.Recovery
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", scope = Kaster.Scope.Authentication))
+        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
+
+        viewModel.onInput(DomainEntryInput.Scope(expectedScope))
+        viewModel.onInput(DomainEntryInput.Save)
+
+        persistence.entries.value.single().scope shouldBe expectedScope
+    }
+
+    @Test
+    fun `Changes to password type are saved`() {
+        val expectedType = Kaster.PasswordType.Short
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", type = Kaster.PasswordType.PIN))
+        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
+
+        viewModel.onInput(DomainEntryInput.Type(expectedType))
+        viewModel.onInput(DomainEntryInput.Save)
+
+        persistence.entries.value.single().type shouldBe expectedType
+    }
+
+    @Test
+    fun `Changes to counter are saved`() {
+        val expectedCounter = 100
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 1))
+        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
+
+        viewModel.onInput(DomainEntryInput.Counter(expectedCounter))
+        viewModel.onInput(DomainEntryInput.Save)
+
+        persistence.entries.value.single().counter shouldBe expectedCounter
+    }
+
+    @Test
+    fun `Counter can be increased`() = runTest {
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 100))
+        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
+
+        viewModel.viewState.test {
+            viewModel.onInput(DomainEntryInput.IncreaseCounter)
+
+            awaitItem().domainEntry.counter shouldBe 101
+        }
+    }
+
+    @Test
+    fun `Counter can be decreased`() = runTest {
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 100))
+        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
+
+        viewModel.viewState.test {
+            viewModel.onInput(DomainEntryInput.DecreaseCounter)
+
+            awaitItem().domainEntry.counter shouldBe 99
+        }
+    }
+
+    @Test
+    fun `Counter cannot become zero or negative`() = runTest {
+        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 1))
+        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
+
+        viewModel.viewState.test {
+            viewModel.onInput(DomainEntryInput.Counter(0))
+            viewModel.onInput(DomainEntryInput.Counter(-1))
+            viewModel.onInput(DomainEntryInput.Counter(-100))
+            viewModel.onInput(DomainEntryInput.DecreaseCounter)
+
+            awaitItem().domainEntry.counter shouldBe 1
+            expectNoEvents()
+        }
     }
 
     @Test
