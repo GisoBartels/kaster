@@ -18,95 +18,71 @@ import org.junit.Test
 class DomainEntrySpec {
 
     @Test
-    fun `New domain entry displays default values`() = runTest {
-        val viewModel = DomainEntryViewModel(null, DomainEntryPersistenceInMemory(), LoginPersistenceInMemory())
-
+    fun `New domain entry displays default values`() = testHarness {
         viewModel.viewState.test {
             awaitItem() shouldBe DomainEntryViewState(DomainEntry(), GeneratedPassword.NotEnoughData)
         }
     }
 
     @Test
-    fun `Existing domain entry displays persisted values`() = runTest {
-        val expectedDomain = "www.example.com"
-        val viewModel = DomainEntryViewModel(
-            expectedDomain,
-            DomainEntryPersistenceInMemory(DomainEntry(expectedDomain)),
-            LoginPersistenceInMemory()
-        )
-
+    fun `Existing domain entry displays persisted values`() = testHarness(DomainEntry("www.example.com")) {
         viewModel.viewState.test {
-            awaitItem().domainEntry.domain shouldBe expectedDomain
+            awaitItem().domainEntry.domain shouldBe originalDomainEntry?.domain
         }
     }
 
     @Test
-    fun `Changes to domain entry can be saved`() {
-        val originalDomain = "original.com"
+    fun `Changes to domain entry can be saved`() = testHarness(DomainEntry("original.com")) {
         val changedDomain = "new.com"
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry(originalDomain))
-        val viewModel = DomainEntryViewModel(originalDomain, persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Domain(changedDomain))
         viewModel.onInput(DomainEntryInput.Save)
 
-        persistence.entries.value.single().domain shouldBe changedDomain
+        domainEntryPersistence.entries.value.single().domain shouldBe changedDomain
     }
 
     @Test
-    fun `Changes to domain entry can be dismissed`() {
-        val originalDomain = "original.com"
+    fun `Changes to domain entry can be dismissed`() = testHarness(DomainEntry("original.com")) {
         val changedDomain = "new.com"
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry(originalDomain))
-        val viewModel = DomainEntryViewModel(originalDomain, persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Domain(changedDomain))
         viewModel.onInput(DomainEntryInput.Dismiss)
 
-        persistence.entries.value.single().domain shouldBe originalDomain
+        domainEntryPersistence.entries.value.single().domain shouldBe originalDomainEntry?.domain
     }
 
     @Test
-    fun `Changes to scope are saved`() {
+    fun `Changes to scope are saved`() = testHarness(DomainEntry("www.com", scope = Kaster.Scope.Authentication)) {
         val expectedScope = Kaster.Scope.Recovery
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", scope = Kaster.Scope.Authentication))
-        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Scope(expectedScope))
         viewModel.onInput(DomainEntryInput.Save)
 
-        persistence.entries.value.single().scope shouldBe expectedScope
+        domainEntryPersistence.entries.value.single().scope shouldBe expectedScope
     }
 
     @Test
-    fun `Changes to password type are saved`() {
+    fun `Changes to password type are saved`() = testHarness(DomainEntry("www.com", type = Kaster.PasswordType.PIN)) {
         val expectedType = Kaster.PasswordType.Short
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", type = Kaster.PasswordType.PIN))
-        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Type(expectedType))
         viewModel.onInput(DomainEntryInput.Save)
 
-        persistence.entries.value.single().type shouldBe expectedType
+        domainEntryPersistence.entries.value.single().type shouldBe expectedType
     }
 
     @Test
-    fun `Changes to counter are saved`() {
+    fun `Changes to counter are saved`() = testHarness(DomainEntry("www.com", counter = 1)) {
         val expectedCounter = 100
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 1))
-        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
 
         viewModel.onInput(DomainEntryInput.Counter(expectedCounter))
         viewModel.onInput(DomainEntryInput.Save)
 
-        persistence.entries.value.single().counter shouldBe expectedCounter
+        domainEntryPersistence.entries.value.single().counter shouldBe expectedCounter
     }
 
     @Test
-    fun `Counter can be increased`() = runTest {
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 100))
-        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
-
+    fun `Counter can be increased`() = testHarness(DomainEntry("www.com", counter = 100)) {
         viewModel.viewState.test {
             viewModel.onInput(DomainEntryInput.IncreaseCounter)
 
@@ -115,10 +91,7 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Counter can be decreased`() = runTest {
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 100))
-        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
-
+    fun `Counter can be decreased`() = testHarness(DomainEntry("www.com", counter = 100)) {
         viewModel.viewState.test {
             viewModel.onInput(DomainEntryInput.DecreaseCounter)
 
@@ -127,10 +100,7 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Counter cannot become zero or negative`() = runTest {
-        val persistence = DomainEntryPersistenceInMemory(DomainEntry("www.com", counter = 1))
-        val viewModel = DomainEntryViewModel("www.com", persistence, LoginPersistenceInMemory())
-
+    fun `Counter cannot become zero or negative`() = testHarness(DomainEntry("www.com", counter = 1)) {
         viewModel.viewState.test {
             viewModel.onInput(DomainEntryInput.Counter(0))
             viewModel.onInput(DomainEntryInput.Counter(-1))
@@ -143,13 +113,7 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Password is generated when domain is entered`() = runTest {
-        val viewModel = DomainEntryViewModel(
-            null,
-            DomainEntryPersistenceInMemory(),
-            LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!")
-        )
-
+    fun `Password is generated when domain is entered`() = testHarness {
         viewModel.onInput(DomainEntryInput.Domain("benderbrau.robot"))
 
         viewModel.viewState.test {
@@ -159,12 +123,8 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Show empty state when domain is empty`() = runTest {
-        val viewModel = DomainEntryViewModel(
-            "",
-            DomainEntryPersistenceInMemory(),
-            LoginPersistenceInMemory("username", "masterPassword")
-        )
+    fun `Show empty state when domain is empty`() = testHarness(DomainEntry("www.example.com")) {
+        viewModel.onInput(DomainEntryInput.Domain(""))
 
         viewModel.viewState.test {
             awaitItem().generatedPassword shouldBe GeneratedPassword.NotEnoughData
@@ -172,13 +132,7 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Show loadings state while password is generated`() = runTest {
-        val viewModel = DomainEntryViewModel(
-            "",
-            DomainEntryPersistenceInMemory(),
-            LoginPersistenceInMemory("username", "masterPassword")
-        )
-
+    fun `Show loadings state while password is generated`() = testHarness {
         viewModel.onInput(DomainEntryInput.Domain("www.example.com"))
 
         viewModel.viewState.test {
@@ -194,6 +148,21 @@ class DomainEntrySpec {
     @Test
     fun `User can copy generated password to clipboard`() {
         TODO()
+    }
+
+    private class TestHarness(
+        val originalDomainEntry: DomainEntry? = null,
+    ) {
+        val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
+        val viewModel = DomainEntryViewModel(
+            originalDomainEntry?.domain,
+            domainEntryPersistence,
+            LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!"),
+        )
+    }
+
+    private fun testHarness(domainEntry: DomainEntry? = null, block: suspend TestHarness.() -> Unit) = runTest {
+        block(TestHarness(domainEntry))
     }
 
 }
