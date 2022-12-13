@@ -11,6 +11,7 @@ import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.core.Kaster
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -20,14 +21,14 @@ class DomainEntrySpec {
     @Test
     fun `New domain entry displays default values`() = testHarness {
         viewModel.viewState.test {
-            awaitItem() shouldBe DomainEntryViewState(DomainEntry(), GeneratedPassword.NotEnoughData)
+            expectMostRecentItem() shouldBe DomainEntryViewState(DomainEntry(), GeneratedPassword.NotEnoughData)
         }
     }
 
     @Test
     fun `Existing domain entry displays persisted values`() = testHarness(DomainEntry("www.example.com")) {
         viewModel.viewState.test {
-            awaitItem().domainEntry.domain shouldBe originalDomainEntry?.domain
+            expectMostRecentItem().domainEntry.domain shouldBe originalDomainEntry?.domain
         }
     }
 
@@ -86,7 +87,7 @@ class DomainEntrySpec {
         viewModel.viewState.test {
             viewModel.onInput(DomainEntryInput.IncreaseCounter)
 
-            awaitItem().domainEntry.counter shouldBe 101
+            expectMostRecentItem().domainEntry.counter shouldBe 101
         }
     }
 
@@ -95,7 +96,7 @@ class DomainEntrySpec {
         viewModel.viewState.test {
             viewModel.onInput(DomainEntryInput.DecreaseCounter)
 
-            awaitItem().domainEntry.counter shouldBe 99
+            expectMostRecentItem().domainEntry.counter shouldBe 99
         }
     }
 
@@ -107,7 +108,7 @@ class DomainEntrySpec {
             viewModel.onInput(DomainEntryInput.Counter(-100))
             viewModel.onInput(DomainEntryInput.DecreaseCounter)
 
-            awaitItem().domainEntry.counter shouldBe 1
+            expectMostRecentItem().domainEntry.counter shouldBe 1
             expectNoEvents()
         }
     }
@@ -127,7 +128,7 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Domain(""))
 
         viewModel.viewState.test {
-            awaitItem().generatedPassword shouldBe GeneratedPassword.NotEnoughData
+            expectMostRecentItem().generatedPassword shouldBe GeneratedPassword.NotEnoughData
         }
     }
 
@@ -136,7 +137,7 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Domain("www.example.com"))
 
         viewModel.viewState.test {
-            awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
+            expectMostRecentItem().generatedPassword shouldBe GeneratedPassword.Generating
         }
     }
 
@@ -152,17 +153,19 @@ class DomainEntrySpec {
 
     private class TestHarness(
         val originalDomainEntry: DomainEntry? = null,
+        testCoroutineScheduler: TestCoroutineScheduler
     ) {
         val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
         val viewModel = DomainEntryViewModel(
             originalDomainEntry?.domain,
             domainEntryPersistence,
             LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!"),
+            testCoroutineScheduler
         )
     }
 
     private fun testHarness(domainEntry: DomainEntry? = null, block: suspend TestHarness.() -> Unit) = runTest {
-        block(TestHarness(domainEntry))
+        block(TestHarness(domainEntry, testScheduler))
     }
 
 }

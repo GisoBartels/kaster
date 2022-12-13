@@ -7,19 +7,20 @@ import app.kaster.common.navigation.Navigator
 import app.kaster.core.Kaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class DomainEntryViewModel(
     private val originalDomain: String?,
     private val domainEntryPersistence: DomainEntryPersistence,
-    loginPersistence: LoginPersistence
+    loginPersistence: LoginPersistence,
+    private val passwordGenerationContext: CoroutineContext = Dispatchers.Default
 ) {
     private val username = loginPersistence.loadUsername()
     private val masterPassword = loginPersistence.loadMasterPassword()
@@ -27,15 +28,15 @@ class DomainEntryViewModel(
         originalDomain?.let { domainEntryPersistence.entries.value.find { it.domain == originalDomain } }
     private val workingCopy = MutableStateFlow(originalEntry ?: DomainEntry(originalDomain ?: ""))
 
-    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val password: Flow<GeneratedPassword> = workingCopy
-        .debounce(250)
         .transformLatest { domainEntry ->
             if (domainEntry.domain.isEmpty()) {
                 emit(GeneratedPassword.NotEnoughData)
             } else {
                 emit(GeneratedPassword.Generating)
-                emit(withContext(Dispatchers.Default) { domainEntry.generatePassword() })
+                delay(250) // debounce during multiple inputs
+                emit(withContext(passwordGenerationContext) { domainEntry.generatePassword() })
             }
         }
 
