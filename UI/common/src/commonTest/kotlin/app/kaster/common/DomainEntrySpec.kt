@@ -142,8 +142,16 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Correct password is generated for non-default values for domain, scope, counter and type`() {
-        TODO()
+    fun `Correct password is generated for non-default values for domain, scope, counter and type`() = testHarness {
+        viewModel.onInput(DomainEntryInput.Domain("benderbrau.robot"))
+        viewModel.onInput(DomainEntryInput.Scope(Kaster.Scope.Recovery))
+        viewModel.onInput(DomainEntryInput.Counter(9001))
+        viewModel.onInput(DomainEntryInput.Type(Kaster.PasswordType.Phrase))
+
+        viewModel.viewState.test {
+            awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
+            awaitItem().generatedPassword shouldBe GeneratedPassword.Result("gajr jev rikbeku pah")
+        }
     }
 
     @Test
