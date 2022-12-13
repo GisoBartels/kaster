@@ -16,7 +16,7 @@ kotlin {
     }
 
     sourceSets {
-        named("commonMain") {
+        commonMain {
             dependencies {
                 api(projects.core)
                 api(compose.runtime)
@@ -28,7 +28,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
             }
         }
-        named("commonTest") {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
