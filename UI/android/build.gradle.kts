@@ -17,8 +17,8 @@ dependencies {
     implementation("androidx.datastore:datastore:1.1.0-alpha01")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
-    implementation("androidx.compose.ui:ui:1.3.1")
-    implementation("androidx.compose.ui:ui-tooling:1.3.1")
+    implementation("androidx.compose.ui:ui:1.3.2")
+    implementation("androidx.compose.ui:ui-tooling:1.3.2")
     implementation("androidx.compose.foundation:foundation:1.3.1")
     implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.compose.material:material-icons-core:1.3.1")
@@ -28,12 +28,12 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.2")
 
     androidTestImplementation("androidx.test:core:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.1")
     androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.2")
     androidTestImplementation("io.mockk:mockk-android:1.13.2")
 }
 
