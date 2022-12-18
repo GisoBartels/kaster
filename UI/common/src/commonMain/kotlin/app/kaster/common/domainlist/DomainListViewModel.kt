@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 class DomainListViewModel(persistence: DomainEntryPersistence) {
 
     val viewState = persistence.entries.map { entries ->
-        DomainListViewState(entries.map { it.domain }.toImmutableList())
+        DomainListViewState(entries.map { it.domain }.sortedWith(String.CASE_INSENSITIVE_ORDER).toImmutableList())
     }
 
     fun onInput(input: DomainListInput) {

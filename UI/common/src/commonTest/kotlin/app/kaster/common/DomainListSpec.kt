@@ -63,8 +63,14 @@ class DomainListSpec {
     }
 
     @Test
-    fun `Entries are sorted by domain name`() {
-        TODO()
+    fun `Entries are sorted by domain name`() = runTest {
+        val domainFixtures = listOf("z", "a", "c", "B")
+        val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())
+        val viewModel = DomainListViewModel(persistence)
+
+        viewModel.viewState.test {
+            expectMostRecentItem().domainList.shouldContainExactly(listOf("a", "B", "c", "z"))
+        }
     }
 
     @Test
