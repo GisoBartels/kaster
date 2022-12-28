@@ -6,5 +6,9 @@ interface LoginPersistence {
 
     val credentials: MutableStateFlow<Credentials?>
 
+    fun clear() {
+        credentials.value = null
+    }
+
     data class Credentials(val username: String, val password: String)
 }

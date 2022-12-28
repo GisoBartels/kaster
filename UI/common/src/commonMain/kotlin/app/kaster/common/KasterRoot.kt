@@ -22,13 +22,14 @@ fun KasterRoot(
         Screen.Login -> LoginScreen(loginPersistence)
         Screen.DomainList -> DomainListScreen(
             { viewModel.onInput(RootInput.ShowDomainEntry(it)) },
+            loginPersistence,
             domainEntryPersistence
         )
         is Screen.DomainEntry -> DomainEntryScreen(
             screen.domain,
             { viewModel.onInput(RootInput.CloseDomainEntry) },
-            domainEntryPersistence,
-            loginPersistence
+            loginPersistence,
+            domainEntryPersistence
         )
     }
 }

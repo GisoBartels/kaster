@@ -167,8 +167,8 @@ class DomainEntrySpec {
         val viewModel = DomainEntryViewModel(
             originalDomainEntry?.domain,
             onCloseEntryMock,
-            domainEntryPersistence,
             LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!"),
+            domainEntryPersistence,
             testCoroutineScheduler
         )
     }

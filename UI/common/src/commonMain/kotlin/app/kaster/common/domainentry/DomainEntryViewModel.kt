@@ -18,8 +18,8 @@ import kotlin.coroutines.CoroutineContext
 class DomainEntryViewModel(
     private val originalDomain: String?,
     private val onCloseEntry: () -> Unit,
-    private val domainEntryPersistence: DomainEntryPersistence,
     private val loginPersistence: LoginPersistence,
+    private val domainEntryPersistence: DomainEntryPersistence,
     private val passwordGenerationContext: CoroutineContext = Dispatchers.Default
 ) {
     private val originalEntry =

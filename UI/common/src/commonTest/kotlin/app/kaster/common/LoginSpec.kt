@@ -89,11 +89,6 @@ class LoginSpec {
     }
 
     @Test
-    fun `Username and password are cleared, when user logs out`() {
-        TODO()
-    }
-
-    @Test
     fun `User can login via biometric authentication`() {
         TODO()
     }

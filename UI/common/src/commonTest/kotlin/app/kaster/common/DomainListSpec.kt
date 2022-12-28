@@ -6,7 +6,9 @@ import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListViewModel
+import app.kaster.common.login.LoginPersistenceInMemory
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.nulls.shouldBeNull
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -59,12 +61,21 @@ class DomainListSpec {
         TODO()
     }
 
+    @Test
+    fun `User can manually log out from domain list`() = testHarness {
+        viewModel.onInput(DomainListInput.Logout)
+
+        loginPersistence.credentials.value.shouldBeNull()
+    }
+
     private class TestHarness(val domains: Set<String>) {
         val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
+        val loginPersistence = LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!")
         val domainEntryPersistence = DomainEntryPersistenceInMemory(domains.map { DomainEntry(it) }.toSet())
         val viewModel = DomainListViewModel(
             onEditDomainEntryMock,
-            domainEntryPersistence,
+            loginPersistence,
+            domainEntryPersistence
         )
     }
 

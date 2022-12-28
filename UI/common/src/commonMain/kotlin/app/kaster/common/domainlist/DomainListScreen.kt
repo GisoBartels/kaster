@@ -26,11 +26,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.kaster.common.domainentry.DomainEntryPersistence
+import app.kaster.common.login.LoginPersistence
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun DomainListScreen(onEditDomainEntry: (String?) -> Unit, persistence: DomainEntryPersistence) {
-    val viewModel = remember { DomainListViewModel(onEditDomainEntry, persistence) }
+fun DomainListScreen(
+    onEditDomainEntry: (String?) -> Unit,
+    loginPersistence: LoginPersistence,
+    domainEntryPersistence: DomainEntryPersistence
+) {
+    val viewModel = remember { DomainListViewModel(onEditDomainEntry, loginPersistence, domainEntryPersistence) }
     val viewState by viewModel.viewState.collectAsState(DomainListViewState(persistentListOf()))
     DomainListContent(viewState, viewModel::onInput)
 }

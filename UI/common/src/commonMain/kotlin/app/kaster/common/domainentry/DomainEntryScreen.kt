@@ -47,10 +47,10 @@ import app.kaster.core.Kaster
 fun DomainEntryScreen(
     domain: String?,
     onCloseEntry: () -> Unit,
-    domainEntryPersistence: DomainEntryPersistence,
-    loginPersistence: LoginPersistence
+    loginPersistence: LoginPersistence,
+    domainEntryPersistence: DomainEntryPersistence
 ) {
-    val viewModel = remember { DomainEntryViewModel(domain, onCloseEntry, domainEntryPersistence, loginPersistence) }
+    val viewModel = remember { DomainEntryViewModel(domain, onCloseEntry, loginPersistence, domainEntryPersistence) }
     val viewState by viewModel.viewState.collectAsState(DomainEntryViewState())
     DomainEntryContent(viewState, viewModel::onInput)
 }

@@ -1,6 +1,7 @@
 package app.kaster.android
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import app.kaster.common.KasterTheme
@@ -28,6 +29,15 @@ class DomainListUiTest {
         composeTestRule.onNodeWithText(domainFixture).performClick()
 
         verify { inputMock(DomainListInput.EditDomain(domainFixture)) }
+    }
+
+    @Test
+    fun logout() {
+        givenDomainList()
+
+        composeTestRule.onNodeWithContentDescription("Log out").performClick()
+
+        verify { inputMock(DomainListInput.Logout) }
     }
 
     private fun givenDomainList(vararg domains: String) = givenDomainListUiWithState(
