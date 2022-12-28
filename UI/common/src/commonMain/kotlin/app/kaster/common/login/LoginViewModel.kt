@@ -1,8 +1,6 @@
 package app.kaster.common.login
 
 import app.kaster.common.login.LoginInput.*
-import app.kaster.common.navigation.Navigator
-import app.kaster.common.navigation.Screen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -38,7 +36,6 @@ class LoginViewModel(private val persistence: LoginPersistence) {
 
     private fun login(username: String, password: String) {
         persistence.credentials.value = LoginPersistence.Credentials(username, password)
-        Navigator.navTo(Screen.DomainList)
     }
 
 }

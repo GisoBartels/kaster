@@ -10,6 +10,10 @@ import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.core.Kaster
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
@@ -158,9 +162,11 @@ class DomainEntrySpec {
         val originalDomainEntry: DomainEntry? = null,
         testCoroutineScheduler: TestCoroutineScheduler
     ) {
+        val onCloseEntryMock = mockk<() -> Unit> { every { this@mockk() } just runs }
         val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
         val viewModel = DomainEntryViewModel(
             originalDomainEntry?.domain,
+            onCloseEntryMock,
             domainEntryPersistence,
             LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!"),
             testCoroutineScheduler

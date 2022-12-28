@@ -3,7 +3,6 @@ package app.kaster.common.domainentry
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.login.LoginPersistence
-import app.kaster.common.navigation.Navigator
 import app.kaster.core.Kaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,6 +17,7 @@ import kotlin.coroutines.CoroutineContext
 
 class DomainEntryViewModel(
     private val originalDomain: String?,
+    private val onCloseEntry: () -> Unit,
     private val domainEntryPersistence: DomainEntryPersistence,
     private val loginPersistence: LoginPersistence,
     private val passwordGenerationContext: CoroutineContext = Dispatchers.Default
@@ -51,7 +51,7 @@ class DomainEntryViewModel(
             DecreaseCounter -> updateCounterIfValid(workingCopy.value.counter - 1)
             is Type -> workingCopy.update { it.copy(type = input.value) }
             Save -> saveAndClose()
-            Dismiss -> Navigator.goBack()
+            Dismiss -> onCloseEntry()
         }
     }
 
@@ -68,7 +68,7 @@ class DomainEntryViewModel(
 
     private fun saveAndClose() {
         save()
-        Navigator.goBack()
+        onCloseEntry()
     }
 
     private fun save() {

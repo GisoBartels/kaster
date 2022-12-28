@@ -6,10 +6,12 @@ import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListViewModel
-import app.kaster.common.navigation.Navigator
-import app.kaster.common.navigation.Screen
 import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -21,7 +23,7 @@ class DomainListSpec {
     fun `A logged in user sees the list of previously added domains`() = runTest {
         val domainFixtures = listOf("d1", "d2", "d3")
         val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())
-        val viewModel = DomainListViewModel(persistence)
+        val viewModel = DomainListViewModel({}, persistence)
 
         viewModel.viewState.test {
             expectMostRecentItem().domainList.shouldContainExactly(domainFixtures)
@@ -30,11 +32,12 @@ class DomainListSpec {
 
     @Test
     fun `A logged in user can add new domain entries`() = runTest {
-        val viewModel = DomainListViewModel(DomainEntryPersistenceInMemory())
+        val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
+        val viewModel = DomainListViewModel(onEditDomainEntryMock, DomainEntryPersistenceInMemory())
 
         viewModel.onInput(AddDomain)
 
-        Navigator.currentScreen.value shouldBe Screen.DomainEntry(null)
+        verify { onEditDomainEntryMock(null) }
     }
 
     @Test
@@ -44,19 +47,21 @@ class DomainListSpec {
 
     @Test
     fun `A logged in user can modify domain entries`() {
+        val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
         val domainFixture = "www.example.org"
-        val viewModel = DomainListViewModel(DomainEntryPersistenceInMemory(DomainEntry(domainFixture)))
+        val viewModel =
+            DomainListViewModel(onEditDomainEntryMock, DomainEntryPersistenceInMemory(DomainEntry(domainFixture)))
 
         viewModel.onInput(DomainListInput.EditDomain(domainFixture))
 
-        Navigator.currentScreen.value shouldBe Screen.DomainEntry(domainFixture)
+        verify { onEditDomainEntryMock(domainFixture) }
     }
 
     @Test
     fun `Entries are sorted by domain name`() = runTest {
         val domainFixtures = listOf("z", "a", "c", "B")
         val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())
-        val viewModel = DomainListViewModel(persistence)
+        val viewModel = DomainListViewModel({}, persistence)
 
         viewModel.viewState.test {
             expectMostRecentItem().domainList.shouldContainExactly(listOf("a", "B", "c", "z"))

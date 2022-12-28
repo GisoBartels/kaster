@@ -9,4 +9,5 @@ data class DomainListViewState(
 sealed interface DomainListInput {
     object AddDomain : DomainListInput
     data class EditDomain(val domain: String) : DomainListInput
+    object Logout : DomainListInput
 }

@@ -34,6 +34,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+                implementation("io.mockk:mockk:1.13.2")
                 implementation("app.cash.turbine:turbine:0.12.0")
                 implementation("io.kotest:kotest-assertions-core:5.5.3")
             }

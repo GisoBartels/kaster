@@ -6,21 +6,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
+import app.kaster.common.RootViewModel
+import app.kaster.common.domainentry.DomainEntryPersistence
+import app.kaster.common.login.LoginPersistence
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun KasterAndroidUi() {
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-    val loginPersistence = remember { LoginPersistenceAndroid(context, coroutineScope) }
-    val domainListPersistence = remember { DomainEntryPersistenceAndroid(context, coroutineScope) }
-
+fun KasterAndroidUi(
+    loginPersistence: LoginPersistence,
+    domainListPersistence: DomainEntryPersistence,
+    rootViewModel: RootViewModel
+) {
     KasterTheme {
         val systemUiController = rememberSystemUiController()
         val useDarkIcons = isSystemInDarkTheme()
@@ -34,7 +33,7 @@ fun KasterAndroidUi() {
             onDispose {}
         }
         Surface(modifier = Modifier.fillMaxSize()) {
-            KasterRoot(loginPersistence, domainListPersistence)
+            KasterRoot(rootViewModel, loginPersistence, domainListPersistence)
         }
     }
 }

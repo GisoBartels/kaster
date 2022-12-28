@@ -6,17 +6,23 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import app.kaster.common.navigation.Navigator
-import app.kaster.common.navigation.Screen
+import androidx.lifecycle.lifecycleScope
+import app.kaster.common.RootInput
+import app.kaster.common.RootViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val loginPersistence by lazy { LoginPersistenceAndroid(applicationContext, lifecycleScope) }
+    private val domainListPersistence by lazy { DomainEntryPersistenceAndroid(applicationContext, lifecycleScope) }
+    private val rootViewModel by lazy { RootViewModel(loginPersistence) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             intent?.navToDomainEntry()
         }
         setContent {
-            KasterAndroidUi()
+            KasterAndroidUi(loginPersistence, domainListPersistence, rootViewModel)
         }
     }
 
@@ -27,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun Intent.navToDomainEntry() {
         val host = getStringExtra(Intent.EXTRA_TEXT)?.toUri()?.simpleHost ?: return
-        Navigator.navTo(Screen.DomainEntry(host))
+        rootViewModel.onInput(RootInput.ShowDomainEntry(host))
     }
 
     private val Uri.simpleHost: String?

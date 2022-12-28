@@ -46,10 +46,11 @@ import app.kaster.core.Kaster
 @Composable
 fun DomainEntryScreen(
     domain: String?,
+    onCloseEntry: () -> Unit,
     domainEntryPersistence: DomainEntryPersistence,
     loginPersistence: LoginPersistence
 ) {
-    val viewModel = remember { DomainEntryViewModel(domain, domainEntryPersistence, loginPersistence) }
+    val viewModel = remember { DomainEntryViewModel(domain, onCloseEntry, domainEntryPersistence, loginPersistence) }
     val viewState by viewModel.viewState.collectAsState(DomainEntryViewState())
     DomainEntryContent(viewState, viewModel::onInput)
 }
