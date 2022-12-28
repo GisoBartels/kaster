@@ -53,16 +53,6 @@ class DomainListSpec {
     }
 
     @Test
-    fun `A domain entry can be added via share intent`() {
-        TODO()
-    }
-
-    @Test
-    fun `When a shared domain was already added, the entry is opened instead`() {
-        TODO()
-    }
-
-    @Test
     fun `Entries are sorted by domain name`() = runTest {
         val domainFixtures = listOf("z", "a", "c", "B")
         val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())

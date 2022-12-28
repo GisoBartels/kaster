@@ -35,6 +35,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.2")
     androidTestImplementation("io.mockk:mockk-android:1.13.2")
+    androidTestImplementation("io.kotest:kotest-assertions-core:5.5.3")
 }
 
 @Suppress("UnstableApiUsage")
