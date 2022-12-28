@@ -20,37 +20,27 @@ import kotlin.test.Test
 class DomainListSpec {
 
     @Test
-    fun `A logged in user sees the list of previously added domains`() = runTest {
-        val domainFixtures = listOf("d1", "d2", "d3")
-        val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())
-        val viewModel = DomainListViewModel({}, persistence)
-
+    fun `A logged in user sees the list of previously added domains`() = testHarness("d1", "d2", "d3") {
         viewModel.viewState.test {
-            expectMostRecentItem().domainList.shouldContainExactly(domainFixtures)
+            expectMostRecentItem().domainList.shouldContainExactly(domains)
         }
     }
 
     @Test
-    fun `A logged in user can add new domain entries`() = runTest {
-        val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
-        val viewModel = DomainListViewModel(onEditDomainEntryMock, DomainEntryPersistenceInMemory())
-
+    fun `A logged in user can add new domain entries`() = testHarness {
         viewModel.onInput(AddDomain)
 
         verify { onEditDomainEntryMock(null) }
     }
 
     @Test
-    fun `A logged in user can remove domain entries`() {
+    fun `A logged in user can remove domain entries`() = testHarness {
         TODO()
     }
 
     @Test
-    fun `A logged in user can modify domain entries`() {
-        val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
+    fun `A logged in user can modify domain entries`() = testHarness {
         val domainFixture = "www.example.org"
-        val viewModel =
-            DomainListViewModel(onEditDomainEntryMock, DomainEntryPersistenceInMemory(DomainEntry(domainFixture)))
 
         viewModel.onInput(DomainListInput.EditDomain(domainFixture))
 
@@ -58,11 +48,7 @@ class DomainListSpec {
     }
 
     @Test
-    fun `Entries are sorted by domain name`() = runTest {
-        val domainFixtures = listOf("z", "a", "c", "B")
-        val persistence = DomainEntryPersistenceInMemory(domainFixtures.map { DomainEntry(it) }.toSet())
-        val viewModel = DomainListViewModel({}, persistence)
-
+    fun `Entries are sorted by domain name`() = testHarness("z", "a", "c", "B") {
         viewModel.viewState.test {
             expectMostRecentItem().domainList.shouldContainExactly(listOf("a", "B", "c", "z"))
         }
@@ -71,6 +57,19 @@ class DomainListSpec {
     @Test
     fun `The list is filtered for matching domain names, when a search term is entered`() {
         TODO()
+    }
+
+    private class TestHarness(val domains: Set<String>) {
+        val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
+        val domainEntryPersistence = DomainEntryPersistenceInMemory(domains.map { DomainEntry(it) }.toSet())
+        val viewModel = DomainListViewModel(
+            onEditDomainEntryMock,
+            domainEntryPersistence,
+        )
+    }
+
+    private fun testHarness(vararg domains: String, block: suspend TestHarness.() -> Unit) = runTest {
+        block(TestHarness(domains.toSet()))
     }
 
 }
