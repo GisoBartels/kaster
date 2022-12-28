@@ -19,11 +19,9 @@ import kotlin.coroutines.CoroutineContext
 class DomainEntryViewModel(
     private val originalDomain: String?,
     private val domainEntryPersistence: DomainEntryPersistence,
-    loginPersistence: LoginPersistence,
+    private val loginPersistence: LoginPersistence,
     private val passwordGenerationContext: CoroutineContext = Dispatchers.Default
 ) {
-    private val username = loginPersistence.loadUsername()
-    private val masterPassword = loginPersistence.loadMasterPassword()
     private val originalEntry =
         originalDomain?.let { domainEntryPersistence.entries.value.find { it.domain == originalDomain } }
     private val workingCopy = MutableStateFlow(originalEntry ?: DomainEntry(originalDomain ?: ""))
@@ -63,8 +61,10 @@ class DomainEntryViewModel(
         }
     }
 
-    private fun DomainEntry.generatePassword() =
-        GeneratedPassword.Result(Kaster.generatePassword(username, masterPassword, domain, counter, type, scope))
+    private fun DomainEntry.generatePassword(): GeneratedPassword.Result {
+        val (username, masterPassword) = loginPersistence.credentials.value!!
+        return GeneratedPassword.Result(Kaster.generatePassword(username, masterPassword, domain, counter, type, scope))
+    }
 
     private fun saveAndClose() {
         save()

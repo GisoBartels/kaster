@@ -1,11 +1,10 @@
 package app.kaster.common.login
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 interface LoginPersistence {
 
-    fun storeCredentials(username: String, password: String)
+    val credentials: MutableStateFlow<Credentials?>
 
-    fun loadUsername(): String
-
-    fun loadMasterPassword(): String
-
+    data class Credentials(val username: String, val password: String)
 }

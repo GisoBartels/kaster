@@ -2,6 +2,7 @@ package app.kaster.common
 
 import app.cash.turbine.test
 import app.kaster.common.login.LoginInput.*
+import app.kaster.common.login.LoginPersistence
 import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.login.LoginViewModel
 import app.kaster.common.navigation.Navigator
@@ -81,8 +82,7 @@ class LoginSpec {
 
         vm.onInput(Login)
 
-        persistence.loadUsername() shouldBe "Bender"
-        persistence.loadMasterPassword() shouldBe "BiteMyShinyMetalAss!"
+        persistence.credentials.value shouldBe LoginPersistence.Credentials("Bender", "BiteMyShinyMetalAss!")
     }
 
     @Test

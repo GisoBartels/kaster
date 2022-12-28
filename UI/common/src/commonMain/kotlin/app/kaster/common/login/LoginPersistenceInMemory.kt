@@ -1,17 +1,11 @@
 package app.kaster.common.login
 
-class LoginPersistenceInMemory(initialUsername: String = "", initialPassword: String = "") : LoginPersistence {
+import kotlinx.coroutines.flow.MutableStateFlow
 
-    private var username = initialUsername
-    private var password = initialPassword
+class LoginPersistenceInMemory(initialCredentials: LoginPersistence.Credentials? = null) : LoginPersistence {
 
-    override fun storeCredentials(username: String, password: String) {
-        this.username = username
-        this.password = password
-    }
+    constructor(username: String, masterPassword: String) : this(LoginPersistence.Credentials(username, masterPassword))
 
-    override fun loadUsername(): String = username
-
-    override fun loadMasterPassword(): String = password
+    override val credentials = MutableStateFlow(initialCredentials)
 
 }

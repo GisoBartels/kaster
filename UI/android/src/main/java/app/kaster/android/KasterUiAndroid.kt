@@ -18,7 +18,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun KasterAndroidUi() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val loginPersistence = remember { LoginPersistenceAndroid(context) }
+    val loginPersistence = remember { LoginPersistenceAndroid(context, coroutineScope) }
     val domainListPersistence = remember { DomainEntryPersistenceAndroid(context, coroutineScope) }
 
     KasterTheme {

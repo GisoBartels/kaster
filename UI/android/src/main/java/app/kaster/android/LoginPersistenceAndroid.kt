@@ -7,8 +7,13 @@ import androidx.security.crypto.EncryptedSharedPreferences.PrefKeyEncryptionSche
 import androidx.security.crypto.EncryptedSharedPreferences.PrefValueEncryptionScheme
 import androidx.security.crypto.MasterKey
 import app.kaster.common.login.LoginPersistence
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
-class LoginPersistenceAndroid(context: Context) : LoginPersistence {
+class LoginPersistenceAndroid(context: Context, coroutineScope: CoroutineScope) : LoginPersistence {
 
     private val masterKey = MasterKey.Builder(context, "Kaster")
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -22,15 +27,26 @@ class LoginPersistenceAndroid(context: Context) : LoginPersistence {
         PrefValueEncryptionScheme.AES256_GCM
     )
 
-    override fun storeCredentials(username: String, password: String) {
-        prefs.edit {
-            putString("username", username)
-            putString("password", password)
+    override val credentials: MutableStateFlow<LoginPersistence.Credentials?> = MutableStateFlow(loadCredentials())
+
+    init {
+        coroutineScope.launch {
+            credentials.filterNotNull().collectLatest {
+                prefs.edit {
+                    putString("username", it.username)
+                    putString("password", it.password)
+                }
+            }
         }
     }
 
-    override fun loadUsername(): String = prefs.getString("username", null) ?: ""
-
-    override fun loadMasterPassword(): String = prefs.getString("password", null) ?: ""
+    private fun loadCredentials(): LoginPersistence.Credentials? {
+        val username = prefs.getString("username", null)
+        val password = prefs.getString("password", null)
+        return when {
+            username == null || password == null -> null
+            else -> LoginPersistence.Credentials(username, password)
+        }
+    }
 
 }
