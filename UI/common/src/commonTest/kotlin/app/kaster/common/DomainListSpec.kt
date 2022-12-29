@@ -6,9 +6,13 @@ import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListViewModel
+import app.kaster.common.domainlist.DomainListViewState.SearchState
 import app.kaster.common.login.LoginPersistenceInMemory
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -52,9 +56,48 @@ class DomainListSpec {
     }
 
     @Test
-    fun `The list is filtered for matching domain names, when a search term is entered`() {
-        TODO()
+    fun `Search is started upon request`() = testHarness {
+        viewModel.onInput(DomainListInput.StartSearch)
+
+        viewModel.viewState.test {
+            expectMostRecentItem().searchState shouldBe SearchState.ShowSearch("")
+        }
     }
+
+    @Test
+    fun `Search is stopped upon request`() = testHarness {
+        viewModel.onInput(DomainListInput.StopSearch)
+
+        viewModel.viewState.test {
+            expectMostRecentItem().searchState shouldBe SearchState.HideSearch
+        }
+    }
+
+    @Test
+    fun `Search is cleared when restarted`() = testHarness {
+        viewModel.onInput(DomainListInput.StartSearch)
+        viewModel.onInput(DomainListInput.Search(contains = "foo"))
+        viewModel.onInput(DomainListInput.StopSearch)
+        viewModel.onInput(DomainListInput.StartSearch)
+
+        viewModel.viewState.test {
+            expectMostRecentItem().searchState shouldBe SearchState.ShowSearch("")
+        }
+    }
+
+    @Test
+    fun `The list is filtered for matching domain names, when a search term is entered`() =
+        testHarness("foo", "fo", "oof", "afoobar", "fOo") {
+            viewModel.onInput(DomainListInput.StartSearch)
+            viewModel.onInput(DomainListInput.Search(contains = "foo"))
+
+            viewModel.viewState.test {
+                expectMostRecentItem() should { viewState ->
+                    viewState.domainList shouldContainExactlyInAnyOrder  setOf("foo", "afoobar", "fOo")
+                    viewState.searchState shouldBe SearchState.ShowSearch("foo")
+                }
+            }
+        }
 
     @Test
     fun `User can manually log out from domain list`() = testHarness {
