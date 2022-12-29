@@ -23,4 +23,5 @@ sealed interface DomainEntryInput {
 
     object Save : DomainEntryInput
     object Dismiss : DomainEntryInput
+    object Delete : DomainEntryInput
 }

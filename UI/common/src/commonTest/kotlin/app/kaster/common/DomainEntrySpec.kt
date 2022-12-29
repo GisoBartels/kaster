@@ -9,11 +9,13 @@ import app.kaster.common.domainentry.DomainEntryViewState
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
 import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.core.Kaster
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
@@ -156,6 +158,14 @@ class DomainEntrySpec {
             awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
             awaitItem().generatedPassword shouldBe GeneratedPassword.Result("gajr jev rikbeku pah")
         }
+    }
+
+    @Test
+    fun `A domain entry can be deleted`() = testHarness(DomainEntry("example.com")) {
+        viewModel.onInput(DomainEntryInput.Delete)
+
+        domainEntryPersistence.entries.value.shouldBeEmpty()
+        verify { onCloseEntryMock() }
     }
 
     private class TestHarness(

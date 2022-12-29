@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -67,6 +68,9 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
                 }
             },
             actions = {
+                IconButton(onClick = { input(Delete) }, modifier = Modifier.testTag("delete")) {
+                    Icon(Icons.Outlined.Delete, "Delete")
+                }
                 IconButton(onClick = { input(Save) }, modifier = Modifier.testTag("save")) {
                     Icon(Icons.Outlined.Save, "Save")
                 }

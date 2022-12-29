@@ -52,6 +52,7 @@ class DomainEntryViewModel(
             is Type -> workingCopy.update { it.copy(type = input.value) }
             Save -> saveAndClose()
             Dismiss -> onCloseEntry()
+            Delete -> deleteAndClose()
         }
     }
 
@@ -68,6 +69,11 @@ class DomainEntryViewModel(
 
     private fun saveAndClose() {
         save()
+        onCloseEntry()
+    }
+
+    private fun deleteAndClose() {
+        originalDomain?.let { domainEntryPersistence.remove(it) }
         onCloseEntry()
     }
 

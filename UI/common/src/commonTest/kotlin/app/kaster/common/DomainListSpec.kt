@@ -36,11 +36,6 @@ class DomainListSpec {
     }
 
     @Test
-    fun `A logged in user can remove domain entries`() = testHarness {
-        TODO()
-    }
-
-    @Test
     fun `A logged in user can modify domain entries`() = testHarness {
         val domainFixture = "www.example.org"
 

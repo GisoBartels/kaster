@@ -149,6 +149,15 @@ class DomainEntryUiTest {
     }
 
     @Test
+    fun testInputDelete() {
+        givenDomainEntry(DomainEntryViewState())
+
+        composeTestRule.onNodeWithTag("delete").performClick()
+
+        verify { inputMock(Delete) }
+    }
+
+    @Test
     fun testCopyPasswordToClipboard() {
         val clipboardMock = mockk<ClipboardManager>(relaxUnitFun = true)
         val expectedPassword = "subba secret"
