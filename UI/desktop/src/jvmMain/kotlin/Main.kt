@@ -13,7 +13,7 @@ import app.kaster.common.login.LoginPersistenceInMemory
 fun main() = application {
     val loginPersistence = remember { LoginPersistenceInMemory() } // TODO real persistence
     val domainListPersistence = remember { DomainEntryPersistenceInMemory() } // TODO real persistence
-    val viewModel = remember { RootViewModel(loginPersistence) }
+    val viewModel = remember { RootViewModel(::exitApplication, loginPersistence) }
 
     KasterTheme {
         Window(title = "Password Kaster", onCloseRequest = ::exitApplication) {

@@ -3,6 +3,7 @@ package app.kaster.android
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private val loginPersistence by lazy { LoginPersistenceAndroid(applicationContext, lifecycleScope) }
     private val domainListPersistence by lazy { DomainEntryPersistenceAndroid(applicationContext, lifecycleScope) }
-    private val rootViewModel by lazy { RootViewModel(loginPersistence) }
+    private val rootViewModel by lazy { RootViewModel({ finish() }, loginPersistence) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
         setContent {
             KasterAndroidUi(loginPersistence, domainListPersistence, rootViewModel)
+            BackHandler { rootViewModel.onInput(RootInput.BackPressed) }
         }
     }
 

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
-class RootViewModel(loginPersistence: LoginPersistence) {
+class RootViewModel(private val onCloseApp: () -> Unit, loginPersistence: LoginPersistence) {
 
     private val openedDomainEntry = MutableStateFlow<String?>(null)
 
@@ -24,7 +24,10 @@ class RootViewModel(loginPersistence: LoginPersistence) {
         when (input) {
             is RootInput.ShowDomainEntry -> openedDomainEntry.value = input.domain ?: ""
             RootInput.CloseDomainEntry -> openedDomainEntry.value = null
-            RootInput.BackPressed -> TODO()
+            RootInput.BackPressed -> when {
+                openedDomainEntry.value != null -> openedDomainEntry.value = null
+                else -> onCloseApp()
+            }
         }
     }
 
