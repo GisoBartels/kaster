@@ -7,37 +7,6 @@ plugins {
 group = "app.kaster"
 version = "1.0-SNAPSHOT"
 
-dependencies {
-    implementation(project(":UI:common"))
-
-    implementation("androidx.appcompat:appcompat:1.5.1")
-
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha04")
-    implementation("androidx.datastore:datastore:1.1.0-alpha01")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-
-    implementation("androidx.compose.ui:ui:1.3.2")
-    implementation("androidx.compose.ui:ui-tooling:1.3.2")
-    implementation("androidx.compose.foundation:foundation:1.3.1")
-    implementation("androidx.compose.material:material:1.3.1")
-    implementation("androidx.compose.material:material-icons-core:1.3.1")
-    implementation("androidx.compose.material:material-icons-extended:1.3.1")
-
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
-
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.2")
-
-    androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.5.1")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.2")
-    androidTestImplementation("io.mockk:mockk-android:1.13.2")
-    androidTestImplementation("io.kotest:kotest-assertions-core:5.5.3")
-}
-
 @Suppress("UnstableApiUsage")
 android {
     namespace = "app.kaster.android"
@@ -67,4 +36,35 @@ android {
             resources.excludes += "META-INF/LICENSE*"
         }
     }
+}
+
+dependencies {
+    implementation(project(":UI:common"))
+
+    implementation(libs.androidx.appcompat)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.datastore)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    implementation(libs.accompanist.systemuicontroller)
+
+    implementation(libs.kotlinx.collections.immutable)
+
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.kotest.assertions)
 }

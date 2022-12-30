@@ -25,18 +25,18 @@ kotlin {
                 api(compose.material)
                 api(compose.materialIconsExtended)
                 api(compose.preview)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-                implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+                implementation(libs.kotlinx.coroutines)
+                implementation(libs.kotlinx.collections.immutable)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-                implementation("io.mockk:mockk:1.13.2")
-                implementation("app.cash.turbine:turbine:0.12.0")
-                implementation("io.kotest:kotest-assertions-core:5.5.3")
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.mockk)
+                implementation(libs.turbine)
+                implementation(libs.kotest.assertions)
             }
         }
     }
