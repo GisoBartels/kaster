@@ -3,13 +3,21 @@ plugins {
     kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("com.google.devtools.ksp")
 }
 
 group = "app.kaster"
 version = "1.0-SNAPSHOT"
 
 kotlin {
-    android()
+    android {
+        compilations.all {
+            sourceSets.all {
+                // make KSP-generated sources visible to IDE
+                kotlin.srcDir("build/generated/ksp/$targetName/$name/kotlin")
+            }
+        }
+    }
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
@@ -39,7 +47,16 @@ kotlin {
                 implementation(libs.kotest.assertions)
             }
         }
+        named("androidMain") {
+            dependencies {
+                implementation(libs.showkase)
+            }
+        }
     }
+}
+
+dependencies {
+    add("kspAndroid", libs.showkase.processor)
 }
 
 @Suppress("UnstableApiUsage")

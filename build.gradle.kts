@@ -9,6 +9,7 @@ plugins {
     id("com.android.application") version agp apply false
     id("com.android.library") version agp apply false
     id("org.jetbrains.compose") version compose apply false
+    id("com.google.devtools.ksp") version "$kotlin-1.0.8" apply false
 }
 
 tasks.wrapper {

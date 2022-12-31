@@ -13,6 +13,6 @@ fun KasterTheme(content: @Composable () -> Unit) = MaterialTheme(colors = themeC
 @Composable
 private fun themeColors() =
     if (isSystemInDarkTheme())
-        darkColors(primary = Color(0xFF00CC00))
+        darkColors(primary = Color(0xFF00CC00), background = Color.Black)
     else
         lightColors(primary = Color(0xFF005000))

@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
     kotlin("android")
+    id("com.google.devtools.ksp")
 }
 
 group = "app.kaster"
@@ -28,6 +29,10 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+    }
+    sourceSets.all {
+        // make KSP-generated sources visible to IDE
+        kotlin.srcDir("build/generated/ksp/$name/kotlin")
     }
     testOptions {
         packagingOptions {
@@ -60,6 +65,9 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    debugImplementation(libs.showkase)
+    kspDebug(libs.showkase.processor)
 
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.runner)
