@@ -94,9 +94,10 @@ private fun DomainInput(value: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth().testTag("domain"),
         label = { Text("Domain") },
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth().testTag("domain")
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+        singleLine = true
     )
 }
 
