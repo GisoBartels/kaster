@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("com.google.devtools.ksp")
+    id("app.cash.paparazzi")
 }
 
 group = "app.kaster"
@@ -52,11 +53,19 @@ kotlin {
                 implementation(libs.showkase)
             }
         }
+        named("androidTest") {
+            dependencies {
+                implementation(libs.junit4)
+                implementation(libs.testparameterinjector)
+                implementation(libs.showkase)
+            }
+        }
     }
 }
 
 dependencies {
     add("kspAndroid", libs.showkase.processor)
+    add("kspAndroidTest", libs.showkase.processor)
 }
 
 @Suppress("UnstableApiUsage")

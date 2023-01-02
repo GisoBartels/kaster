@@ -15,6 +15,10 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+    plugins {
+        id("app.cash.paparazzi") version "1.2.0-SNAPSHOT"
     }
 }
 
@@ -24,6 +28,7 @@ dependencyResolutionManagement {
         mavenCentral()
         google()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
@@ -44,6 +49,10 @@ dependencyResolutionManagement {
 
             // JVM
             library("password4j", "com.password4j:password4j:1.6.0")
+
+            // JVM test
+            library("junit4", "junit:junit:4.13")
+            library("testparameterinjector", "com.google.testparameterinjector:test-parameter-injector:1.10")
 
             // Android
             library("androidx-appcompat", "androidx.appcompat:appcompat:1.5.1")
