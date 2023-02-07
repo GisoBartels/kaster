@@ -53,7 +53,7 @@ kotlin {
                 implementation(libs.showkase)
             }
         }
-        named("androidTest") {
+        named("androidUnitTest") {
             dependencies {
                 implementation(libs.junit4)
                 implementation(libs.testparameterinjector)
