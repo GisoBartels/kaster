@@ -16,6 +16,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Login
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,8 +33,8 @@ import app.kaster.common.login.LoginInput.MasterPassword
 import app.kaster.common.login.LoginInput.UnmaskPassword
 
 @Composable
-fun LoginScreen(persistence: LoginPersistence) {
-    val viewModel = remember { LoginViewModel(persistence) }
+fun LoginScreen(persistence: LoginPersistence, biometrics: Biometrics) {
+    val viewModel = remember { LoginViewModel(persistence, biometrics) }
     val viewState by viewModel.viewState.collectAsState(LoginViewState())
     LoginContent(viewState, viewModel::onInput)
 }
@@ -64,6 +65,12 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
                 modifier = Modifier.align(Alignment.CenterHorizontally).testTag("login"),
                 enabled = viewState.loginEnabled,
                 onClick = { input(LoginInput.Login) }
+            )
+
+            LoginWithBiometrics(
+                modifier = Modifier.align(Alignment.CenterHorizontally).testTag("loginWithBiometrics"),
+                enabled = viewState.loginEnabled,
+                onClick = { input(LoginInput.LoginWithBiometrics) }
             )
         }
     }
@@ -114,5 +121,15 @@ fun LoginButton(modifier: Modifier = Modifier, enabled: Boolean, onClick: () -> 
     onClick = onClick
 ) {
     Icon(Icons.Outlined.Login, "Login", Modifier.padding(end = 8.dp))
+    Text("Login")
+}
+
+@Composable
+fun LoginWithBiometrics(modifier: Modifier = Modifier, enabled: Boolean, onClick: () -> Unit) = Button(
+    modifier = modifier,
+    enabled = enabled,
+    onClick = onClick
+) {
+    Icon(Icons.Outlined.Fingerprint, "Login with biometrics", Modifier.padding(end = 8.dp))
     Text("Login")
 }

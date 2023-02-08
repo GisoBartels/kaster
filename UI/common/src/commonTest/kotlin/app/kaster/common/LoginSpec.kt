@@ -1,12 +1,17 @@
 package app.kaster.common
 
 import app.cash.turbine.test
+import app.kaster.common.login.Biometrics
 import app.kaster.common.login.LoginInput.*
 import app.kaster.common.login.LoginPersistence
 import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.login.LoginViewModel
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
@@ -76,17 +81,23 @@ class LoginSpec {
     }
 
     @Test
-    fun `User can login via biometric authentication`() {
-        TODO()
-    }
+    fun `User can login via biometric authentication`() = testHarness {
+        inputCredentials()
+        viewModel.onInput(LoginWithBiometrics)
 
+        coVerify { biometricsMock.promptUserAuth() }
+        loginPersistence.credentials.value shouldBe LoginPersistence.Credentials("Bender", "BiteMyShinyMetalAss!")
+    }
 
     private class TestHarness(
         credentials: LoginPersistence.Credentials?,
         testCoroutineScheduler: TestCoroutineScheduler
     ) {
+        val biometricsMock = mockk<Biometrics> {
+            coEvery { promptUserAuth() } returns Biometrics.AuthResult.Success
+        }
         val loginPersistence = LoginPersistenceInMemory(credentials)
-        val viewModel = LoginViewModel(loginPersistence)
+        val viewModel = LoginViewModel(loginPersistence, biometricsMock, CoroutineScope(testCoroutineScheduler))
 
         fun inputCredentials() {
             viewModel.onInput(Username("Bender"))

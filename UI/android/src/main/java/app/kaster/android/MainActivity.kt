@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private val loginPersistence by lazy { LoginPersistenceAndroid(applicationContext, lifecycleScope) }
     private val domainListPersistence by lazy { DomainEntryPersistenceAndroid(applicationContext, lifecycleScope) }
     private val rootViewModel by lazy { RootViewModel({ finish() }, loginPersistence) }
+    private val biometrics by lazy { BiometricsAndroid(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             intent?.navToDomainEntry()
         }
         setContent {
-            KasterAndroidUi(loginPersistence, domainListPersistence, rootViewModel)
+            KasterAndroidUi(loginPersistence, domainListPersistence, rootViewModel, biometrics)
             BackHandler { rootViewModel.onInput(RootInput.BackPressed) }
         }
     }

@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.biometric)
     implementation(libs.kotlinx.serialization.json)
 
     implementation(platform(libs.androidx.compose.bom))
