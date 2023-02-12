@@ -2,8 +2,8 @@ package app.kaster.common.domainentry
 
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.login.LoginPersistence
-import app.kaster.common.login.LoginPersistence.LoginState
+import app.kaster.common.login.LoginInteractor
+import app.kaster.common.login.LoginInteractor.LoginState
 import app.kaster.core.Kaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 class DomainEntryViewModel(
     private val originalDomain: String?,
     private val onCloseEntry: () -> Unit,
-    private val loginPersistence: LoginPersistence,
+    private val loginInteractor: LoginInteractor,
     private val domainEntryPersistence: DomainEntryPersistence,
     private val passwordGenerationContext: CoroutineContext = Dispatchers.Default
 ) {
@@ -64,7 +64,7 @@ class DomainEntryViewModel(
     }
 
     private fun DomainEntry.generatePassword(): GeneratedPassword.Result {
-        val (username, masterPassword) = (loginPersistence.loginState.value as LoginState.LoggedIn).credentials
+        val (username, masterPassword) = (loginInteractor.loginState.value as LoginState.LoggedIn).credentials
         return GeneratedPassword.Result(Kaster.generatePassword(username, masterPassword, domain, counter, type, scope))
     }
 

@@ -8,19 +8,19 @@ import androidx.security.crypto.EncryptedSharedPreferences.PrefKeyEncryptionSche
 import androidx.security.crypto.EncryptedSharedPreferences.PrefValueEncryptionScheme
 import androidx.security.crypto.MasterKey
 import app.kaster.common.login.Biometrics
-import app.kaster.common.login.LoginPersistence
-import app.kaster.common.login.LoginPersistence.LoginState
+import app.kaster.common.login.LoginInteractor
+import app.kaster.common.login.LoginInteractor.LoginState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.security.KeyStore
 
-class LoginPersistenceAndroid(
+class LoginInteractorAndroid(
     private val context: Context,
     private val biometrics: Biometrics,
     private val coroutineScope: CoroutineScope
-) : LoginPersistence {
+) : LoginInteractor {
 
     private val configPrefs = context.getSharedPreferences("loginConfig", Context.MODE_PRIVATE)
 
@@ -32,7 +32,7 @@ class LoginPersistenceAndroid(
 
     override val loginState: StateFlow<LoginState> = _loginState
 
-    override fun save(credentials: LoginPersistence.Credentials, requireUserAuth: Boolean) {
+    override fun save(credentials: LoginInteractor.Credentials, requireUserAuth: Boolean) {
         coroutineScope.launch {
             clear() // TODO actually needed?
             if (!requireUserAuth || biometrics.promptUserAuth() == Biometrics.AuthResult.Success) {
@@ -74,7 +74,7 @@ class LoginPersistenceAndroid(
         }
     }
 
-    private fun saveCredentials(credentials: LoginPersistence.Credentials) {
+    private fun saveCredentials(credentials: LoginInteractor.Credentials) {
         credentialsPrefs().edit {
             putString("username", credentials.username)
             putString("password", credentials.password)
@@ -82,13 +82,13 @@ class LoginPersistenceAndroid(
 
     }
 
-    private fun loadCredentials(): LoginPersistence.Credentials? {
+    private fun loadCredentials(): LoginInteractor.Credentials? {
         val prefs = credentialsPrefs()
         val username = prefs.getString("username", null)
         val password = prefs.getString("password", null)
         return when {
             username == null || password == null -> null
-            else -> LoginPersistence.Credentials(username, password)
+            else -> LoginInteractor.Credentials(username, password)
         }
     }
 

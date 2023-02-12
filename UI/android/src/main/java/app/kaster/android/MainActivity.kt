@@ -13,7 +13,7 @@ import app.kaster.common.RootViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val loginPersistence by lazy { LoginPersistenceAndroid(applicationContext, BiometricsAndroid(this), lifecycleScope) }
+    private val loginPersistence by lazy { LoginInteractorAndroid(applicationContext, BiometricsAndroid(this), lifecycleScope) }
     private val domainListPersistence by lazy { DomainEntryPersistenceAndroid(applicationContext, lifecycleScope) }
     private val rootViewModel by lazy { RootViewModel({ finish() }, loginPersistence) }
 

@@ -2,9 +2,9 @@ package app.kaster.common
 
 import app.cash.turbine.test
 import app.kaster.common.login.LoginInput.*
-import app.kaster.common.login.LoginPersistence.Credentials
-import app.kaster.common.login.LoginPersistence.LoginState
-import app.kaster.common.login.LoginPersistenceInMemory
+import app.kaster.common.login.LoginInteractor.Credentials
+import app.kaster.common.login.LoginInteractor.LoginState
+import app.kaster.common.login.LoginInteractorInMemory
 import app.kaster.common.login.LoginViewModel
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -62,7 +62,7 @@ class LoginSpec {
     private class TestHarness(
         credentials: Credentials?,
     ) {
-        val loginPersistence = LoginPersistenceInMemory(credentials).apply { unlock() }
+        val loginPersistence = LoginInteractorInMemory(credentials).apply { unlock() }
         val viewModel = LoginViewModel(loginPersistence)
 
         fun inputCredentials() {

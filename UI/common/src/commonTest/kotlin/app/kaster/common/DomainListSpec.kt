@@ -7,8 +7,8 @@ import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListViewModel
 import app.kaster.common.domainlist.DomainListViewState.SearchState
-import app.kaster.common.login.LoginPersistence.LoginState
-import app.kaster.common.login.LoginPersistenceInMemory
+import app.kaster.common.login.LoginInteractor.LoginState
+import app.kaster.common.login.LoginInteractorInMemory
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.should
@@ -108,7 +108,7 @@ class DomainListSpec {
 
     private class TestHarness(val domains: Set<String>) {
         val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
-        val loginPersistence = LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!")
+        val loginPersistence = LoginInteractorInMemory("Bender", "BiteMyShinyMetalAss!")
         val domainEntryPersistence = DomainEntryPersistenceInMemory(domains.map { DomainEntry(it) }.toSet())
         val viewModel = DomainListViewModel(
             onEditDomainEntryMock,

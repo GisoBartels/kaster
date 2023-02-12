@@ -35,15 +35,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.kaster.common.domainentry.DomainEntryPersistence
 import app.kaster.common.domainlist.DomainListViewState.SearchState.*
-import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginInteractor
 
 @Composable
 fun DomainListScreen(
     onEditDomainEntry: (String?) -> Unit,
-    loginPersistence: LoginPersistence,
+    loginInteractor: LoginInteractor,
     domainEntryPersistence: DomainEntryPersistence
 ) {
-    val viewModel = remember { DomainListViewModel(onEditDomainEntry, loginPersistence, domainEntryPersistence) }
+    val viewModel = remember { DomainListViewModel(onEditDomainEntry, loginInteractor, domainEntryPersistence) }
     val viewState by viewModel.viewState.collectAsState(DomainListViewState())
     DomainListContent(viewState, viewModel::onInput)
 }

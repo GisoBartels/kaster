@@ -11,12 +11,12 @@ import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
 import app.kaster.common.RootViewModel
 import app.kaster.common.domainentry.DomainEntryPersistence
-import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginInteractor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun KasterAndroidUi(
-    loginPersistence: LoginPersistence,
+    loginInteractor: LoginInteractor,
     domainListPersistence: DomainEntryPersistence,
     rootViewModel: RootViewModel,
 ) {
@@ -33,7 +33,7 @@ fun KasterAndroidUi(
             onDispose {}
         }
         Surface(modifier = Modifier.fillMaxSize()) {
-            KasterRoot(rootViewModel, loginPersistence, domainListPersistence)
+            KasterRoot(rootViewModel, loginInteractor, domainListPersistence)
         }
     }
 }

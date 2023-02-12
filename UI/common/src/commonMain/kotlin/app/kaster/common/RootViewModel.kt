@@ -1,10 +1,10 @@
 package app.kaster.common
 
-import app.kaster.common.login.LoginPersistence
-import app.kaster.common.login.LoginPersistence.LoginState.Locked
-import app.kaster.common.login.LoginPersistence.LoginState.LoggedIn
-import app.kaster.common.login.LoginPersistence.LoginState.LoggedOut
-import app.kaster.common.login.LoginPersistence.LoginState.UnlockFailed
+import app.kaster.common.login.LoginInteractor
+import app.kaster.common.login.LoginInteractor.LoginState.Locked
+import app.kaster.common.login.LoginInteractor.LoginState.LoggedIn
+import app.kaster.common.login.LoginInteractor.LoginState.LoggedOut
+import app.kaster.common.login.LoginInteractor.LoginState.UnlockFailed
 import app.kaster.common.navigation.Screen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 
-class RootViewModel(private val onCloseApp: () -> Unit, loginPersistence: LoginPersistence) {
+class RootViewModel(private val onCloseApp: () -> Unit, loginInteractor: LoginInteractor) {
 
     private val openedDomainEntry = MutableStateFlow<String?>(null)
 
-    val viewState: Flow<RootViewState> = loginPersistence.loginState
+    val viewState: Flow<RootViewState> = loginInteractor.loginState
         .onEach {
             when (it) {
-                Locked -> loginPersistence.unlock()
+                Locked -> loginInteractor.unlock()
                 UnlockFailed -> onCloseApp()
                 else -> {}
             }
@@ -36,7 +36,7 @@ class RootViewModel(private val onCloseApp: () -> Unit, loginPersistence: LoginP
             }
         }
         .map { RootViewState(it) }
-        .onStart { if (loginPersistence.loginState.value == Locked) loginPersistence.unlock() }
+        .onStart { if (loginInteractor.loginState.value == Locked) loginInteractor.unlock() }
 
     fun onInput(input: RootInput) {
         when (input) {

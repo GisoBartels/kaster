@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.kaster.common.domainentry.DomainEntryInput.*
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginInteractor
 import app.kaster.common.util.DropDown
 import app.kaster.core.Kaster
 
@@ -48,10 +48,10 @@ import app.kaster.core.Kaster
 fun DomainEntryScreen(
     domain: String?,
     onCloseEntry: () -> Unit,
-    loginPersistence: LoginPersistence,
+    loginInteractor: LoginInteractor,
     domainEntryPersistence: DomainEntryPersistence
 ) {
-    val viewModel = remember { DomainEntryViewModel(domain, onCloseEntry, loginPersistence, domainEntryPersistence) }
+    val viewModel = remember { DomainEntryViewModel(domain, onCloseEntry, loginInteractor, domainEntryPersistence) }
     val viewState by viewModel.viewState.collectAsState(DomainEntryViewState())
     DomainEntryContent(viewState, viewModel::onInput)
 }

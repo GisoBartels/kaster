@@ -2,7 +2,7 @@ package app.kaster.common.login
 
 import kotlinx.coroutines.flow.StateFlow
 
-interface LoginPersistence {
+interface LoginInteractor {
 
     val loginState: StateFlow<LoginState>
 

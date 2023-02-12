@@ -7,7 +7,7 @@ import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainentry.DomainEntryViewModel
 import app.kaster.common.domainentry.DomainEntryViewState
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.login.LoginPersistenceInMemory
+import app.kaster.common.login.LoginInteractorInMemory
 import app.kaster.core.Kaster
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
@@ -177,7 +177,7 @@ class DomainEntrySpec {
         val viewModel = DomainEntryViewModel(
             originalDomainEntry?.domain,
             onCloseEntryMock,
-            LoginPersistenceInMemory("Bender", "BiteMyShinyMetalAss!"),
+            LoginInteractorInMemory("Bender", "BiteMyShinyMetalAss!"),
             domainEntryPersistence,
             testCoroutineScheduler
         )

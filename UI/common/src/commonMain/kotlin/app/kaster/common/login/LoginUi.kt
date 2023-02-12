@@ -33,7 +33,7 @@ import app.kaster.common.login.LoginInput.MasterPassword
 import app.kaster.common.login.LoginInput.UnmaskPassword
 
 @Composable
-fun LoginScreen(persistence: LoginPersistence) {
+fun LoginScreen(persistence: LoginInteractor) {
     val viewModel = remember { LoginViewModel(persistence) }
     val viewState by viewModel.viewState.collectAsState(LoginViewState())
     LoginContent(viewState, viewModel::onInput)

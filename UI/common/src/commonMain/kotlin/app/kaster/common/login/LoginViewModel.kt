@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
-class LoginViewModel(private val persistence: LoginPersistence) {
+class LoginViewModel(private val persistence: LoginInteractor) {
     private val usernameState = MutableStateFlow("")
     private val masterPasswordState = MutableStateFlow("")
     private val maskPasswordState = MutableStateFlow(true)
@@ -40,7 +40,7 @@ class LoginViewModel(private val persistence: LoginPersistence) {
     }
 
     private fun login(username: String, password: String, requireUserAuth: Boolean) {
-        persistence.save(LoginPersistence.Credentials(username, password), requireUserAuth)
+        persistence.save(LoginInteractor.Credentials(username, password), requireUserAuth)
     }
 
 }

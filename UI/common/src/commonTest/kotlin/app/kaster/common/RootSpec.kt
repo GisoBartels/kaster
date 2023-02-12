@@ -1,9 +1,9 @@
 package app.kaster.common
 
 import app.cash.turbine.test
-import app.kaster.common.login.LoginPersistence
-import app.kaster.common.login.LoginPersistence.LoginState
-import app.kaster.common.login.LoginPersistenceInMemory
+import app.kaster.common.login.LoginInteractor
+import app.kaster.common.login.LoginInteractor.LoginState
+import app.kaster.common.login.LoginInteractorInMemory
 import app.kaster.common.navigation.Screen
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -19,7 +19,7 @@ class RootSpec {
 
     @Test
     fun `try to unlock credentials on start`() = runTest {
-        val loginPersistence = LoginPersistenceInMemory()
+        val loginPersistence = LoginInteractorInMemory()
         val viewModel = RootViewModel({}, loginPersistence)
 
         viewModel.viewState.test {
@@ -30,10 +30,10 @@ class RootSpec {
     @Test
     fun `exit app when credentials unlock fails`() = runTest {
         val closeAppMock = mockk<() -> Unit>(relaxed = true)
-        val loginPersistence = mockk<LoginPersistence> {
+        val loginInteractor = mockk<LoginInteractor> {
             every { loginState } returns MutableStateFlow(LoginState.UnlockFailed)
         }
-        val viewModel = RootViewModel(closeAppMock, loginPersistence)
+        val viewModel = RootViewModel(closeAppMock, loginInteractor)
 
         viewModel.viewState.test {
             expectMostRecentItem().screen shouldBe Screen.Empty
@@ -43,7 +43,7 @@ class RootSpec {
 
     @Test
     fun `login is shown when no credentials are available`() = runTest {
-        val loginPersistence = LoginPersistenceInMemory()
+        val loginPersistence = LoginInteractorInMemory()
         val viewModel = RootViewModel({}, loginPersistence)
 
         viewModel.viewState.test {
@@ -53,7 +53,7 @@ class RootSpec {
 
     @Test
     fun `domain list is shown when credentials are available`() = runTest {
-        val loginPersistence = LoginPersistenceInMemory("someUser", "somePassword")
+        val loginPersistence = LoginInteractorInMemory("someUser", "somePassword")
         val viewModel = RootViewModel({}, loginPersistence)
 
         viewModel.viewState.test {
@@ -64,7 +64,7 @@ class RootSpec {
     @Test
     fun `domain entry is shown when requested`() = runTest {
         val expectedDomain = "example.com"
-        val loginPersistence = LoginPersistenceInMemory("someUser", "somePassword")
+        val loginPersistence = LoginInteractorInMemory("someUser", "somePassword")
         val viewModel = RootViewModel({}, loginPersistence)
 
         viewModel.onInput(RootInput.ShowDomainEntry(expectedDomain))
@@ -76,7 +76,7 @@ class RootSpec {
 
     @Test
     fun `domain list is shown when domain entry is closed`() = runTest {
-        val loginPersistence = LoginPersistenceInMemory("someUser", "somePassword")
+        val loginPersistence = LoginInteractorInMemory("someUser", "somePassword")
         val viewModel = RootViewModel({}, loginPersistence)
         viewModel.onInput(RootInput.ShowDomainEntry("example.com"))
 
@@ -90,7 +90,7 @@ class RootSpec {
     @Test
     fun `close app on backpress on domain list`() = runTest {
         val closeAppMock = mockk<() -> Unit>(relaxed = true)
-        val loginPersistence = LoginPersistenceInMemory("someUser", "somePassword")
+        val loginPersistence = LoginInteractorInMemory("someUser", "somePassword")
         val viewModel = RootViewModel(closeAppMock, loginPersistence)
         viewModel.onInput(RootInput.BackPressed)
 
@@ -100,7 +100,7 @@ class RootSpec {
     @Test
     fun `go back from domain entry to list on backpress`() = runTest {
         val closeAppMock = mockk<() -> Unit>()
-        val loginPersistence = LoginPersistenceInMemory("someUser", "somePassword")
+        val loginPersistence = LoginInteractorInMemory("someUser", "somePassword")
         val viewModel = RootViewModel(closeAppMock, loginPersistence)
         viewModel.onInput(RootInput.ShowDomainEntry("example.org"))
 

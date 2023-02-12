@@ -6,30 +6,30 @@ import androidx.compose.runtime.getValue
 import app.kaster.common.domainentry.DomainEntryPersistence
 import app.kaster.common.domainentry.DomainEntryScreen
 import app.kaster.common.domainlist.DomainListScreen
-import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginInteractor
 import app.kaster.common.login.LoginScreen
 import app.kaster.common.navigation.Screen
 
 @Composable
 fun KasterRoot(
     viewModel: RootViewModel,
-    loginPersistence: LoginPersistence,
+    loginInteractor: LoginInteractor,
     domainEntryPersistence: DomainEntryPersistence,
 ) {
     val viewState by viewModel.viewState.collectAsState(RootViewState(Screen.Empty))
     when (val screen = viewState.screen) {
         Screen.Empty -> Unit
-        Screen.Login -> LoginScreen(loginPersistence)
+        Screen.Login -> LoginScreen(loginInteractor)
         Screen.DomainList -> DomainListScreen(
             { viewModel.onInput(RootInput.ShowDomainEntry(it)) },
-            loginPersistence,
+            loginInteractor,
             domainEntryPersistence
         )
 
         is Screen.DomainEntry -> DomainEntryScreen(
             screen.domain,
             { viewModel.onInput(RootInput.CloseDomainEntry) },
-            loginPersistence,
+            loginInteractor,
             domainEntryPersistence
         )
     }

@@ -4,14 +4,14 @@ import app.kaster.common.domainentry.DomainEntryPersistence
 import app.kaster.common.domainlist.DomainListInput.*
 import app.kaster.common.domainlist.DomainListViewState.SearchState.HideSearch
 import app.kaster.common.domainlist.DomainListViewState.SearchState.ShowSearch
-import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginInteractor
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
 class DomainListViewModel(
     private val onEditDomainEntry: (String?) -> Unit,
-    private val loginPersistence: LoginPersistence,
+    private val loginInteractor: LoginInteractor,
     domainEntryPersistence: DomainEntryPersistence
 ) {
     private val searchTerm = MutableStateFlow<String?>(null)
@@ -34,7 +34,7 @@ class DomainListViewModel(
             StartSearch -> searchTerm.value = ""
             StopSearch -> searchTerm.value = null
             is Search -> searchTerm.value = input.contains
-            Logout -> loginPersistence.clear()
+            Logout -> loginInteractor.clear()
         }
     }
 }
