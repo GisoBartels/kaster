@@ -7,10 +7,10 @@ import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListViewModel
 import app.kaster.common.domainlist.DomainListViewState.SearchState
+import app.kaster.common.login.LoginPersistence.LoginState
 import app.kaster.common.login.LoginPersistenceInMemory
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -93,7 +93,7 @@ class DomainListSpec {
 
             viewModel.viewState.test {
                 expectMostRecentItem() should { viewState ->
-                    viewState.domainList shouldContainExactlyInAnyOrder  setOf("foo", "afoobar", "fOo")
+                    viewState.domainList shouldContainExactlyInAnyOrder setOf("foo", "afoobar", "fOo")
                     viewState.searchState shouldBe SearchState.ShowSearch("foo")
                 }
             }
@@ -103,7 +103,7 @@ class DomainListSpec {
     fun `User can manually log out from domain list`() = testHarness {
         viewModel.onInput(DomainListInput.Logout)
 
-        loginPersistence.credentials.value.shouldBeNull()
+        loginPersistence.loginState.value shouldBe LoginState.LoggedOut
     }
 
     private class TestHarness(val domains: Set<String>) {

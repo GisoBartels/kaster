@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import app.kaster.common.domainentry.DomainEntryPersistence
 import app.kaster.common.domainentry.DomainEntryScreen
 import app.kaster.common.domainlist.DomainListScreen
-import app.kaster.common.login.Biometrics
 import app.kaster.common.login.LoginPersistence
 import app.kaster.common.login.LoginScreen
 import app.kaster.common.navigation.Screen
@@ -16,12 +15,11 @@ fun KasterRoot(
     viewModel: RootViewModel,
     loginPersistence: LoginPersistence,
     domainEntryPersistence: DomainEntryPersistence,
-    biometrics: Biometrics
 ) {
     val viewState by viewModel.viewState.collectAsState(RootViewState(Screen.Empty))
     when (val screen = viewState.screen) {
         Screen.Empty -> Unit
-        Screen.Login -> LoginScreen(loginPersistence, biometrics)
+        Screen.Login -> LoginScreen(loginPersistence)
         Screen.DomainList -> DomainListScreen(
             { viewModel.onInput(RootInput.ShowDomainEntry(it)) },
             loginPersistence,

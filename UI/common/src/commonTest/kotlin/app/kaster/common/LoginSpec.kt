@@ -1,19 +1,13 @@
 package app.kaster.common
 
 import app.cash.turbine.test
-import app.kaster.common.login.Biometrics
 import app.kaster.common.login.LoginInput.*
-import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginPersistence.Credentials
+import app.kaster.common.login.LoginPersistence.LoginState
 import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.login.LoginViewModel
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -57,47 +51,19 @@ class LoginSpec {
     }
 
     @Test
-    fun `Username and password are restored from persistence if enabled`() = testHarness("someUser", "somePassword") {
-        viewModel.viewState.test {
-            expectMostRecentItem() should { viewState ->
-                viewState.username shouldBe "someUser"
-                viewState.password shouldBe "somePassword"
-            }
-        }
-    }
-
-    @Test
     fun `Username and password are persisted when user enabled persistence`() = testHarness {
         inputCredentials()
 
         viewModel.onInput(Login)
 
-        loginPersistence.credentials.value shouldBe LoginPersistence.Credentials("Bender", "BiteMyShinyMetalAss!")
-    }
-
-    @Test
-    fun `User is logged out after 5 minutes`() {
-        TODO()
-    }
-
-    @Test
-    fun `User can login via biometric authentication`() = testHarness {
-        inputCredentials()
-        viewModel.onInput(LoginWithBiometrics)
-
-        coVerify { biometricsMock.promptUserAuth() }
-        loginPersistence.credentials.value shouldBe LoginPersistence.Credentials("Bender", "BiteMyShinyMetalAss!")
+        loginPersistence.loginState.value shouldBe LoginState.LoggedIn(Credentials("Bender", "BiteMyShinyMetalAss!"))
     }
 
     private class TestHarness(
-        credentials: LoginPersistence.Credentials?,
-        testCoroutineScheduler: TestCoroutineScheduler
+        credentials: Credentials?,
     ) {
-        val biometricsMock = mockk<Biometrics> {
-            coEvery { promptUserAuth() } returns Biometrics.AuthResult.Success
-        }
-        val loginPersistence = LoginPersistenceInMemory(credentials)
-        val viewModel = LoginViewModel(loginPersistence, biometricsMock, CoroutineScope(testCoroutineScheduler))
+        val loginPersistence = LoginPersistenceInMemory(credentials).apply { unlock() }
+        val viewModel = LoginViewModel(loginPersistence)
 
         fun inputCredentials() {
             viewModel.onInput(Username("Bender"))
@@ -109,13 +75,13 @@ class LoginSpec {
         storedUsername: String,
         storedPassword: String,
         block: suspend TestHarness.() -> Unit
-    ) = testHarness(LoginPersistence.Credentials(storedUsername, storedPassword), block)
+    ) = testHarness(Credentials(storedUsername, storedPassword), block)
 
     private fun testHarness(
-        credentials: LoginPersistence.Credentials? = null,
+        credentials: Credentials? = null,
         block: suspend TestHarness.() -> Unit
     ) = runTest {
-        block(TestHarness(credentials, testScheduler))
+        block(TestHarness(credentials))
     }
 
 }

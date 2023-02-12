@@ -1,17 +1,45 @@
 package app.kaster.common
 
 import app.cash.turbine.test
+import app.kaster.common.login.LoginPersistence
+import app.kaster.common.login.LoginPersistence.LoginState
 import app.kaster.common.login.LoginPersistenceInMemory
 import app.kaster.common.navigation.Screen
 import io.kotest.matchers.shouldBe
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RootSpec {
+
+    @Test
+    fun `try to unlock credentials on start`() = runTest {
+        val loginPersistence = LoginPersistenceInMemory()
+        val viewModel = RootViewModel({}, loginPersistence)
+
+        viewModel.viewState.test {
+            expectMostRecentItem().screen shouldBe Screen.Login
+        }
+    }
+
+    @Test
+    fun `exit app when credentials unlock fails`() = runTest {
+        val closeAppMock = mockk<() -> Unit>(relaxed = true)
+        val loginPersistence = mockk<LoginPersistence> {
+            every { loginState } returns MutableStateFlow(LoginState.UnlockFailed)
+        }
+        val viewModel = RootViewModel(closeAppMock, loginPersistence)
+
+        viewModel.viewState.test {
+            expectMostRecentItem().screen shouldBe Screen.Empty
+        }
+        verify { closeAppMock() }
+    }
 
     @Test
     fun `login is shown when no credentials are available`() = runTest {

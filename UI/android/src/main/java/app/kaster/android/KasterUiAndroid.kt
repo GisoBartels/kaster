@@ -11,7 +11,6 @@ import app.kaster.common.KasterRoot
 import app.kaster.common.KasterTheme
 import app.kaster.common.RootViewModel
 import app.kaster.common.domainentry.DomainEntryPersistence
-import app.kaster.common.login.Biometrics
 import app.kaster.common.login.LoginPersistence
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -20,7 +19,6 @@ fun KasterAndroidUi(
     loginPersistence: LoginPersistence,
     domainListPersistence: DomainEntryPersistence,
     rootViewModel: RootViewModel,
-    biometrics: Biometrics
 ) {
     KasterTheme {
         val systemUiController = rememberSystemUiController()
@@ -35,7 +33,7 @@ fun KasterAndroidUi(
             onDispose {}
         }
         Surface(modifier = Modifier.fillMaxSize()) {
-            KasterRoot(rootViewModel, loginPersistence, domainListPersistence, biometrics)
+            KasterRoot(rootViewModel, loginPersistence, domainListPersistence)
         }
     }
 }

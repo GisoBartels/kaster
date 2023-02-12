@@ -33,8 +33,8 @@ import app.kaster.common.login.LoginInput.MasterPassword
 import app.kaster.common.login.LoginInput.UnmaskPassword
 
 @Composable
-fun LoginScreen(persistence: LoginPersistence, biometrics: Biometrics) {
-    val viewModel = remember { LoginViewModel(persistence, biometrics) }
+fun LoginScreen(persistence: LoginPersistence) {
+    val viewModel = remember { LoginViewModel(persistence) }
     val viewState by viewModel.viewState.collectAsState(LoginViewState())
     LoginContent(viewState, viewModel::onInput)
 }
