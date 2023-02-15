@@ -10,12 +10,14 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import app.kaster.common.RootInput
 import app.kaster.common.RootViewModel
+import app.kaster.common.login.LoginInteractorBiometrics
 
 class MainActivity : AppCompatActivity() {
 
-    private val loginPersistence by lazy { LoginInteractorAndroid(applicationContext, BiometricsAndroid(this), lifecycleScope) }
+    private val loginPersistence by lazy { LoginPersistenceAndroid(applicationContext) }
+    private val loginInteractor by lazy { LoginInteractorBiometrics(loginPersistence, BiometricsAndroid(this), lifecycleScope) }
     private val domainListPersistence by lazy { DomainEntryPersistenceAndroid(applicationContext, lifecycleScope) }
-    private val rootViewModel by lazy { RootViewModel({ finish() }, loginPersistence) }
+    private val rootViewModel by lazy { RootViewModel({ finish() }, loginInteractor) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             intent?.navToDomainEntry()
         }
         setContent {
-            KasterAndroidUi(loginPersistence, domainListPersistence, rootViewModel)
+            KasterAndroidUi(loginInteractor, domainListPersistence, rootViewModel)
             BackHandler { rootViewModel.onInput(RootInput.BackPressed) }
         }
     }

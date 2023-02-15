@@ -4,7 +4,14 @@ interface Biometrics {
 
     suspend fun promptUserAuth(): AuthResult
 
+    val isSupported: Boolean
+
     enum class AuthResult {
-        Success, Failed, Canceled
+        Success, Failed
+    }
+
+    object Unsupported : Biometrics {
+        override suspend fun promptUserAuth(): AuthResult = AuthResult.Failed
+        override val isSupported: Boolean = false
     }
 }

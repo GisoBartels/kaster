@@ -1,5 +1,8 @@
 package app.kaster.android
 
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import app.kaster.common.login.Biometrics
@@ -7,6 +10,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 class BiometricsAndroid(private val fragmentActivity: FragmentActivity) : Biometrics {
+
+    private val biometricManager = BiometricManager.from(fragmentActivity)
+    override val isSupported: Boolean
+        get() = biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL) == BiometricManager.BIOMETRIC_SUCCESS
 
     private val promptInfo = BiometricPrompt.PromptInfo.Builder()
         .setTitle("Biometric login for my app")

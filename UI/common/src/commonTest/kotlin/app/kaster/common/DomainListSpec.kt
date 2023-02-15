@@ -7,8 +7,10 @@ import app.kaster.common.domainlist.DomainListInput
 import app.kaster.common.domainlist.DomainListInput.AddDomain
 import app.kaster.common.domainlist.DomainListViewModel
 import app.kaster.common.domainlist.DomainListViewState.SearchState
+import app.kaster.common.login.Biometrics
 import app.kaster.common.login.LoginInteractor.LoginState
-import app.kaster.common.login.LoginInteractorInMemory
+import app.kaster.common.login.LoginInteractorBiometrics
+import app.kaster.common.login.LoginPersistenceNop
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.should
@@ -18,7 +20,9 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -106,9 +110,9 @@ class DomainListSpec {
         loginPersistence.loginState.value shouldBe LoginState.LoggedOut
     }
 
-    private class TestHarness(val domains: Set<String>) {
+    private class TestHarness(val domains: Set<String>, testScheduler: TestCoroutineScheduler) {
         val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
-        val loginPersistence = LoginInteractorInMemory("Bender", "BiteMyShinyMetalAss!")
+        val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, Biometrics.Unsupported, CoroutineScope(testScheduler))
         val domainEntryPersistence = DomainEntryPersistenceInMemory(domains.map { DomainEntry(it) }.toSet())
         val viewModel = DomainListViewModel(
             onEditDomainEntryMock,
@@ -118,7 +122,7 @@ class DomainListSpec {
     }
 
     private fun testHarness(vararg domains: String, block: suspend TestHarness.() -> Unit) = runTest {
-        block(TestHarness(domains.toSet()))
+        block(TestHarness(domains.toSet(), testScheduler))
     }
 
 }

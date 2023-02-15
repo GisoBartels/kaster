@@ -7,7 +7,10 @@ import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
 import app.kaster.common.domainentry.DomainEntryViewModel
 import app.kaster.common.domainentry.DomainEntryViewState
 import app.kaster.common.domainentry.DomainEntryViewState.GeneratedPassword
-import app.kaster.common.login.LoginInteractorInMemory
+import app.kaster.common.login.Biometrics
+import app.kaster.common.login.LoginInteractor
+import app.kaster.common.login.LoginInteractorBiometrics
+import app.kaster.common.login.LoginPersistence
 import app.kaster.core.Kaster
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
@@ -17,7 +20,7 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -170,21 +173,29 @@ class DomainEntrySpec {
 
     private class TestHarness(
         val originalDomainEntry: DomainEntry? = null,
-        testCoroutineScheduler: TestCoroutineScheduler
+        testScope: TestScope
     ) {
         val onCloseEntryMock = mockk<() -> Unit> { every { this@mockk() } just runs }
+        val loginPersistenceMock = mockk<LoginPersistence> {
+            every { loadCredentials() } returns LoginInteractor.Credentials("Bender", "BiteMyShinyMetalAss!")
+            every { userAuthenticationRequired } returns false
+        }
         val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
         val viewModel = DomainEntryViewModel(
             originalDomainEntry?.domain,
             onCloseEntryMock,
-            LoginInteractorInMemory("Bender", "BiteMyShinyMetalAss!"),
+            LoginInteractorBiometrics(
+                loginPersistenceMock,
+                Biometrics.Unsupported,
+                testScope
+            ).apply { unlock() },
             domainEntryPersistence,
-            testCoroutineScheduler
+            testScope.testScheduler
         )
     }
 
     private fun testHarness(domainEntry: DomainEntry? = null, block: suspend TestHarness.() -> Unit) = runTest {
-        block(TestHarness(domainEntry, testScheduler))
+        block(TestHarness(domainEntry, this))
     }
 
 }

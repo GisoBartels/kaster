@@ -1,13 +1,17 @@
 package app.kaster.common
 
 import app.cash.turbine.test
+import app.kaster.common.login.Biometrics
 import app.kaster.common.login.LoginInput.*
 import app.kaster.common.login.LoginInteractor.Credentials
 import app.kaster.common.login.LoginInteractor.LoginState
-import app.kaster.common.login.LoginInteractorInMemory
+import app.kaster.common.login.LoginInteractorBiometrics
+import app.kaster.common.login.LoginPersistenceNop
 import app.kaster.common.login.LoginViewModel
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -24,14 +28,14 @@ class LoginSpec {
     }
 
     @Test
-    fun `Master password is obscured by default`() = testHarness("someUser", "somePassword") {
+    fun `Master password is obscured by default`() = testHarness {
         viewModel.viewState.test {
             expectMostRecentItem().passwordMasked shouldBe true
         }
     }
 
     @Test
-    fun `Master password is revealed on user request`() = testHarness("someUser", "somePassword") {
+    fun `Master password is revealed on user request`() = testHarness {
         viewModel.onInput(UnmaskPassword)
 
         viewModel.viewState.test {
@@ -40,7 +44,7 @@ class LoginSpec {
     }
 
     @Test
-    fun `Master password is be hidden on user request`() = testHarness("someUser", "somePassword") {
+    fun `Master password should be hidden on user request`() = testHarness {
         viewModel.onInput(UnmaskPassword)
 
         viewModel.onInput(MaskPassword)
@@ -55,14 +59,13 @@ class LoginSpec {
         inputCredentials()
 
         viewModel.onInput(Login)
+        testScope.advanceUntilIdle()
 
         loginPersistence.loginState.value shouldBe LoginState.LoggedIn(Credentials("Bender", "BiteMyShinyMetalAss!"))
     }
 
-    private class TestHarness(
-        credentials: Credentials?,
-    ) {
-        val loginPersistence = LoginInteractorInMemory(credentials).apply { unlock() }
+    private class TestHarness(val testScope: TestScope) {
+        val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, Biometrics.Unsupported, testScope)
         val viewModel = LoginViewModel(loginPersistence)
 
         fun inputCredentials() {
@@ -71,17 +74,8 @@ class LoginSpec {
         }
     }
 
-    private fun testHarness(
-        storedUsername: String,
-        storedPassword: String,
-        block: suspend TestHarness.() -> Unit
-    ) = testHarness(Credentials(storedUsername, storedPassword), block)
-
-    private fun testHarness(
-        credentials: Credentials? = null,
-        block: suspend TestHarness.() -> Unit
-    ) = runTest {
-        block(TestHarness(credentials))
+    private fun testHarness(block: suspend TestHarness.() -> Unit) = runTest {
+        block(TestHarness(this))
     }
 
 }

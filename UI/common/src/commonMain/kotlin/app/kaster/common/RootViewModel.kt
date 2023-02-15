@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 
 class RootViewModel(private val onCloseApp: () -> Unit, loginInteractor: LoginInteractor) {
 
@@ -36,7 +35,6 @@ class RootViewModel(private val onCloseApp: () -> Unit, loginInteractor: LoginIn
             }
         }
         .map { RootViewState(it) }
-        .onStart { if (loginInteractor.loginState.value == Locked) loginInteractor.unlock() }
 
     fun onInput(input: RootInput) {
         when (input) {
