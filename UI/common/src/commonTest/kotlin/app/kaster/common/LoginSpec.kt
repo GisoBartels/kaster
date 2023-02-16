@@ -64,8 +64,29 @@ class LoginSpec {
         loginPersistence.loginState.value shouldBe LoginState.LoggedIn(Credentials("Bender", "BiteMyShinyMetalAss!"))
     }
 
-    private class TestHarness(val testScope: TestScope) {
-        val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, Biometrics.Unsupported, testScope)
+    @Test
+    fun `Biometric login enabled when supported`() = testHarness(biometricsSupported = true) {
+        inputCredentials()
+
+        viewModel.viewState.test {
+            expectMostRecentItem().biometricLoginEnabled shouldBe true
+        }
+    }
+
+    @Test
+    fun `Biometric login disabled when not supported`() = testHarness(biometricsSupported = false) {
+        inputCredentials()
+
+        viewModel.viewState.test {
+            expectMostRecentItem().biometricLoginEnabled shouldBe false
+        }
+    }
+
+    private class TestHarness(
+        biometricsSupported: Boolean,
+        val testScope: TestScope
+    ) {
+        val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, BiometricsFake(biometricsSupported), testScope)
         val viewModel = LoginViewModel(loginPersistence)
 
         fun inputCredentials() {
@@ -74,8 +95,17 @@ class LoginSpec {
         }
     }
 
-    private fun testHarness(block: suspend TestHarness.() -> Unit) = runTest {
-        block(TestHarness(this))
+    private fun testHarness(biometricsSupported: Boolean = false, block: suspend TestHarness.() -> Unit) = runTest {
+        block(TestHarness(biometricsSupported, this))
+    }
+
+    private class BiometricsFake(private val supported: Boolean) : Biometrics {
+        override suspend fun promptUserAuth(): Biometrics.AuthResult = when (supported) {
+            true -> Biometrics.AuthResult.Success
+            false -> Biometrics.AuthResult.Failed
+        }
+
+        override val isSupported: Boolean = supported
     }
 
 }

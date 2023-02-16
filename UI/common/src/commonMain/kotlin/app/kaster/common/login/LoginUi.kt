@@ -33,8 +33,8 @@ import app.kaster.common.login.LoginInput.MasterPassword
 import app.kaster.common.login.LoginInput.UnmaskPassword
 
 @Composable
-fun LoginScreen(persistence: LoginInteractor) {
-    val viewModel = remember { LoginViewModel(persistence) }
+fun LoginScreen(loginInteractor: LoginInteractor) {
+    val viewModel = remember { LoginViewModel(loginInteractor) }
     val viewState by viewModel.viewState.collectAsState(LoginViewState())
     LoginContent(viewState, viewModel::onInput)
 }
@@ -67,11 +67,13 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
                 onClick = { input(LoginInput.Login) }
             )
 
-            LoginWithBiometrics(
-                modifier = Modifier.align(Alignment.CenterHorizontally).testTag("loginWithBiometrics"),
-                enabled = viewState.loginEnabled,
-                onClick = { input(LoginInput.LoginWithBiometrics) }
-            )
+            if (viewState.biometricLoginEnabled) {
+                LoginWithBiometrics(
+                    modifier = Modifier.align(Alignment.CenterHorizontally).testTag("loginWithBiometrics"),
+                    enabled = viewState.loginEnabled,
+                    onClick = { input(LoginInput.LoginWithBiometrics) }
+                )
+            }
         }
     }
 }

@@ -4,7 +4,8 @@ data class LoginViewState(
     val username: String = "",
     val password: String = "",
     val passwordMasked: Boolean = true,
-    val loginEnabled: Boolean = false
+    val loginEnabled: Boolean = false,
+    val biometricLoginEnabled: Boolean = false
 )
 
 sealed interface LoginInput {

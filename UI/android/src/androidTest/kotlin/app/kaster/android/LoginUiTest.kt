@@ -1,6 +1,7 @@
 package app.kaster.android
 
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -109,6 +110,28 @@ class LoginUiTest {
         composeTestRule.onNodeWithContentDescription("Hide password").performClick()
 
         verify { inputMock(LoginInput.MaskPassword) }
+    }
+
+    @Test
+    fun biometricLoginIsShownWhenEnabled() {
+        givenLoginUiWithState(
+            LoginViewState(
+                biometricLoginEnabled = true
+            )
+        )
+
+        composeTestRule.onNodeWithTag("loginWithBiometrics").assertIsDisplayed()
+    }
+
+    @Test
+    fun biometricLoginIsHiddenWhenDisabled() {
+        givenLoginUiWithState(
+            LoginViewState(
+                biometricLoginEnabled = false
+            )
+        )
+
+        composeTestRule.onNodeWithTag("loginWithBiometrics").assertDoesNotExist()
     }
 
     private fun givenLoginUiWithState(viewState: LoginViewState) {

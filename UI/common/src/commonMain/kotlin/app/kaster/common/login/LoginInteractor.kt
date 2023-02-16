@@ -6,6 +6,8 @@ interface LoginInteractor {
 
     val loginState: StateFlow<LoginState>
 
+    val biometricsSupported: Boolean
+
     fun save(credentials: Credentials, requireUserAuth: Boolean)
 
     fun unlock()

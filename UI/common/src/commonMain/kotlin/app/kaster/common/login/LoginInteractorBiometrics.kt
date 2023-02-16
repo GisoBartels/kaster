@@ -13,6 +13,9 @@ class LoginInteractorBiometrics(
     private val _loginState: MutableStateFlow<LoginInteractor.LoginState> = MutableStateFlow(LoginInteractor.LoginState.Locked)
     override val loginState: StateFlow<LoginInteractor.LoginState> = _loginState
 
+    override val biometricsSupported: Boolean
+        get() = biometrics.isSupported
+
     override fun save(credentials: LoginInteractor.Credentials, requireUserAuth: Boolean) {
         coroutineScope.launch {
             if (!requireUserAuth || biometrics.promptUserAuth() == Biometrics.AuthResult.Success) {
