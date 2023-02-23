@@ -5,3 +5,6 @@ build/
 *.iml
 
 local.properties
+
+keystore.jks
+/UI/android/release/
