@@ -179,6 +179,7 @@ class DomainEntrySpec {
         val loginPersistenceMock = mockk<LoginPersistence> {
             every { loadCredentials() } returns LoginInteractor.Credentials("Bender", "BiteMyShinyMetalAss!")
             every { userAuthenticationRequired } returns false
+            every { clear() } just runs
         }
         val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
         val viewModel = DomainEntryViewModel(

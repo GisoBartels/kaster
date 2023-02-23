@@ -17,7 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Fingerprint
-import androidx.compose.material.icons.outlined.Login
+import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -122,7 +122,7 @@ fun LoginButton(modifier: Modifier = Modifier, enabled: Boolean, onClick: () -> 
     enabled = enabled,
     onClick = onClick
 ) {
-    Icon(Icons.Outlined.Login, "Login", Modifier.padding(end = 8.dp))
+    Icon(Icons.Outlined.Timer, "Login", Modifier.padding(end = 8.dp))
     Text("Login")
 }
 

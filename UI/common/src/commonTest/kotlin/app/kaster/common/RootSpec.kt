@@ -15,9 +15,11 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.minutes
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RootSpec {
@@ -25,7 +27,7 @@ class RootSpec {
     @Test
     fun `try to auth user on start when credentials are protected`() = testHarness(LoggedInRequiringUserAuth) {
         viewModel.viewState.test {
-            testScope.advanceUntilIdle()
+            testScope.runCurrent()
             cancelAndIgnoreRemainingEvents()
         }
 
@@ -37,7 +39,7 @@ class RootSpec {
         coEvery { biometricsMock.promptUserAuth() } returns Biometrics.AuthResult.Failed
 
         viewModel.viewState.test {
-            testScope.advanceUntilIdle()
+            testScope.runCurrent()
             expectMostRecentItem().screen shouldBe Screen.Empty
         }
         verify { closeAppMock() }
@@ -46,7 +48,7 @@ class RootSpec {
     @Test
     fun `login is shown when no credentials are available`() = testHarness(LoggedOut) {
         viewModel.viewState.test {
-            testScope.advanceUntilIdle()
+            testScope.runCurrent()
             expectMostRecentItem().screen shouldBe Screen.Login
         }
     }
@@ -99,6 +101,26 @@ class RootSpec {
         verify(exactly = 0) { closeAppMock() }
     }
 
+    @Test
+    fun `require user re-auth after 5 min, when using biometric auth`() = testHarness(LoggedInRequiringUserAuth) {
+        viewModel.viewState.test {
+            testScope.advanceTimeBy(5.minutes.inWholeMilliseconds)
+            testScope.runCurrent()
+
+            coVerify { biometricsMock.promptUserAuth() }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `log out user after 5 min, when not using biometric auth`() = testHarness(LoggedIn) {
+        viewModel.viewState.test {
+            testScope.advanceTimeBy(5.minutes.inWholeMilliseconds)
+            testScope.runCurrent()
+            expectMostRecentItem().screen shouldBe Screen.Login
+        }
+    }
+
     private class TestHarness(initialState: InitialState, val testScope: TestScope) {
         val biometricsMock = mockk<Biometrics>() {
             coEvery { promptUserAuth() } returns Biometrics.AuthResult.Success
@@ -120,7 +142,7 @@ class RootSpec {
 
         fun unlockLoginPersistence() {
             loginInteractor.unlock()
-            testScope.advanceUntilIdle()
+            testScope.runCurrent()
         }
 
         init {

@@ -11,7 +11,7 @@ import app.kaster.common.login.LoginViewModel
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -59,7 +59,7 @@ class LoginSpec {
         inputCredentials()
 
         viewModel.onInput(Login)
-        testScope.advanceUntilIdle()
+        testScope.runCurrent()
 
         loginPersistence.loginState.value shouldBe LoginState.LoggedIn(Credentials("Bender", "BiteMyShinyMetalAss!"))
     }
