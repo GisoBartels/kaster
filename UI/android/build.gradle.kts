@@ -5,15 +5,15 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-group = "app.kaster"
+group = "app.passwordkaster"
 version = "1.0-SNAPSHOT"
 
 @Suppress("UnstableApiUsage")
 android {
-    namespace = "app.kaster.android"
+    namespace = "app.passwordkaster.android"
     compileSdk = 33
     defaultConfig {
-        applicationId = "app.kaster.android"
+        applicationId = "app.passwordkaster.android"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

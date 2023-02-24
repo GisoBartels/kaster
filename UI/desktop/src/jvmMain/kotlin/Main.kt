@@ -5,13 +5,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import app.kaster.common.KasterRoot
-import app.kaster.common.KasterTheme
-import app.kaster.common.RootViewModel
-import app.kaster.common.domainentry.DomainEntryPersistenceInMemory
-import app.kaster.common.login.Biometrics
-import app.kaster.common.login.LoginInteractorBiometrics
-import app.kaster.common.login.LoginPersistenceNop
+import app.passwordkaster.common.KasterRoot
+import app.passwordkaster.common.KasterTheme
+import app.passwordkaster.common.RootViewModel
+import app.passwordkaster.common.domainentry.DomainEntryPersistenceInMemory
+import app.passwordkaster.common.login.Biometrics
+import app.passwordkaster.common.login.LoginInteractorBiometrics
+import app.passwordkaster.common.login.LoginPersistenceNop
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()

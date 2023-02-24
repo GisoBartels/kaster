@@ -7,7 +7,7 @@ plugins {
     id("app.cash.paparazzi")
 }
 
-group = "app.kaster"
+group = "app.passwordkaster"
 version = "1.0-SNAPSHOT"
 
 kotlin {
@@ -70,7 +70,7 @@ dependencies {
 
 @Suppress("UnstableApiUsage")
 android {
-    namespace = "app.kaster.common"
+    namespace = "app.passwordkaster.common"
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {

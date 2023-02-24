@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "app.kaster"
+group = "app.passwordkaster"
 version = "1.0-SNAPSHOT"
 
 kotlin {
