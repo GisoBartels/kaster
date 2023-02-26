@@ -5,9 +5,6 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-group = "app.passwordkaster"
-version = "1.0-SNAPSHOT"
-
 @Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.android"
@@ -16,8 +13,8 @@ android {
         applicationId = "app.passwordkaster.android"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0-SNAPSHOT"
+        versionCode = buildNumber
+        versionName = gitDescribeBuild
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,6 +32,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     sourceSets.all {
         // make KSP-generated sources visible to IDE
         kotlin.srcDir("build/generated/ksp/$name/kotlin")
