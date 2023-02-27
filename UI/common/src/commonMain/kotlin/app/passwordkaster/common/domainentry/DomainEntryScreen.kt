@@ -71,7 +71,7 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
                 IconButton(onClick = { input(Delete) }, modifier = Modifier.testTag("delete")) {
                     Icon(Icons.Outlined.Delete, "Delete")
                 }
-                IconButton(onClick = { input(Save) }, modifier = Modifier.testTag("save")) {
+                IconButton(onClick = { input(Save) }, modifier = Modifier.testTag("save"), enabled = viewState.saveEnabled) {
                     Icon(Icons.Outlined.Save, "Save")
                 }
             }

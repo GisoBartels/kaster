@@ -40,7 +40,7 @@ class DomainEntryViewModel(
         }
 
     val viewState = combine(workingCopy, password) { domainEntry, password ->
-        DomainEntryViewState(domainEntry, password)
+        DomainEntryViewState(domainEntry, password, saveEnabled = domainEntry.domain.isNotBlank())
     }
 
     fun onInput(input: DomainEntryInput) {

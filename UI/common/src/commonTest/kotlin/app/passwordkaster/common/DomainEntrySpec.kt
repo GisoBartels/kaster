@@ -30,7 +30,7 @@ class DomainEntrySpec {
     @Test
     fun `New domain entry displays default values`() = testHarness {
         viewModel.viewState.test {
-            expectMostRecentItem() shouldBe DomainEntryViewState(DomainEntry(), GeneratedPassword.NotEnoughData)
+            expectMostRecentItem() shouldBe DomainEntryViewState(DomainEntry(), GeneratedPassword.NotEnoughData, saveEnabled = false)
         }
     }
 
@@ -38,6 +38,22 @@ class DomainEntrySpec {
     fun `Existing domain entry displays persisted values`() = testHarness(DomainEntry("www.example.com")) {
         viewModel.viewState.test {
             expectMostRecentItem().domainEntry.domain shouldBe originalDomainEntry?.domain
+        }
+    }
+
+    @Test
+    fun `Non-empty domain can be saved`() = testHarness {
+        viewModel.viewState.test {
+            viewModel.onInput(DomainEntryInput.Domain("some.domain"))
+
+            expectMostRecentItem().saveEnabled shouldBe true
+        }
+    }
+
+    @Test
+    fun `Empty domain cannot be saved`() = testHarness {
+        viewModel.viewState.test {
+            expectMostRecentItem().saveEnabled shouldBe false
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasText
@@ -131,12 +132,23 @@ class DomainEntryUiTest {
     }
 
     @Test
-    fun testInputSave() {
-        givenDomainEntry(DomainEntryViewState())
+    fun testInputSaveWhenEnabled() {
+        givenDomainEntry(DomainEntryViewState(saveEnabled = true))
 
         composeTestRule.onNodeWithTag("save").performClick()
 
+        composeTestRule.onNodeWithTag("save").assertIsEnabled()
         verify { inputMock(Save) }
+    }
+
+    @Test
+    fun testNoInputSaveWhenDisabled() {
+        givenDomainEntry(DomainEntryViewState(saveEnabled = false))
+
+        composeTestRule.onNodeWithTag("save").performClick()
+
+        composeTestRule.onNodeWithTag("save").assertIsNotEnabled()
+        verify(exactly = 0) { inputMock(Save) }
     }
 
     @Test

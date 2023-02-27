@@ -4,7 +4,8 @@ import app.passwordkaster.core.Kaster
 
 data class DomainEntryViewState(
     val domainEntry: DomainEntry = DomainEntry(),
-    val generatedPassword: GeneratedPassword = GeneratedPassword.Generating
+    val generatedPassword: GeneratedPassword = GeneratedPassword.Generating,
+    val saveEnabled: Boolean = false,
 ) {
     sealed interface GeneratedPassword {
         object NotEnoughData : GeneratedPassword
