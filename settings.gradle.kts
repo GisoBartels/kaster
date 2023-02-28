@@ -9,6 +9,11 @@ include(
     ":UI:common"
 )
 
+val isCiServer = providers.systemProperty("CI").isPresent
+buildCache {
+    local { isEnabled = !isCiServer }
+}
+
 pluginManagement {
     repositories {
         google()
