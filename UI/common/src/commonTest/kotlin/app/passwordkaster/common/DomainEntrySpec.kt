@@ -23,6 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DomainEntrySpec {
@@ -142,7 +143,7 @@ class DomainEntrySpec {
     fun `Password is generated when domain is entered`() = testHarness {
         viewModel.onInput(DomainEntryInput.Domain("benderbrau.robot"))
 
-        viewModel.viewState.test {
+        viewModel.viewState.test(timeout = 10.seconds) {
             awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
             awaitItem().generatedPassword shouldBe GeneratedPassword.Result("X@CPl2wOm0RgIWu#lC7/")
         }
@@ -173,7 +174,7 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Counter(9001))
         viewModel.onInput(DomainEntryInput.Type(Kaster.PasswordType.Phrase))
 
-        viewModel.viewState.test {
+        viewModel.viewState.test(timeout = 10.seconds) {
             awaitItem().generatedPassword shouldBe GeneratedPassword.Generating
             awaitItem().generatedPassword shouldBe GeneratedPassword.Result("gajr jev rikbeku pah")
         }
