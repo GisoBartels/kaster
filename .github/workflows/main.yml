@@ -23,8 +23,10 @@ jobs:
         cache: gradle
 
     - name: Build
-      run: ./gradlew build
-      
+      uses: burrunan/gradle-cache-action@v1
+      with:
+        arguments: build
+
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
