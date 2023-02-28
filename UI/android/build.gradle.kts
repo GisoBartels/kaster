@@ -22,6 +22,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    signingConfigs {
+        providers.environmentVariable("SIGN_KEY_PASSWORD").orNull?.let { signKeyPassword ->
+            create("release") {
+                storeFile = rootProject.file("keystore.jks")
+                storePassword = signKeyPassword
+                keyAlias = "kaster-upload"
+                keyPassword = signKeyPassword
+            }
+        }
+    }
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = ".debug"
@@ -30,6 +40,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 
