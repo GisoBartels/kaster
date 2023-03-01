@@ -22,8 +22,13 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    - name: Unpack keystore
+      run: echo "${{secrets.KEYSTORE}}" | base64 -d > keystore.jks
+
     - name: Build
       uses: burrunan/gradle-cache-action@v1
+      env:
+        SIGN_KEY_PASSWORD: ${{ secrets.SIGN_KEY_PASSWORD }}
       with:
         arguments: build
 
