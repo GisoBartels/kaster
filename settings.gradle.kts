@@ -9,9 +9,10 @@ include(
     ":UI:common"
 )
 
-val isCiServer = providers.systemProperty("CI").isPresent
+val runsOnCI = providers.environmentVariable("CI").isPresent
+
 buildCache {
-    local { isEnabled = !isCiServer }
+    local { isEnabled = !runsOnCI }
 }
 
 pluginManagement {
@@ -24,6 +25,22 @@ pluginManagement {
     }
     plugins {
         id("app.cash.paparazzi") version "1.2.0"
+    }
+}
+
+plugins {
+    id("com.gradle.enterprise") version("3.12.3")
+}
+
+gradleEnterprise {
+    if (runsOnCI) {
+        buildScan {
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+            publishAlways()
+            tag("CI")
+            isUploadInBackground = false
+        }
     }
 }
 
