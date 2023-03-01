@@ -32,6 +32,12 @@ jobs:
       with:
         arguments: build
 
+    - name: Upload to Play Store
+      env:
+        SIGN_KEY_PASSWORD: ${{ secrets.SIGN_KEY_PASSWORD }}
+        ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
+      run: ./gradlew publishBundle
+
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
