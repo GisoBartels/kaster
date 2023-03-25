@@ -58,6 +58,15 @@ android {
     }
 }
 
+androidComponents {
+    val skipReleaseProp = providers.gradleProperty("skipRelease")
+    beforeVariants { variantBuilder ->
+        if (variantBuilder.buildType == "release" && skipReleaseProp.isPresent) {
+            variantBuilder.enable = false
+        }
+    }
+}
+
 dependencies {
     implementation(project(":UI:common"))
 
