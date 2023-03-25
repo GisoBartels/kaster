@@ -81,7 +81,7 @@ dependencyResolutionManagement {
             library("androidx-activity-compose", "androidx.activity:activity-compose:1.6.1")
             library("androidx-security-crypto", "androidx.security:security-crypto-ktx:1.1.0-alpha04")
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
-            library("androidx-datastore", "androidx.datastore:datastore:1.1.0-alpha01")
+            library("androidx-datastore", "androidx.datastore:datastore:1.1.0-alpha03")
             library("androidx-compose-bom", "androidx.compose:compose-bom:2023.01.00")
             library("androidx-compose-ui", "androidx.compose.ui", "ui").withoutVersion()
             library("androidx-compose-ui-tooling", "androidx.compose.ui", "ui-tooling").withoutVersion()
