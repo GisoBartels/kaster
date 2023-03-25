@@ -2,5 +2,15 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePrefixes": ["io.mockk:"],
+      "groupName": "mockk"
+    },
+    {
+      "matchPackagePrefixes": ["com.airbnb.android:showkase"],
+      "allowedVersions": "!/1\\.0\\.0\\-kotlin1\\.5\\.30\\-1/"
+    }
   ]
 }
