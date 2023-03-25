@@ -9,15 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -25,6 +16,15 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.passwordkaster.common.domainentry.DomainEntryInput.*
 import app.passwordkaster.common.domainentry.DomainEntryViewState.GeneratedPassword
+import app.passwordkaster.common.kasterTopAppBarColors
 import app.passwordkaster.common.login.LoginInteractor
 import app.passwordkaster.common.util.DropDown
 import app.passwordkaster.core.Kaster
@@ -56,12 +57,13 @@ fun DomainEntryScreen(
     DomainEntryContent(viewState, viewModel::onInput)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput) -> Unit) {
     Column {
         TopAppBar(
             title = { Text("Password Kaster") },
-            backgroundColor = MaterialTheme.colors.primary,
+            colors = kasterTopAppBarColors,
             navigationIcon = {
                 IconButton(onClick = { input(Dismiss) }, modifier = Modifier.testTag("dismiss")) {
                     Icon(Icons.Outlined.Close, "Dismiss")
@@ -89,6 +91,7 @@ fun DomainEntryContent(viewState: DomainEntryViewState, input: (DomainEntryInput
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DomainInput(value: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
@@ -113,6 +116,7 @@ private fun ScopeInput(value: Kaster.Scope, onValueChange: (Kaster.Scope) -> Uni
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CounterInput(value: Int, input: (DomainEntryInput) -> Unit) {
     OutlinedTextField(

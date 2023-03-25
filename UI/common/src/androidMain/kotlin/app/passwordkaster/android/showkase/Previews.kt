@@ -1,7 +1,7 @@
 package app.passwordkaster.android.showkase
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,8 +19,8 @@ import kotlinx.collections.immutable.persistentListOf
 private fun Preview(content: @Composable () -> Unit) {
     KasterTheme {
         Surface(
-            color = MaterialTheme.colors.background,
-            elevation = 8.dp
+            color = MaterialTheme.colorScheme.background,
+            shadowElevation = 8.dp
         ) {
             content()
         }

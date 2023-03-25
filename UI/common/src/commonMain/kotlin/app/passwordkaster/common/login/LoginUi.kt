@@ -5,19 +5,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Timer
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import app.passwordkaster.common.kasterTopAppBarColors
 import app.passwordkaster.common.login.LoginInput.MasterPassword
 import app.passwordkaster.common.login.LoginInput.UnmaskPassword
 
@@ -39,12 +40,13 @@ fun LoginScreen(loginInteractor: LoginInteractor) {
     LoginContent(viewState, viewModel::onInput)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
     Column {
         TopAppBar(
             title = { Text("Password Kaster") },
-            backgroundColor = MaterialTheme.colors.primary,
+            colors = kasterTopAppBarColors
         )
         Column(modifier = Modifier.fillMaxWidth().padding(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             UsernameField(
@@ -78,6 +80,7 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UsernameField(modifier: Modifier = Modifier, username: String, onUsernameChange: (String) -> Unit) {
     OutlinedTextField(
@@ -88,6 +91,7 @@ fun UsernameField(modifier: Modifier = Modifier, username: String, onUsernameCha
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordField(
     modifier: Modifier = Modifier,

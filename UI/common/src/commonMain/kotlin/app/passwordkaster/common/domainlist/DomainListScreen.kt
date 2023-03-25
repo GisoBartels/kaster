@@ -8,20 +8,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.ListItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,6 +34,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.passwordkaster.common.domainentry.DomainEntryPersistence
 import app.passwordkaster.common.domainlist.DomainListViewState.SearchState.*
+import app.passwordkaster.common.kasterTopAppBarColors
 import app.passwordkaster.common.login.LoginInteractor
 
 @Composable
@@ -48,7 +48,7 @@ fun DomainListScreen(
     DomainListContent(viewState, viewModel::onInput)
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -> Unit) {
     Column {
@@ -61,7 +61,7 @@ fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -
             LazyColumn {
                 items(viewState.domainList) { domain ->
                     ListItem(
-                        text = { Text(domain) },
+                        headlineText = { Text(domain) },
                         modifier = Modifier.clickable { input(DomainListInput.EditDomain(domain)) }
                     )
                 }
@@ -76,10 +76,11 @@ fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RegularTopAppBar(input: (DomainListInput) -> Unit) = TopAppBar(
     title = { Text("Password Kaster") },
-    backgroundColor = MaterialTheme.colors.primary,
+    colors = kasterTopAppBarColors,
     actions = {
         IconButton(onClick = { input(DomainListInput.StartSearch) }) {
             Icon(Icons.Outlined.Search, "Search")
@@ -90,6 +91,7 @@ private fun RegularTopAppBar(input: (DomainListInput) -> Unit) = TopAppBar(
     }
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTopAppBar(
     searchTerm: String,
@@ -105,7 +107,7 @@ private fun SearchTopAppBar(
             singleLine = true
         )
     },
-    backgroundColor = MaterialTheme.colors.primary,
+    colors = kasterTopAppBarColors,
     actions = {
         IconButton(onClick = { input(DomainListInput.StopSearch) }) {
             Icon(Icons.Outlined.Close, "Stop search")

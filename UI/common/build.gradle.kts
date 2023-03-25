@@ -1,3 +1,5 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -31,7 +33,8 @@ kotlin {
                 api(projects.core)
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
+                @OptIn(ExperimentalComposeLibrary::class)
+                api(compose.material3)
                 api(compose.materialIconsExtended)
                 api(compose.preview)
                 implementation(libs.kotlinx.coroutines)

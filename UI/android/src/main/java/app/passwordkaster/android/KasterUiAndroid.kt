@@ -2,8 +2,8 @@ package app.passwordkaster.android
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
@@ -22,8 +22,8 @@ fun KasterAndroidUi(
 ) {
     KasterTheme {
         val systemUiController = rememberSystemUiController()
-        val useDarkIcons = isSystemInDarkTheme()
-        val systemBarColor = MaterialTheme.colors.primary
+        val useDarkIcons = !isSystemInDarkTheme()
+        val systemBarColor = MaterialTheme.colorScheme.primaryContainer
 
         DisposableEffect(systemUiController, systemBarColor) {
             systemUiController.setSystemBarsColor(
@@ -32,7 +32,7 @@ fun KasterAndroidUi(
             )
             onDispose {}
         }
-        Surface(modifier = Modifier.fillMaxSize()) {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             KasterRoot(rootViewModel, loginInteractor, domainListPersistence)
         }
     }

@@ -85,7 +85,7 @@ dependencyResolutionManagement {
             library("androidx-compose-bom", "androidx.compose:compose-bom:2023.01.00")
             library("androidx-compose-ui", "androidx.compose.ui", "ui").withoutVersion()
             library("androidx-compose-ui-tooling", "androidx.compose.ui", "ui-tooling").withoutVersion()
-            library("androidx-compose-material", "androidx.compose.material", "material").withoutVersion()
+            library("androidx-compose-material3", "androidx.compose.material3", "material3").withoutVersion()
             library("androidx-compose-material-icons-core", "androidx.compose.material", "material-icons-core").withoutVersion()
             library("androidx-compose-material-icons-extended", "androidx.compose.material", "material-icons-extended").withoutVersion()
             library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.28.0")

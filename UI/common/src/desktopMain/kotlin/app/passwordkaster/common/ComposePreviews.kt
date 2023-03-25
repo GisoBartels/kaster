@@ -1,8 +1,8 @@
 package app.passwordkaster.common
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import app.passwordkaster.common.login.LoginContent
 import app.passwordkaster.common.login.LoginViewState
@@ -11,7 +11,7 @@ import app.passwordkaster.common.login.LoginViewState
 @Composable
 fun LoginPreview() {
     KasterTheme {
-        Surface(color = MaterialTheme.colors.surface) {
+        Surface(color = MaterialTheme.colorScheme.surface) {
             LoginContent(
                 LoginViewState(
                     username = "Bender",

@@ -1,18 +1,30 @@
 package app.passwordkaster.common
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 @Composable
-fun KasterTheme(content: @Composable () -> Unit) = MaterialTheme(colors = themeColors(), content = content)
+fun KasterTheme(
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    MaterialTheme(
+        colorScheme = if (useDarkTheme) DarkColors else LightColors,
+        content = content
+    )
+}
 
-@Composable
-private fun themeColors() =
-    if (isSystemInDarkTheme())
-        darkColors(primary = Color(0xFF00CC00), secondary = Color(0xFF00CC00), background = Color.Black)
-    else
-        lightColors(primary = Color(0xFF005000), secondary = Color(0xFF005000))
+@OptIn(ExperimentalMaterial3Api::class)
+val kasterTopAppBarColors: TopAppBarColors
+    @Composable
+    get() = TopAppBarDefaults.smallTopAppBarColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    )

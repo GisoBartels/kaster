@@ -2,10 +2,10 @@ package app.passwordkaster.common.util
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,12 +32,13 @@ internal actual fun <T> DropDown(
             onDismissRequest = { expanded = false }
         ) {
             values.forEach { value ->
-                DropdownMenuItem(onClick = {
-                    onSelected(value)
-                    expanded = false
-                }) {
-                    Text(valueLabel(value))
-                }
+                DropdownMenuItem(
+                    onClick = {
+                        onSelected(value)
+                        expanded = false
+                    },
+                    text = { Text(valueLabel(value)) }
+                )
             }
         }
     }
