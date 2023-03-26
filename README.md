@@ -17,3 +17,5 @@ to create an opinionated approach how modern UI development could look like.
   * Single input for all view events
 * [Showcasing](https://github.com/airbnb/Showkase) UI elements with different device configurations
 * [Snapshot testing](https://github.com/cashapp/paparazzi) without Android emulator ([Example](UI/common/src/androidUnitTest/kotlin/app/passwordkaster/android/screenshottests/PreviewScreenshotTests.kt))
+* Continuous Deployment pipeline into Play Store (internal track) ([Example](.github/workflows/main.yml))
+* Automatic dependency updates with [Renovate](https://github.com/renovatebot/renovate)
