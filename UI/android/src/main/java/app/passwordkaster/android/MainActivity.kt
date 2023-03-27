@@ -15,7 +15,9 @@ import app.passwordkaster.common.login.LoginInteractorBiometrics
 class MainActivity : AppCompatActivity() {
 
     private val loginPersistence by lazy { LoginPersistenceAndroid(applicationContext) }
-    private val loginInteractor by lazy { LoginInteractorBiometrics(loginPersistence, BiometricsAndroid(this), lifecycleScope) }
+    private val loginInteractor by lazy {
+        LoginInteractorBiometrics(loginPersistence, BiometricsAndroid(this), lifecycleScope)
+    }
     private val domainListPersistence by lazy { DomainEntryPersistenceAndroid(applicationContext, lifecycleScope) }
     private val rootViewModel by lazy { RootViewModel({ finish() }, loginInteractor) }
 

@@ -19,6 +19,7 @@ fun KasterAndroidUi(
     loginInteractor: LoginInteractor,
     domainListPersistence: DomainEntryPersistence,
     rootViewModel: RootViewModel,
+    modifier: Modifier = Modifier
 ) {
     KasterTheme {
         val systemUiController = rememberSystemUiController()
@@ -32,7 +33,7 @@ fun KasterAndroidUi(
             )
             onDispose {}
         }
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             KasterRoot(rootViewModel, loginInteractor, domainListPersistence)
         }
     }
