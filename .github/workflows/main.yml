@@ -28,7 +28,7 @@ jobs:
       env:
         SIGN_KEY_PASSWORD: ${{ secrets.SIGN_KEY_PASSWORD }}
       with:
-        arguments: build
+        arguments: build verifyPaparazziDebug
 
     - name: Upload to Play Store
       env:
