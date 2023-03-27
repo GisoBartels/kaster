@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -33,7 +31,6 @@ kotlin {
                 api(projects.core)
                 api(compose.runtime)
                 api(compose.foundation)
-                @OptIn(ExperimentalComposeLibrary::class)
                 api(compose.material3)
                 api(compose.materialIconsExtended)
                 api(compose.preview)
@@ -78,7 +75,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

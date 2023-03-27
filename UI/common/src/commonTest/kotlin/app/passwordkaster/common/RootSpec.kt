@@ -122,7 +122,7 @@ class RootSpec {
     }
 
     private class TestHarness(initialState: InitialState, val testScope: TestScope) {
-        val biometricsMock = mockk<Biometrics>() {
+        val biometricsMock = mockk<Biometrics> {
             coEvery { promptUserAuth() } returns Biometrics.AuthResult.Success
             coEvery { isSupported } returns true
         }
