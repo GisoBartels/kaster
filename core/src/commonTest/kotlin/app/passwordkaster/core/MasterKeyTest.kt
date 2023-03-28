@@ -9,7 +9,7 @@ class MasterKeyTest {
     fun testMasterKeySalt() {
         val salt = MasterKey.salt("Bender")
         assertEquals(
-            "2ADE71770AD37827976B76932DA344280FA81DE6DA5256FB8E6310520BFFA48A",
+            "2ade71770ad37827976b76932da344280fa81de6da5256fb8e6310520bffa48a",
             sha256(salt).toHexString()
         )
     }
@@ -18,7 +18,7 @@ class MasterKeyTest {
     fun verifyMasterKeyAlgorithm() {
         val masterKey = MasterKey("Bender", "BiteMyShinyMetalAss!")
         assertEquals(
-            "13826B521B744F9488D1FF6433A96D687C52E2AC50DDA296A66CA87BC2A1EF09",
+            "13826b521b744f9488d1ff6433a96d687c52e2ac50dda296a66ca87bc2a1ef09",
             sha256(masterKey.key).toHexString()
         )
     }
