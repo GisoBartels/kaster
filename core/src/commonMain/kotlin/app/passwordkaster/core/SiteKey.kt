@@ -7,9 +7,9 @@ class SiteKey(masterKey: MasterKey, domain: String, counter: Int, scope: Scope) 
 
     companion object {
         internal fun salt(domain: String, counter: Int, scope: Scope): ByteArray = concat(
-            scope.id.toByteArray(),
+            scope.id.encodeToByteArray(),
             domain.length.toBigEndianBytes(),
-            domain.toByteArray(),
+            domain.encodeToByteArray(),
             counter.toBigEndianBytes()
         )
 

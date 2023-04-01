@@ -6,6 +6,8 @@ class MasterKey(username: String, masterPassword: String) {
 
     companion object {
         internal fun salt(username: String): ByteArray =
-            "com.lyndir.masterpassword".toByteArray() + username.length.toBigEndianBytes() + username.toByteArray()
+            "com.lyndir.masterpassword".encodeToByteArray() +
+                    username.length.toBigEndianBytes() +
+                    username.encodeToByteArray()
     }
 }
