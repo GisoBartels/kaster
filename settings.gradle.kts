@@ -89,7 +89,7 @@ dependencyResolutionManagement {
             library("androidx-compose-material-icons-extended", "androidx.compose.material", "material-icons-extended").withoutVersion()
             library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.30.0")
 
-            version("showkase", "1.0.0-beta17")
+            version("showkase", "1.0.0-beta18")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")
             library("showkase-processor", "com.airbnb.android", "showkase-processor").versionRef("showkase")
 
