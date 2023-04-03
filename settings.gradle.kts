@@ -65,7 +65,7 @@ dependencyResolutionManagement {
             // common test
             library("kotlinx-coroutines-test", "org.jetbrains.kotlinx", "kotlinx-coroutines-test").versionRef("kotlinx-coroutines")
             library("mockk", "io.mockk:mockk:1.13.2")
-            library("turbine", "app.cash.turbine:turbine:0.12.1")
+            library("turbine", "app.cash.turbine:turbine:0.12.3")
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.5.5")
 
             // JVM
