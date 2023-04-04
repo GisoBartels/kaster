@@ -87,7 +87,7 @@ dependencyResolutionManagement {
             library("androidx-compose-material3", "androidx.compose.material3", "material3").withoutVersion()
             library("androidx-compose-material-icons-core", "androidx.compose.material", "material-icons-core").withoutVersion()
             library("androidx-compose-material-icons-extended", "androidx.compose.material", "material-icons-extended").withoutVersion()
-            library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.30.0")
+            library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 
             version("showkase", "1.0.0-beta17")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")
