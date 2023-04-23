@@ -78,7 +78,7 @@ dependencyResolutionManagement {
             // Android
             library("androidx-appcompat", "androidx.appcompat:appcompat:1.6.1")
             library("androidx-activity-compose", "androidx.activity:activity-compose:1.7.1")
-            library("androidx-security-crypto", "androidx.security:security-crypto-ktx:1.1.0-alpha05")
+            library("androidx-security-crypto", "androidx.security:security-crypto-ktx:1.1.0-alpha06")
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
             library("androidx-datastore", "androidx.datastore:datastore:1.1.0-alpha04")
             library("androidx-compose-bom", "androidx.compose:compose-bom:2023.04.01")
