@@ -3,7 +3,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("com.google.devtools.ksp")
-    id("com.github.triplet.play") version "3.8.1"
+    id("com.github.triplet.play") version "3.8.2"
 }
 
 @Suppress("UnstableApiUsage")
