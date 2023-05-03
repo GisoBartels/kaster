@@ -15,11 +15,13 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
-import io.mockk.runs
-import io.mockk.verify
+import io.mockative.Mock
+import io.mockative.anything
+import io.mockative.classOf
+import io.mockative.given
+import io.mockative.mock
+import io.mockative.thenDoNothing
+import io.mockative.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -40,7 +42,7 @@ class DomainListSpec {
     fun `A logged in user can add new domain entries`() = testHarness {
         viewModel.onInput(AddDomain)
 
-        verify { onEditDomainEntryMock(null) }
+        verify(onEditDomainEntryMock).invocation { invoke(null) }.wasInvoked()
     }
 
     @Test
@@ -49,7 +51,7 @@ class DomainListSpec {
 
         viewModel.onInput(DomainListInput.EditDomain(domainFixture))
 
-        verify { onEditDomainEntryMock(domainFixture) }
+        verify(onEditDomainEntryMock).invocation { invoke(domainFixture) }.wasInvoked()
     }
 
     @Test
@@ -90,7 +92,7 @@ class DomainListSpec {
     }
 
     @Test
-    fun `The list is filtered for matching domain names, when a search term is entered`() =
+    fun `The list is filtered for matching domain names when a search term is entered`() =
         testHarness("foo", "fo", "oof", "afoobar", "fOo") {
             viewModel.onInput(DomainListInput.StartSearch)
             viewModel.onInput(DomainListInput.Search(contains = "foo"))
@@ -111,7 +113,10 @@ class DomainListSpec {
     }
 
     private class TestHarness(val domains: Set<String>, testScheduler: TestCoroutineScheduler) {
-        val onEditDomainEntryMock = mockk<(String?) -> Unit> { every { this@mockk(any()) } just runs }
+        @Mock
+        val onEditDomainEntryMock = mock(classOf<(String?) -> Unit>()).apply {
+            given(this).function(this::invoke).whenInvokedWith(anything()).thenDoNothing()
+        }
         val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, Biometrics.Unsupported, CoroutineScope(testScheduler))
         val domainEntryPersistence = DomainEntryPersistenceInMemory(domains.map { DomainEntry(it) }.toSet())
         val viewModel = DomainListViewModel(

@@ -1,6 +1,7 @@
 package app.passwordkaster.common
 
 import app.cash.turbine.test
+import app.passwordkaster.core.Kaster
 import app.passwordkaster.logic.domainentry.DomainEntry
 import app.passwordkaster.logic.domainentry.DomainEntryInput
 import app.passwordkaster.logic.domainentry.DomainEntryPersistenceInMemory
@@ -11,18 +12,18 @@ import app.passwordkaster.logic.login.Biometrics
 import app.passwordkaster.logic.login.LoginInteractor
 import app.passwordkaster.logic.login.LoginInteractorBiometrics
 import app.passwordkaster.logic.login.LoginPersistence
-import app.passwordkaster.core.Kaster
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
-import io.mockk.runs
-import io.mockk.verify
+import io.mockative.Mock
+import io.mockative.classOf
+import io.mockative.given
+import io.mockative.mock
+import io.mockative.thenDoNothing
+import io.mockative.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -168,7 +169,7 @@ class DomainEntrySpec {
     }
 
     @Test
-    fun `Correct password is generated for non-default values for domain, scope, counter and type`() = testHarness {
+    fun `Correct password is generated for non-default values for domain scope counter and type`() = testHarness {
         viewModel.onInput(DomainEntryInput.Domain("benderbrau.robot"))
         viewModel.onInput(DomainEntryInput.Scope(Kaster.Scope.Recovery))
         viewModel.onInput(DomainEntryInput.Counter(9001))
@@ -185,18 +186,24 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Delete)
 
         domainEntryPersistence.entries.value.shouldBeEmpty()
-        verify { onCloseEntryMock() }
+        verify(onCloseEntryMock).invocation { invoke() }.wasInvoked()
     }
+
 
     private class TestHarness(
         val originalDomainEntry: DomainEntry? = null,
         testScope: TestScope
     ) {
-        val onCloseEntryMock = mockk<() -> Unit> { every { this@mockk() } just runs }
-        val loginPersistenceMock = mockk<LoginPersistence> {
-            every { loadCredentials() } returns LoginInteractor.Credentials("Bender", "BiteMyShinyMetalAss!")
-            every { userAuthenticationRequired } returns false
-            every { clear() } just runs
+        @Mock
+        val onCloseEntryMock = mock(classOf<() -> Unit>()).apply {
+            given(this).function(this::invoke).whenInvoked().thenDoNothing()
+        }
+
+        @Mock
+        val loginPersistenceMock = mock(classOf<LoginPersistence>()).apply {
+            given(this).invocation { loadCredentials() }.thenReturn(LoginInteractor.Credentials("Bender", "BiteMyShinyMetalAss!"))
+            given(this).invocation { userAuthenticationRequired }.thenReturn(false)
+            given(this).invocation { clear() }.thenDoNothing()
         }
         val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
         val viewModel = DomainEntryViewModel(

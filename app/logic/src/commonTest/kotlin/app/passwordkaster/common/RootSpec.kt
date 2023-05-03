@@ -4,17 +4,19 @@ import app.cash.turbine.test
 import app.passwordkaster.common.RootSpec.InitialState.LoggedIn
 import app.passwordkaster.common.RootSpec.InitialState.LoggedInRequiringUserAuth
 import app.passwordkaster.common.RootSpec.InitialState.LoggedOut
+import app.passwordkaster.logic.RootInput
+import app.passwordkaster.logic.RootViewModel
 import app.passwordkaster.logic.login.Biometrics
 import app.passwordkaster.logic.login.LoginInteractor
 import app.passwordkaster.logic.login.LoginInteractorBiometrics
 import app.passwordkaster.logic.navigation.Screen
-import app.passwordkaster.logic.RootInput
-import app.passwordkaster.logic.RootViewModel
 import io.kotest.matchers.shouldBe
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockative.Mock
+import io.mockative.classOf
+import io.mockative.given
+import io.mockative.mock
+import io.mockative.thenDoNothing
+import io.mockative.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
@@ -33,18 +35,19 @@ class RootSpec {
             cancelAndIgnoreRemainingEvents()
         }
 
-        coVerify { biometricsMock.promptUserAuth() }
+        verify(biometricsMock).suspendFunction(biometricsMock::promptUserAuth).wasInvoked()
     }
 
     @Test
     fun `exit app when credentials unlock fails`() = testHarness(LoggedInRequiringUserAuth) {
-        coEvery { biometricsMock.promptUserAuth() } returns Biometrics.AuthResult.Failed
+        given(biometricsMock).suspendFunction(biometricsMock::promptUserAuth)
+            .whenInvoked().thenReturn(Biometrics.AuthResult.Failed)
 
         viewModel.viewState.test {
             testScope.runCurrent()
             expectMostRecentItem().screen shouldBe Screen.Empty
         }
-        verify { closeAppMock() }
+        verify(closeAppMock).function(closeAppMock::invoke).wasInvoked()
     }
 
     @Test
@@ -88,7 +91,7 @@ class RootSpec {
     fun `close app on backpress on domain list`() = testHarness(LoggedIn) {
         viewModel.onInput(RootInput.BackPressed)
 
-        verify { closeAppMock() }
+        verify(closeAppMock).function(closeAppMock::invoke).wasInvoked()
     }
 
     @Test
@@ -100,22 +103,22 @@ class RootSpec {
 
             expectMostRecentItem().screen shouldBe Screen.DomainList
         }
-        verify(exactly = 0) { closeAppMock() }
+        verify(closeAppMock).function(closeAppMock::invoke).wasNotInvoked()
     }
 
     @Test
-    fun `require user re-auth after 5 min, when using biometric auth`() = testHarness(LoggedInRequiringUserAuth) {
+    fun `require user re-auth after 5 min when using biometric auth`() = testHarness(LoggedInRequiringUserAuth) {
         viewModel.viewState.test {
             testScope.advanceTimeBy(5.minutes.inWholeMilliseconds)
             testScope.runCurrent()
 
-            coVerify { biometricsMock.promptUserAuth() }
+            verify(biometricsMock).suspendFunction(biometricsMock::promptUserAuth).wasInvoked()
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `log out user after 5 min, when not using biometric auth`() = testHarness(LoggedIn) {
+    fun `log out user after 5 min when not using biometric auth`() = testHarness(LoggedIn) {
         viewModel.viewState.test {
             testScope.advanceTimeBy(5.minutes.inWholeMilliseconds)
             testScope.runCurrent()
@@ -124,11 +127,16 @@ class RootSpec {
     }
 
     private class TestHarness(initialState: InitialState, val testScope: TestScope) {
-        val biometricsMock = mockk<Biometrics> {
-            coEvery { promptUserAuth() } returns Biometrics.AuthResult.Success
-            coEvery { isSupported } returns true
+        @Mock
+        val biometricsMock = mock(classOf<Biometrics>()).apply {
+            given(this).suspendFunction(::promptUserAuth).whenInvoked().thenReturn(Biometrics.AuthResult.Success)
+            given(this).invocation { isSupported }.thenReturn(true)
         }
-        val closeAppMock = mockk<() -> Unit>(relaxed = true)
+
+        @Mock
+        val closeAppMock = mock(classOf<() -> Unit>()).apply {
+            given(this).function(this::invoke).whenInvoked().thenDoNothing()
+        }
 
         val loginPersistence = LoginPersistenceInMemory().apply {
             if (initialState == LoggedIn || initialState == LoggedInRequiringUserAuth) {
