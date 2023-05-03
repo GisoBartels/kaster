@@ -1,0 +1,80 @@
+plugins {
+    kotlin("multiplatform")
+    kotlin("plugin.serialization")
+    id("org.jetbrains.compose")
+    id("com.android.library")
+    id("com.google.devtools.ksp")
+    id("app.cash.paparazzi")
+}
+
+kotlin {
+    android {
+        compilations.all {
+            sourceSets.all {
+                // make KSP-generated sources visible to IDE
+                kotlin.srcDir("build/generated/ksp/$targetName/$name/kotlin")
+            }
+        }
+    }
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(projects.app.logic)
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material3)
+                api(compose.materialIconsExtended)
+                api(compose.preview)
+                implementation(libs.kotlinx.coroutines)
+                implementation(libs.kotlinx.collections.immutable)
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
+        named("androidMain") {
+            dependencies {
+                implementation(libs.showkase)
+            }
+        }
+        named("androidUnitTest") {
+            dependencies {
+                implementation(libs.junit4)
+                implementation(libs.testparameterinjector)
+                implementation(libs.showkase)
+            }
+        }
+    }
+}
+
+dependencies {
+    add("kspAndroid", libs.showkase.processor)
+    add("kspAndroidTest", libs.showkase.processor)
+}
+
+@Suppress("UnstableApiUsage")
+android {
+    namespace = "app.passwordkaster.common"
+    compileSdk = 33
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = 24
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+androidComponents {
+    val skipReleaseProp = providers.gradleProperty("skipRelease")
+    beforeVariants { variantBuilder ->
+        if (variantBuilder.buildType == "release" && skipReleaseProp.isPresent) {
+            variantBuilder.enable = false
+        }
+    }
+}

@@ -7,4 +7,4 @@ build/
 local.properties
 
 keystore.jks
-/UI/android/release/
+app/ui/android/release/

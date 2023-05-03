@@ -4,9 +4,10 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":core",
-    ":UI:android",
-    ":UI:desktop",
-    ":UI:common"
+    ":app:logic",
+    ":app:ui:android",
+    ":app:ui:desktop",
+    ":app:ui:common",
 )
 
 val runsOnCI = providers.environmentVariable("CI").isPresent
