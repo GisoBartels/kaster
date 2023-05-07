@@ -72,5 +72,4 @@ class LoginPersistenceAndroid(private val context: Context) : LoginPersistence {
         private const val KEY_USER_AUTH = "userAuth"
         private const val CRED_PREFS_FILENAME = "credentials"
     }
-
 }

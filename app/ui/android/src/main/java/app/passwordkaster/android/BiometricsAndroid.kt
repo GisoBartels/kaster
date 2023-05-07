@@ -23,7 +23,8 @@ class BiometricsAndroid(private val fragmentActivity: FragmentActivity) : Biomet
         .build()
 
     override suspend fun promptUserAuth(): Biometrics.AuthResult = suspendCancellableCoroutine { continuation ->
-        val biometricPrompt = BiometricPrompt(fragmentActivity,
+        val biometricPrompt = BiometricPrompt(
+            fragmentActivity,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     continuation.resume(Biometrics.AuthResult.Failed)
@@ -36,7 +37,8 @@ class BiometricsAndroid(private val fragmentActivity: FragmentActivity) : Biomet
                 override fun onAuthenticationFailed() {
                     continuation.resume(Biometrics.AuthResult.Failed)
                 }
-            })
+            }
+        )
 
         biometricPrompt.authenticate(promptInfo)
 
