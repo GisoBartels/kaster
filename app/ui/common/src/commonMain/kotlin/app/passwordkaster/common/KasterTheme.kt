@@ -19,7 +19,7 @@ fun KasterTheme(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-val kasterTopAppBarColors: TopAppBarColors
+internal val kasterTopAppBarColors: TopAppBarColors
     @Composable
     get() = TopAppBarDefaults.smallTopAppBarColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,

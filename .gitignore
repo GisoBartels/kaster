@@ -8,3 +8,10 @@ local.properties
 
 keystore.jks
 app/ui/android/release/
+
+app/ui/iosApp/Podfile.lock
+app/ui/iosApp/Pods/*
+app/ui/iosApp/iosApp.xcworkspace/*
+app/ui/iosApp/iosApp.xcodeproj/*
+!app/ui/iosApp/iosApp.xcodeproj/project.pbxproj
+app/ui/common/common.podspec

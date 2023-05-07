@@ -8,6 +8,6 @@ internal expect fun <T> DropDown(
     values: List<T>,
     selected: T,
     onSelected: (T) -> Unit,
-    valueLabel: (T) -> String = { it.toString() },
-    modifier: Modifier = Modifier
+    valueLabel: (T) -> String,
+    modifier: Modifier
 )

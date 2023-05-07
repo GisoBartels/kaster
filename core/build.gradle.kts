@@ -12,11 +12,17 @@ kotlin {
     jvm()
 
     iosArm64 {
-        binaries.framework { baseName = "core" }
+        binaries.framework {
+            baseName = "core"
+            isStatic = true
+        }
         libsodium("ios")
     }
     iosSimulatorArm64 {
-        binaries.framework { baseName = "core" }
+        binaries.framework {
+            baseName = "core"
+            isStatic = true
+        }
         libsodium("ios-simulators")
     }
 
@@ -38,12 +44,15 @@ kotlin {
 }
 
 fun KotlinNativeTarget.libsodium(libPath: String) {
+    val path = file("libs/$libPath/lib").absolutePath
     compilations.getByName("main") {
         val libsodium by cinterops.creating {
             includeDirs(file("libs/$libPath/include"))
         }
+        kotlinOptions.freeCompilerArgs = listOf(
+            "-include-binary", "$path/libsodium.a"
+        )
     }
-    val path = file("libs/$libPath/lib").absolutePath
     binaries.all {
         linkerOpts("-L$path", "-lsodium")
     }

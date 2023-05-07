@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("native.cocoapods")
     kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
@@ -21,6 +22,21 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+        version = "1.0.0"
+        summary = "Kaster Common"
+        homepage = "https://passwordkaster.app"
+        ios.deploymentTarget = "14.1"
+        podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "common"
+            isStatic = true
+        }
+        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
+    }
 
     sourceSets {
         commonMain {
@@ -30,23 +46,44 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material3)
                 api(compose.materialIconsExtended)
-                api(compose.preview)
                 implementation(libs.kotlinx.coroutines)
                 implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.serialization.json)
             }
         }
-        named("androidMain") {
+        val desktopMain by getting {
             dependencies {
-                implementation(libs.showkase)
+                implementation(compose.preview)
             }
         }
-        named("androidUnitTest") {
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.showkase)
+                implementation(compose.preview)
+            }
+        }
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit4)
                 implementation(libs.testparameterinjector)
                 implementation(libs.showkase)
             }
+        }
+        val iosMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                api(projects.core)
+                api(compose.runtime)
+            }
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosMain)
+        }
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
         }
     }
 }
@@ -56,7 +93,6 @@ dependencies {
     add("kspAndroidTest", libs.showkase.processor)
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.common"
     compileSdk = 33

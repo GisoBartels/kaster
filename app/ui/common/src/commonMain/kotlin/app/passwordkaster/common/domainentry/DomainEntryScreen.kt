@@ -115,6 +115,7 @@ private fun ScopeInput(value: Kaster.Scope, onValueChange: (Kaster.Scope) -> Uni
             values = Kaster.Scope.values().toList(),
             selected = value,
             onSelected = onValueChange,
+            valueLabel = { it.toString() },
             modifier = Modifier.testTag("scope")
         )
     }
@@ -143,6 +144,7 @@ private fun PasswordTypeInput(value: Kaster.PasswordType, onValueChange: (Kaster
             values = Kaster.PasswordType.values().toList(),
             selected = value,
             onSelected = onValueChange,
+            valueLabel = { it.toString() },
             modifier = Modifier.testTag("type")
         )
     }
