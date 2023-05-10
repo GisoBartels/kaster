@@ -70,7 +70,7 @@ dependencyResolutionManagement {
             library("mockative", "io.mockative","mockative").versionRef("mockative")
             library("mockative-processor", "io.mockative","mockative-processor").versionRef("mockative")
             library("turbine", "app.cash.turbine:turbine:0.12.3")
-            library("kotest-assertions", "io.kotest:kotest-assertions-core:5.6.1")
+            library("kotest-assertions", "io.kotest:kotest-assertions-core:5.6.2")
 
             // JVM
             library("password4j", "com.password4j:password4j:1.6.3")
