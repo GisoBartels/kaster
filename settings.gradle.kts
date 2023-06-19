@@ -69,7 +69,7 @@ dependencyResolutionManagement {
             version("mockative","1.4.1")
             library("mockative", "io.mockative","mockative").versionRef("mockative")
             library("mockative-processor", "io.mockative","mockative-processor").versionRef("mockative")
-            library("turbine", "app.cash.turbine:turbine:0.12.3")
+            library("turbine", "app.cash.turbine:turbine:0.13.0")
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.6.2")
 
             // JVM
