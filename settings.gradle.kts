@@ -56,7 +56,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("kotlinx-coroutines", "1.7.0")
+            version("kotlinx-coroutines", "1.7.1")
 
             // common
             library("kotlinx-coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("kotlinx-coroutines")
