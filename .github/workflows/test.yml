@@ -15,4 +15,5 @@ jobs:
       - name: Test notice
         run: |
           VERSION_NAME = $(git describe --match build --dirty)
+          echo $VERSION_NAME
           echo "::notice::Published $VERSION_NAME"
