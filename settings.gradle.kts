@@ -65,7 +65,7 @@ dependencyResolutionManagement {
 
             // common test
             library("kotlinx-coroutines-test", "org.jetbrains.kotlinx", "kotlinx-coroutines-test").versionRef("kotlinx-coroutines")
-            library("mockk", "io.mockk:mockk:1.13.2")
+            library("mockk", "io.mockk:mockk:1.13.5")
             version("mockative","1.4.1")
             library("mockative", "io.mockative","mockative").versionRef("mockative")
             library("mockative-processor", "io.mockative","mockative-processor").versionRef("mockative")
@@ -103,7 +103,7 @@ dependencyResolutionManagement {
             library("androidx-test-runner", "androidx.test:runner:1.5.2")
             library("androidx-test-rules", "androidx.test:rules:1.5.0")
             library("androidx-compose-ui-test-junit4", "androidx.compose.ui:ui-test-junit4:1.4.3")
-            library("mockk-android", "io.mockk:mockk-android:1.13.3")
+            library("mockk-android", "io.mockk:mockk-android:1.13.5")
         }
     }
 }
