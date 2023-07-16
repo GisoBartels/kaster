@@ -60,6 +60,13 @@ kotlin {
             dependencies {
                 implementation(libs.showkase)
                 implementation(compose.preview)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.security.crypto)
+                implementation(libs.androidx.datastore)
+                implementation(libs.androidx.biometric)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.accompanist.systemuicontroller)
             }
         }
         val androidUnitTest by getting {

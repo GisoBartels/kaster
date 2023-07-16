@@ -70,22 +70,12 @@ androidComponents {
 dependencies {
     implementation(project(":app:ui:common"))
 
-    implementation(libs.androidx.appcompat)
-
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.security.crypto)
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.biometric)
-    implementation(libs.kotlinx.serialization.json)
-
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
-
-    implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.kotlinx.collections.immutable)
 
