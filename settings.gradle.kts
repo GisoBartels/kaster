@@ -25,7 +25,7 @@ pluginManagement {
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
     plugins {
-        id("app.cash.paparazzi") version "1.3.0"
+        id("app.cash.paparazzi") version "1.3.1"
     }
 }
 
