@@ -22,25 +22,20 @@ import app.passwordkaster.common.domainentry.DomainEntryContent
 import app.passwordkaster.core.Kaster
 import app.passwordkaster.logic.domainentry.DomainEntry
 import app.passwordkaster.logic.domainentry.DomainEntryInput
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Counter
-import app.passwordkaster.logic.domainentry.DomainEntryInput.DecreaseCounter
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Delete
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Dismiss
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Domain
-import app.passwordkaster.logic.domainentry.DomainEntryInput.IncreaseCounter
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Save
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Scope
-import app.passwordkaster.logic.domainentry.DomainEntryInput.Type
+import app.passwordkaster.logic.domainentry.DomainEntryInput.*
 import app.passwordkaster.logic.domainentry.DomainEntryViewState
 import app.passwordkaster.logic.domainentry.DomainEntryViewState.GeneratedPassword
-import io.mockk.mockk
-import io.mockk.verify
+import dev.mokkery.MockMode.autoUnit
+import dev.mokkery.MockMode.autofill
+import dev.mokkery.mock
+import dev.mokkery.verify
+import dev.mokkery.verify.VerifyMode.Companion.not
 import org.junit.Rule
 import org.junit.Test
 
 class DomainEntryUiTest {
 
-    private val inputMock = mockk<(DomainEntryInput) -> Unit>(relaxed = true)
+    private val inputMock = mock<(DomainEntryInput) -> Unit>(autofill)
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -156,7 +151,7 @@ class DomainEntryUiTest {
         composeTestRule.onNodeWithTag("save").performClick()
 
         composeTestRule.onNodeWithTag("save").assertIsNotEnabled()
-        verify(exactly = 0) { inputMock(Save) }
+        verify(not) { inputMock(Save) }
     }
 
     @Test
@@ -179,7 +174,7 @@ class DomainEntryUiTest {
 
     @Test
     fun testCopyPasswordToClipboard() {
-        val clipboardMock = mockk<ClipboardManager>(relaxUnitFun = true)
+        val clipboardMock = mock<ClipboardManager>(autoUnit)
         val expectedPassword = "subba secret"
         composeTestRule.setContent {
             KasterTheme {

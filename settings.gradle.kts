@@ -73,7 +73,6 @@ dependencyResolutionManagement {
 
             // common test
             library("kotlinx-coroutines-test", "org.jetbrains.kotlinx", "kotlinx-coroutines-test").versionRef("kotlinx-coroutines")
-            library("mockk", "io.mockk:mockk:1.13.2")
 
             library("turbine", "app.cash.turbine:turbine:1.0.0")
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.6.2")
@@ -104,7 +103,6 @@ dependencyResolutionManagement {
             library("androidx-test-runner", "androidx.test:runner:1.5.2")
             library("androidx-test-rules", "androidx.test:rules:1.5.0")
             library("androidx-compose-ui-test-junit4", "androidx.compose.ui:ui-test-junit4:1.4.3")
-            library("mockk-android", "io.mockk:mockk-android:1.13.3")
         }
     }
 }

@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.github.triplet.play") version "3.8.4"
     id("com.google.android.gms.oss-licenses-plugin") version "0.10.6"
+    id("dev.mokkery")
 }
 
 @Suppress("UnstableApiUsage")
@@ -50,13 +51,6 @@ android {
         // make KSP-generated sources visible to IDE
         kotlin.srcDir("build/generated/ksp/$name/kotlin")
     }
-    testOptions {
-        packagingOptions {
-            // https://github.com/mockk/mockk/issues/297#issuecomment-901924678
-            jniLibs.useLegacyPackaging = true
-            resources.excludes += "META-INF/LICENSE*"
-        }
-    }
 }
 
 androidComponents {
@@ -82,6 +76,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.kotest.assertions)
 }

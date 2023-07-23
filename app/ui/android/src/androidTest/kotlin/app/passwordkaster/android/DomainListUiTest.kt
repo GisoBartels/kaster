@@ -11,15 +11,16 @@ import app.passwordkaster.common.domainlist.DomainListContent
 import app.passwordkaster.logic.domainlist.DomainListInput
 import app.passwordkaster.logic.domainlist.DomainListViewState
 import app.passwordkaster.logic.domainlist.DomainListViewState.SearchState.ShowSearch
-import io.mockk.mockk
-import io.mockk.verify
+import dev.mokkery.MockMode.autofill
+import dev.mokkery.mock
+import dev.mokkery.verify
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.Rule
 import org.junit.Test
 
 class DomainListUiTest {
 
-    private val inputMock = mockk<(DomainListInput) -> Unit>(relaxed = true)
+    private val inputMock = mock<(DomainListInput) -> Unit>(autofill)
 
     @get:Rule
     val composeTestRule = createComposeRule()

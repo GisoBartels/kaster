@@ -12,14 +12,16 @@ import app.passwordkaster.common.KasterTheme
 import app.passwordkaster.common.login.LoginContent
 import app.passwordkaster.logic.login.LoginInput
 import app.passwordkaster.logic.login.LoginViewState
-import io.mockk.mockk
-import io.mockk.verify
+import dev.mokkery.MockMode.autofill
+import dev.mokkery.mock
+import dev.mokkery.verify
+import dev.mokkery.verify.VerifyMode.Companion.not
 import org.junit.Rule
 import org.junit.Test
 
 class LoginUiTest {
 
-    private val inputMock = mockk<(LoginInput) -> Unit>(relaxed = true)
+    private val inputMock = mock<(LoginInput) -> Unit>(autofill)
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -47,7 +49,7 @@ class LoginUiTest {
 
         composeTestRule.onNodeWithTag("login").performClick()
 
-        verify(exactly = 0) { inputMock(LoginInput.Login) }
+        verify(not) { inputMock(LoginInput.Login) }
     }
 
     @Test
