@@ -26,6 +26,7 @@ pluginManagement {
     }
     plugins {
         id("app.cash.paparazzi") version "1.3.1"
+        id("dev.mokkery") version "1.8.20-1.1.0"
     }
     resolutionStrategy {
         eachPlugin {
@@ -37,7 +38,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise") version("3.14")
+    id("com.gradle.enterprise") version ("3.14")
 }
 
 gradleEnterprise {
@@ -73,9 +74,7 @@ dependencyResolutionManagement {
             // common test
             library("kotlinx-coroutines-test", "org.jetbrains.kotlinx", "kotlinx-coroutines-test").versionRef("kotlinx-coroutines")
             library("mockk", "io.mockk:mockk:1.13.2")
-            version("mockative","1.4.1")
-            library("mockative", "io.mockative","mockative").versionRef("mockative")
-            library("mockative-processor", "io.mockative","mockative-processor").versionRef("mockative")
+
             library("turbine", "app.cash.turbine:turbine:1.0.0")
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.6.2")
 

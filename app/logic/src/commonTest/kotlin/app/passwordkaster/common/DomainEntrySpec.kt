@@ -12,21 +12,18 @@ import app.passwordkaster.logic.login.Biometrics
 import app.passwordkaster.logic.login.LoginInteractor
 import app.passwordkaster.logic.login.LoginInteractorBiometrics
 import app.passwordkaster.logic.login.LoginPersistence
+import dev.mokkery.MockMode.autofill
+import dev.mokkery.answering.returns
+import dev.mokkery.every
+import dev.mokkery.mock
+import dev.mokkery.verify
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.given
-import io.mockative.mock
-import io.mockative.thenDoNothing
-import io.mockative.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class DomainEntrySpec {
 
     @Test
@@ -186,7 +183,7 @@ class DomainEntrySpec {
         viewModel.onInput(DomainEntryInput.Delete)
 
         domainEntryPersistence.entries.value.shouldBeEmpty()
-        verify(onCloseEntryMock).invocation { invoke() }.wasInvoked()
+        verify { onCloseEntryMock() }
     }
 
 
@@ -194,16 +191,12 @@ class DomainEntrySpec {
         val originalDomainEntry: DomainEntry? = null,
         testScope: TestScope
     ) {
-        @Mock
-        val onCloseEntryMock = mock(classOf<() -> Unit>()).apply {
-            given(this).function(this::invoke).whenInvoked().thenDoNothing()
-        }
+        val onCloseEntryMock = mock<() -> Unit>(autofill)
 
-        @Mock
-        val loginPersistenceMock = mock(classOf<LoginPersistence>()).apply {
-            given(this).invocation { loadCredentials() }.thenReturn(LoginInteractor.Credentials("Bender", "BiteMyShinyMetalAss!"))
-            given(this).invocation { userAuthenticationRequired }.thenReturn(false)
-            given(this).invocation { clear() }.thenDoNothing()
+        val loginPersistenceMock = mock<LoginPersistence>() {
+            every { loadCredentials() } returns LoginInteractor.Credentials("Bender", "BiteMyShinyMetalAss!")
+            every { userAuthenticationRequired } returns false
+            every { clear() } returns Unit
         }
         val domainEntryPersistence = DomainEntryPersistenceInMemory(setOfNotNull(originalDomainEntry))
         val viewModel = DomainEntryViewModel(

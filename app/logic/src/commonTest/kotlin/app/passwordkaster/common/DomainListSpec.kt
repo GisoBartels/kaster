@@ -11,17 +11,13 @@ import app.passwordkaster.logic.login.Biometrics
 import app.passwordkaster.logic.login.LoginInteractor.LoginState
 import app.passwordkaster.logic.login.LoginInteractorBiometrics
 import app.passwordkaster.logic.login.LoginPersistenceNop
+import dev.mokkery.MockMode.autofill
+import dev.mokkery.mock
+import dev.mokkery.verify
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import io.mockative.Mock
-import io.mockative.anything
-import io.mockative.classOf
-import io.mockative.given
-import io.mockative.mock
-import io.mockative.thenDoNothing
-import io.mockative.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -42,7 +38,7 @@ class DomainListSpec {
     fun `A logged in user can add new domain entries`() = testHarness {
         viewModel.onInput(AddDomain)
 
-        verify(onEditDomainEntryMock).invocation { invoke(null) }.wasInvoked()
+        verify { onEditDomainEntryMock(null) }
     }
 
     @Test
@@ -51,7 +47,7 @@ class DomainListSpec {
 
         viewModel.onInput(DomainListInput.EditDomain(domainFixture))
 
-        verify(onEditDomainEntryMock).invocation { invoke(domainFixture) }.wasInvoked()
+        verify { onEditDomainEntryMock(domainFixture) }
     }
 
     @Test
@@ -113,10 +109,7 @@ class DomainListSpec {
     }
 
     private class TestHarness(val domains: Set<String>, testScheduler: TestCoroutineScheduler) {
-        @Mock
-        val onEditDomainEntryMock = mock(classOf<(String?) -> Unit>()).apply {
-            given(this).function(this::invoke).whenInvokedWith(anything()).thenDoNothing()
-        }
+        val onEditDomainEntryMock = mock<(String?) -> Unit>(autofill)
         val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, Biometrics.Unsupported, CoroutineScope(testScheduler))
         val domainEntryPersistence = DomainEntryPersistenceInMemory(domains.map { DomainEntry(it) }.toSet())
         val viewModel = DomainListViewModel(

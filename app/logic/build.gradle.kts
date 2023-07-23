@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("com.android.library")
     id("com.google.devtools.ksp")
+    id("dev.mokkery")
 }
 
 kotlin {
@@ -37,18 +36,11 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
-                implementation(libs.mockative)
                 implementation(libs.turbine)
                 implementation(libs.kotest.assertions)
             }
         }
     }
-}
-
-dependencies {
-    configurations
-        .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
-        .forEach { add(it.name, libs.mockative.processor) }
 }
 
 android {
@@ -71,9 +63,4 @@ androidComponents {
             variantBuilder.enable = false
         }
     }
-}
-
-tasks.withType<KotlinCompile>().all {
-    // workaround for Mockative generating Lambda mocks in Kotlin package
-    kotlinOptions.freeCompilerArgs += "-Xallow-kotlin-package"
 }
