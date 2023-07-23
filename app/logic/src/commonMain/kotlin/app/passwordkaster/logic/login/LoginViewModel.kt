@@ -1,16 +1,14 @@
 package app.passwordkaster.logic.login
 
-import app.passwordkaster.logic.login.LoginInput.Login
-import app.passwordkaster.logic.login.LoginInput.LoginWithBiometrics
-import app.passwordkaster.logic.login.LoginInput.MaskPassword
-import app.passwordkaster.logic.login.LoginInput.MasterPassword
-import app.passwordkaster.logic.login.LoginInput.UnmaskPassword
-import app.passwordkaster.logic.login.LoginInput.Username
+import app.passwordkaster.logic.login.LoginInput.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
-class LoginViewModel(private val loginInteractor: LoginInteractor) {
+class LoginViewModel(
+    private val loginInteractor: LoginInteractor,
+    private val ossLicenses: OSSLicenses
+) {
     private val usernameState = MutableStateFlow("")
     private val masterPasswordState = MutableStateFlow("")
     private val maskPasswordState = MutableStateFlow(true)
@@ -37,6 +35,7 @@ class LoginViewModel(private val loginInteractor: LoginInteractor) {
             UnmaskPassword -> maskPasswordState.value = false
             Login -> login(usernameState.value, masterPasswordState.value, false)
             LoginWithBiometrics -> login(usernameState.value, masterPasswordState.value, true)
+            ShowOSSLicenses -> ossLicenses.show()
         }
     }
 

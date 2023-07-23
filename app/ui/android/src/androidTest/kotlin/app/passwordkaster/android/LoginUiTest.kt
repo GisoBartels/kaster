@@ -134,6 +134,15 @@ class LoginUiTest {
         composeTestRule.onNodeWithTag("loginWithBiometrics").assertDoesNotExist()
     }
 
+    @Test
+    fun showOssLicensesInputReceived() {
+        givenLoginUiWithState(LoginViewState())
+
+        composeTestRule.onNodeWithTag("OpenSourceLicenses").performClick()
+
+        verify { inputMock(LoginInput.ShowOSSLicenses) }
+    }
+
     private fun givenLoginUiWithState(viewState: LoginViewState) {
         composeTestRule.setContent {
             KasterTheme {

@@ -2,6 +2,7 @@ package app.passwordkaster.common.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -36,10 +37,11 @@ import app.passwordkaster.logic.login.LoginInput.UnmaskPassword
 import app.passwordkaster.logic.login.LoginInteractor
 import app.passwordkaster.logic.login.LoginViewModel
 import app.passwordkaster.logic.login.LoginViewState
+import app.passwordkaster.logic.login.OSSLicenses
 
 @Composable
-fun LoginScreen(loginInteractor: LoginInteractor) {
-    val viewModel = remember { LoginViewModel(loginInteractor) }
+fun LoginScreen(loginInteractor: LoginInteractor, ossLicenses: OSSLicenses) {
+    val viewModel = remember { LoginViewModel(loginInteractor, ossLicenses) }
     val viewState by viewModel.viewState.collectAsState(LoginViewState())
     LoginContent(viewState, viewModel::onInput)
 }
@@ -79,6 +81,15 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
                     enabled = viewState.loginEnabled,
                     onClick = { input(LoginInput.LoginWithBiometrics) }
                 )
+            }
+
+            Spacer(Modifier.fillMaxWidth().weight(1f))
+
+            Button(
+                onClick = { input(LoginInput.ShowOSSLicenses) },
+                modifier = Modifier.align(Alignment.CenterHorizontally).testTag("OpenSourceLicenses"),
+            ) {
+                Text("Open Source Licenses")
             }
         }
     }
