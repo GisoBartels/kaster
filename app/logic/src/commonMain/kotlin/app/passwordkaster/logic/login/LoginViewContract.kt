@@ -16,4 +16,5 @@ sealed interface LoginInput {
     object UnmaskPassword : LoginInput
     object Login : LoginInput
     object LoginWithBiometrics : LoginInput
+    object ShowOSSLicenses : LoginInput
 }

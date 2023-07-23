@@ -27,6 +27,13 @@ pluginManagement {
     plugins {
         id("app.cash.paparazzi") version "1.3.1"
     }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.google.android.gms.oss-licenses-plugin") {
+                useModule("com.google.android.gms:oss-licenses-plugin:${requested.version}")
+            }
+        }
+    }
 }
 
 plugins {
@@ -86,6 +93,7 @@ dependencyResolutionManagement {
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
             library("androidx-datastore", "androidx.datastore:datastore:1.1.0-alpha04")
             library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+            library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.0.1")
 
             version("showkase", "1.0.0-beta18")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")

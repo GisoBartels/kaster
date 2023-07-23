@@ -11,6 +11,7 @@ import app.passwordkaster.logic.domainentry.DomainEntryPersistenceInMemory
 import app.passwordkaster.logic.login.Biometrics
 import app.passwordkaster.logic.login.LoginInteractorBiometrics
 import app.passwordkaster.logic.login.LoginPersistenceNop
+import app.passwordkaster.logic.login.OSSLicenses
 
 fun MainViewController() = ComposeUIViewController {
 
@@ -18,10 +19,13 @@ fun MainViewController() = ComposeUIViewController {
     val loginInteractor = remember { LoginInteractorBiometrics(LoginPersistenceNop, Biometrics.Unsupported, coroutineScope) }
     val domainListPersistence = remember { DomainEntryPersistenceInMemory() } // TODO real persistence
     val viewModel = remember { RootViewModel({ TODO() }, loginInteractor) }
+    val ossLicenses = object : OSSLicenses {
+        override fun show() = TODO("Not yet implemented")
+    }
 
     KasterTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            KasterRoot(viewModel, loginInteractor, domainListPersistence)
+            KasterRoot(viewModel, loginInteractor, domainListPersistence, ossLicenses)
         }
     }
 }

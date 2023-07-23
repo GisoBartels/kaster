@@ -8,7 +8,14 @@ import app.passwordkaster.logic.login.LoginInteractor.LoginState
 import app.passwordkaster.logic.login.LoginInteractorBiometrics
 import app.passwordkaster.logic.login.LoginPersistenceNop
 import app.passwordkaster.logic.login.LoginViewModel
+import app.passwordkaster.logic.login.OSSLicenses
 import io.kotest.matchers.shouldBe
+import io.mockative.Mock
+import io.mockative.classOf
+import io.mockative.given
+import io.mockative.mock
+import io.mockative.thenDoNothing
+import io.mockative.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
@@ -82,12 +89,25 @@ class LoginSpec {
         }
     }
 
+    @Test
+    fun `Show OSS licenses`() = testHarness {
+        viewModel.onInput(ShowOSSLicenses)
+
+        verify(ossLicenses).function(ossLicenses::show).wasInvoked()
+    }
+
     private class TestHarness(
         biometricsSupported: Boolean,
         val testScope: TestScope
     ) {
         val loginPersistence = LoginInteractorBiometrics(LoginPersistenceNop, BiometricsFake(biometricsSupported), testScope)
-        val viewModel = LoginViewModel(loginPersistence)
+
+        @Mock
+        val ossLicenses = mock(classOf<OSSLicenses>()).apply {
+            given(this).function(this::show).whenInvoked().thenDoNothing()
+        }
+
+        val viewModel = LoginViewModel(loginPersistence, ossLicenses)
 
         fun inputCredentials() {
             viewModel.onInput(Username("Bender"))

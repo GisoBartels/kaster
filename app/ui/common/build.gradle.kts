@@ -67,6 +67,7 @@ kotlin {
                 implementation(libs.androidx.biometric)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.accompanist.systemuicontroller)
+                implementation(libs.ossLicenses)
             }
         }
         val androidUnitTest by getting {
