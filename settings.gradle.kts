@@ -6,7 +6,6 @@ include(
     ":core",
     ":app:logic",
     ":app:ui:android",
-    ":app:ui:desktop",
     ":app:ui:common",
 )
 
