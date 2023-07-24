@@ -64,7 +64,7 @@ fun DomainListContent(viewState: DomainListViewState, input: (DomainListInput) -
             LazyColumn {
                 items(viewState.domainList) { domain ->
                     ListItem(
-                        headlineText = { Text(domain) },
+                        headlineContent = { Text(domain) },
                         modifier = Modifier.clickable { input(DomainListInput.EditDomain(domain)) }
                     )
                 }

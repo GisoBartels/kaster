@@ -1,7 +1,7 @@
 plugins {
-    val kotlin = "1.8.20"
+    val kotlin = "1.9.0"
     val agp = "7.4.2"
-    val compose = "1.4.1"
+    val compose = "1.5.0-dev1114"
 
     kotlin("multiplatform") version kotlin apply false
     kotlin("plugin.serialization") version kotlin apply false
@@ -9,7 +9,7 @@ plugins {
     id("com.android.application") version agp apply false
     id("com.android.library") version agp apply false
     id("org.jetbrains.compose") version compose apply false
-    id("com.google.devtools.ksp") version "1.8.20-1.0.11" apply false
+    id("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
 
     id("io.gitlab.arturbosch.detekt") version "1.23.0"
 }
