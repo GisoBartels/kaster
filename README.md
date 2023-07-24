@@ -6,8 +6,8 @@ to create an opinionated approach how modern UI development could look like.
 
 ### Featured techniques and technologies
 * [TDD / BDD](https://dannorth.net/introducing-bdd/) on mobile & multiplatform with super fast [subcutaneous tests](https://www.ministryoftesting.com/articles/8745e4ec) ([Example](app/logic/src/commonTest/kotlin/app/passwordkaster/common))
-* Non-flaky, isolated and fast UI integration tests to complement the subcutaneous tests ([Example](app/ui/android/src/androidTest/kotlin/app/passwordkaster/android))
-* Kotlin Multiplatform with [Compose Multiplatform](https://github.com/JetBrains/compose-jb) ([Example](app/ui/common/src/commonMain/kotlin/app/passwordkaster/common/domainlist/DomainListScreen.kt))
+* Non-flaky, isolated and fast UI integration tests to complement the subcutaneous tests ([Example](app/android/src/androidTest/kotlin/app/passwordkaster/android))
+* Kotlin Multiplatform with [Compose Multiplatform](https://github.com/JetBrains/compose-jb) ([Example](app/ui/src/commonMain/kotlin/app/passwordkaster/common/domainlist/DomainListScreen.kt))
   * Android
   * Desktop
   * iOS
@@ -16,6 +16,6 @@ to create an opinionated approach how modern UI development could look like.
   * View model output is pure state, no one-shot events
   * Single input for all view events
 * [Showcasing](https://github.com/airbnb/Showkase) UI elements with different device configurations
-* [Snapshot testing](https://github.com/cashapp/paparazzi) without Android emulator ([Example](app/ui/common/src/androidUnitTest/kotlin/app/passwordkaster/android/screenshottests/PreviewScreenshotTests.kt))
+* [Snapshot testing](https://github.com/cashapp/paparazzi) without Android emulator ([Example](app/ui/src/androidUnitTest/kotlin/app/passwordkaster/android/screenshottests/PreviewScreenshotTests.kt))
 * Continuous Deployment pipeline into Play Store (internal track) ([Example](.github/workflows/main.yml))
 * Automatic dependency updates with [Renovate](https://github.com/renovatebot/renovate)
