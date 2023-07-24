@@ -30,7 +30,7 @@ kotlin {
         summary = "Kaster Common"
         homepage = "https://passwordkaster.app"
         ios.deploymentTarget = "14.1"
-        podfile = project.file("../iosApp/Podfile")
+        podfile = project.file("../../ios/Podfile")
         framework {
             baseName = "common"
             isStatic = true

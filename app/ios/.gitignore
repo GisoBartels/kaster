@@ -1,0 +1,5 @@
+Podfile.lock
+Pods/*
+iosApp.xcworkspace/*
+iosApp.xcodeproj/*
+!iosApp.xcodeproj/project.pbxproj
