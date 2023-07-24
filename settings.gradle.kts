@@ -5,7 +5,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(
     ":core",
     ":app:logic",
-    ":app:ui:android",
+    ":app:android",
     ":app:ui:common",
 )
 

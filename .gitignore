@@ -7,7 +7,6 @@ build/
 local.properties
 
 keystore.jks
-app/ui/android/release/
 
 app/ui/iosApp/Podfile.lock
 app/ui/iosApp/Pods/*
