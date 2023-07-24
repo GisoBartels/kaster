@@ -63,7 +63,7 @@ androidComponents {
 }
 
 dependencies {
-    implementation(project(":app:ui:common"))
+    implementation(project(":app:ui"))
 
     implementation(libs.kotlinx.collections.immutable)
 
