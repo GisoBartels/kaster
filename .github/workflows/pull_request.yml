@@ -32,3 +32,11 @@ jobs:
       if: always()
       with:
         files: '**/build/test-results/**/*.xml'
+
+    - name: Upload screenshot deltas
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: screenshot-deltas
+        path: './**/build/paparazzi/failures/delta-*.png'
+        if-no-files-found: ignore
