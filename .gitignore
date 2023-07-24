@@ -7,5 +7,3 @@ build/
 local.properties
 
 keystore.jks
-
-app/ui/common/common.podspec
