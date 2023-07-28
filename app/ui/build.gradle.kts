@@ -134,3 +134,10 @@ compose.desktop {
         }
     }
 }
+
+// Workaround for bug in KSP: https://github.com/google/ksp/issues/1445
+tasks.whenTaskAdded {
+    if (name == "lintAnalyzeDebug") {
+        dependsOn("kspDebugUnitTestKotlinAndroid")
+    }
+}
