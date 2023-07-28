@@ -1,0 +1,2 @@
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn org.slf4j.impl.StaticLoggerBinder
