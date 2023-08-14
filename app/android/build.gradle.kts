@@ -11,11 +11,11 @@ plugins {
 @Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.android"
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         applicationId = "app.passwordkaster.android"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = buildNumber
         versionName = gitDescribeBuild
 
