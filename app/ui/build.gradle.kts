@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
@@ -9,6 +11,9 @@ plugins {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    targetHierarchy.default()
+
     android {
         compilations.all {
             sourceSets.all {
@@ -78,21 +83,11 @@ kotlin {
                 implementation(libs.showkase)
             }
         }
-        val iosMain by creating {
-            dependsOn(commonMain.get())
+        val iosMain by getting {
             dependencies {
                 api(projects.core)
                 api(compose.runtime)
             }
-        }
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosMain)
-        }
-        val iosArm64Main by getting {
-            dependsOn(iosMain)
         }
     }
 }
