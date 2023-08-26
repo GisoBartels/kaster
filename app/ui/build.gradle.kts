@@ -14,14 +14,7 @@ kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     targetHierarchy.default()
 
-    android {
-        compilations.all {
-            sourceSets.all {
-                // make KSP-generated sources visible to IDE
-                kotlin.srcDir("build/generated/ksp/$targetName/$name/kotlin")
-            }
-        }
-    }
+    android()
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = "17"
@@ -126,12 +119,5 @@ compose.desktop {
             packageName = "Kaster Desktop"
             packageVersion = "1.0.0"
         }
-    }
-}
-
-// Workaround for bug in KSP: https://github.com/google/ksp/issues/1445
-tasks.whenTaskAdded {
-    if (name == "lintAnalyzeDebug") {
-        dependsOn("kspDebugUnitTestKotlinAndroid")
     }
 }
