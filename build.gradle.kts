@@ -1,5 +1,5 @@
 plugins {
-    val kotlin = "1.9.0"
+    val kotlin = "1.9.10"
     val agp = "8.1.1"
     val compose = "1.5.0-beta02"
 
