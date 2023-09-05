@@ -5,12 +5,34 @@
   ],
   "packageRules": [
     {
-      "matchPackagePrefixes": ["io.mockk:"],
-      "groupName": "mockk"
+      "matchPackagePrefixes": [
+        "com.airbnb.android:showkase"
+      ],
+      "allowedVersions": "!/1\\.0\\.0\\-kotlin1\\.5\\.30\\-1/"
     },
     {
-      "matchPackagePrefixes": ["com.airbnb.android:showkase"],
-      "allowedVersions": "!/1\\.0\\.0\\-kotlin1\\.5\\.30\\-1/"
+      "matchPackagePatterns": [
+        "androidx.compose.compiler:compiler"
+      ],
+      "groupName": "kotlin"
+    },
+    {
+      "matchPackagePatterns": [
+        "org.jetbrains.kotlin.*"
+      ],
+      "groupName": "kotlin"
+    },
+    {
+      "matchPackagePatterns": [
+        "com.google.devtools.ksp"
+      ],
+      "groupName": "kotlin"
+    },
+    {
+      "matchPackagePatterns": [
+        "dev.mokkery"
+      ],
+      "groupName": "kotlin"
     }
   ]
 }
