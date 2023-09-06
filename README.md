@@ -1,5 +1,6 @@
 Password Kaster is a stateless password manager based on the concept of [Spectre App](https://spectre.app).
 
+[Download on Play Store](https://play.google.com/store/apps/details?id=app.passwordkaster.android)
 
 This project serves as practical real-world example to try out the latest technologies and development techniques and
 to create an opinionated approach how modern UI development could look like.
