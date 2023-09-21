@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -67,7 +69,7 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
                 onInput = input
             )
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(Modifier.height(2.dp))
 
             LoginButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally).testTag("login"),
@@ -82,6 +84,14 @@ fun LoginContent(viewState: LoginViewState, input: (LoginInput) -> Unit) {
                     onClick = { input(LoginInput.LoginWithBiometrics) }
                 )
             }
+
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+            Text(
+                text = "Username and master password are used to generate site passwords. Use a strong master password and keep it at a " +
+                        "safe place or use biometric login (if available) to store it encrypted on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
 
             Spacer(Modifier.fillMaxWidth().weight(1f))
 
@@ -117,7 +127,7 @@ fun PasswordField(
     OutlinedTextField(
         value = password,
         onValueChange = { onInput(MasterPassword(it)) },
-        label = { Text("Password") },
+        label = { Text("Master Password") },
         modifier = modifier,
         visualTransformation = if (maskPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
