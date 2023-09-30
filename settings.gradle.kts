@@ -1,4 +1,4 @@
-rootProject.name = "Kaster"
+rootProject.name = "kaster"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
