@@ -11,7 +11,7 @@ plugins {
     id("org.jetbrains.compose") version compose apply false
     id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
 
-    id("io.gitlab.arturbosch.detekt") version "1.23.1"
+    id("io.gitlab.arturbosch.detekt") version "1.23.3"
 }
 
 subprojects {
