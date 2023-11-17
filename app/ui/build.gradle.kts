@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
@@ -11,9 +9,6 @@ plugins {
 }
 
 kotlin {
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    targetHierarchy.default()
-
     android()
     jvm("desktop") {
         compilations.all {
@@ -73,12 +68,6 @@ kotlin {
                 implementation(libs.junit4)
                 implementation(libs.testparameterinjector)
                 implementation(libs.showkase)
-            }
-        }
-        val iosMain by getting {
-            dependencies {
-                api(projects.core)
-                api(compose.runtime)
             }
         }
     }
