@@ -3,7 +3,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("com.google.devtools.ksp")
-    id("com.github.triplet.play") version "3.8.5"
+    id("com.github.triplet.play") version "3.8.6"
     id("com.google.android.gms.oss-licenses-plugin") version "0.10.6"
     id("dev.mokkery")
 }
