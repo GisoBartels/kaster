@@ -2,12 +2,12 @@ rootProject.name = "kaster"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(
-    ":core",
-    ":app:logic",
-    ":app:ui",
-    ":app:android",
-)
+settingsDir.walk()
+    .onEnter { it.name != "buildSrc" && it.name != "build" }
+    .filter { it.name == "build.gradle.kts" }
+    .map { it.parentFile.relativeTo(settingsDir).path }
+    .map { it.replace(File.separatorChar, ':') }
+    .forEach { include(it) }
 
 val runsOnCI = providers.environmentVariable("CI").isPresent
 
