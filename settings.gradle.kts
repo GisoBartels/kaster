@@ -66,12 +66,20 @@ dependencyResolutionManagement {
             version("kotlinx-coroutines", "1.7.3")
 
             // common
-            library("kotlinx-coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("kotlinx-coroutines")
+            library(
+                "kotlinx-coroutines",
+                "org.jetbrains.kotlinx",
+                "kotlinx-coroutines-core"
+            ).versionRef("kotlinx-coroutines")
             library("kotlinx-collections-immutable", "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6")
             library("kotlinx-serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
 
             // common test
-            library("kotlinx-coroutines-test", "org.jetbrains.kotlinx", "kotlinx-coroutines-test").versionRef("kotlinx-coroutines")
+            library(
+                "kotlinx-coroutines-test",
+                "org.jetbrains.kotlinx",
+                "kotlinx-coroutines-test"
+            ).versionRef("kotlinx-coroutines")
 
             library("turbine", "app.cash.turbine:turbine:1.0.0")
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.8.0")
@@ -102,6 +110,7 @@ dependencyResolutionManagement {
             library("androidx-test-runner", "androidx.test:runner:1.5.2")
             library("androidx-test-rules", "androidx.test:rules:1.5.0")
             library("androidx-compose-ui-test-junit4", "androidx.compose.ui:ui-test-junit4:1.5.4")
+            library("robolectric", "org.robolectric:robolectric:4.11.1")
         }
     }
 }

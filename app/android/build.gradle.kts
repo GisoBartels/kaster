@@ -1,14 +1,10 @@
 plugins {
-    id("org.jetbrains.compose")
     id("com.android.application")
     kotlin("android")
-    id("com.google.devtools.ksp")
     id("com.github.triplet.play") version "3.8.6"
     id("com.google.android.gms.oss-licenses-plugin") version "0.10.6"
-    id("dev.mokkery")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.android"
     compileSdk = 34
@@ -46,11 +42,6 @@ android {
             signingConfig = signingConfigs.findByName("release")
         }
     }
-
-    sourceSets.all {
-        // make KSP-generated sources visible to IDE
-        kotlin.srcDir("build/generated/ksp/$name/kotlin")
-    }
 }
 
 androidComponents {
@@ -64,17 +55,4 @@ androidComponents {
 
 dependencies {
     implementation(project(":app:ui"))
-
-    implementation(libs.kotlinx.collections.immutable)
-
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    debugImplementation(libs.showkase)
-    kspDebug(libs.showkase.processor)
-
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.rules)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.kotest.assertions)
 }

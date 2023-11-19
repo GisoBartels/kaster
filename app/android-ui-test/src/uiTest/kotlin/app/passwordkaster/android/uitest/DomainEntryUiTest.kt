@@ -1,4 +1,4 @@
-package app.passwordkaster.android
+package app.passwordkaster.android.uitest
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ClipboardManager
@@ -17,6 +17,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.text.AnnotatedString
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.passwordkaster.common.KasterTheme
 import app.passwordkaster.common.domainentry.DomainEntryContent
 import app.passwordkaster.core.Kaster
@@ -32,7 +33,9 @@ import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode.Companion.not
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class DomainEntryUiTest {
 
     private val inputMock = mock<(DomainEntryInput) -> Unit>(autofill)

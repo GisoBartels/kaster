@@ -1,4 +1,4 @@
-package app.passwordkaster.android.showkase
+package app.passwordkaster.android.uitest
 
 import com.airbnb.android.showkase.annotation.ShowkaseRoot
 import com.airbnb.android.showkase.annotation.ShowkaseRootModule
