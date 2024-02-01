@@ -78,10 +78,6 @@ dependencies {
     add("kspAndroidTest", libs.showkase.processor)
 }
 
-compose {
-    kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.5.8")
-}
-
 android {
     namespace = "app.passwordkaster.common"
     compileSdk = 33

@@ -6,10 +6,6 @@ plugins {
     id("dev.mokkery")
 }
 
-compose {
-    kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.5.8")
-}
-
 @Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.android.uitest"
