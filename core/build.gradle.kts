@@ -34,7 +34,7 @@ kotlin {
         }
         named("jvmMain") {
             dependencies {
-                implementation("com.password4j:password4j:1.7.3")
+                implementation("com.password4j:password4j:1.8.0")
             }
         }
     }
