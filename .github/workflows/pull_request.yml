@@ -33,10 +33,19 @@ jobs:
       with:
         files: '**/build/test-results/**/*.xml'
 
-    - name: Upload screenshot deltas
+    - name: Upload screenshot delta artifacts
       uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: screenshot-deltas
         path: './**/build/paparazzi/failures/delta-*.png'
         if-no-files-found: ignore
+
+    - name: Annotate workflow run with screenshot deltas
+      if: failure()
+      uses: edunad/actions-image@v2.0.3
+      with:
+        path: './**/build/paparazzi/failures/delta-*.png'
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        title: 'Failed screenshot tests 🙀'
+        annotationLevel: 'failure'
