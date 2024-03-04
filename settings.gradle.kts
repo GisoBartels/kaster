@@ -97,7 +97,7 @@ dependencyResolutionManagement {
             library("androidx-security-crypto", "androidx.security:security-crypto-ktx:1.1.0-alpha06")
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
             library("androidx-datastore", "androidx.datastore:datastore:1.1.0-beta01")
-            library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.32.0")
+            library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.34.0")
             library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.0.1")
 
             version("showkase", "1.0.2")
