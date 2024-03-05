@@ -1,3 +1,5 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat.*
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
@@ -104,7 +106,7 @@ compose.desktop {
     application {
         mainClass = "app.passwordkaster.desktop.MainKt"
         nativeDistributions {
-            targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb)
+            targetFormats(Dmg, Msi, Deb)
             packageName = "Kaster Desktop"
             packageVersion = "1.0.0"
         }
