@@ -27,7 +27,3 @@ subprojects {
         detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
     }
 }
-
-tasks.wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-}
