@@ -1,6 +1,6 @@
 plugins {
     val kotlin = "1.9.23"
-    val agp = "8.3.1"
+    val agp = "8.3.2"
     val compose = "1.6.1"
 
     kotlin("multiplatform") version kotlin apply false
