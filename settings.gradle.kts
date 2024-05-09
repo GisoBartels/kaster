@@ -82,7 +82,7 @@ dependencyResolutionManagement {
             ).versionRef("kotlinx-coroutines")
 
             library("turbine", "app.cash.turbine:turbine:1.1.0")
-            library("kotest-assertions", "io.kotest:kotest-assertions-core:5.8.1")
+            library("kotest-assertions", "io.kotest:kotest-assertions-core:5.9.0")
 
             // JVM
             library("password4j", "com.password4j:password4j:1.8.2")
