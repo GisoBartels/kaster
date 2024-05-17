@@ -1,7 +1,7 @@
 plugins {
     val kotlin = "1.9.23"
     val agp = "8.4.0"
-    val compose = "1.6.2"
+    val compose = "1.6.10"
 
     kotlin("multiplatform") version kotlin apply false
     kotlin("plugin.serialization") version kotlin apply false
