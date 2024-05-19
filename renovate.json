@@ -18,6 +18,12 @@
     },
     {
       "matchPackagePatterns": [
+        "org.jetbrains.compose"
+      ],
+      "groupName": "kotlin"
+    },
+    {
+      "matchPackagePatterns": [
         "org.jetbrains.kotlin.*"
       ],
       "groupName": "kotlin"
