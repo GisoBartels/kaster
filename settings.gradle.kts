@@ -25,7 +25,7 @@ pluginManagement {
     }
     plugins {
         id("app.cash.paparazzi") version "1.3.1"
-        id("dev.mokkery") version "1.9.23-1.6.1"
+        id("dev.mokkery") version "1.9.24-1.7.0"
     }
     resolutionStrategy {
         eachPlugin {
@@ -63,7 +63,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("kotlinx-coroutines", "1.8.0")
+            version("kotlinx-coroutines", "1.8.1")
 
             // common
             library(
