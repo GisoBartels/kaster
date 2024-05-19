@@ -24,6 +24,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    buildFeatures.compose = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+
     sourceSets.getByName("test") {
         kotlin.srcDir("src/uiTest/kotlin")
     }
