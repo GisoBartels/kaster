@@ -92,7 +92,7 @@ dependencyResolutionManagement {
             library("testparameterinjector", "com.google.testparameterinjector:test-parameter-injector:1.16")
 
             // Android
-            library("androidx-appcompat", "androidx.appcompat:appcompat:1.6.1")
+            library("androidx-appcompat", "androidx.appcompat:appcompat:1.7.0")
             library("androidx-activity-compose", "androidx.activity:activity-compose:1.9.0")
             library("androidx-security-crypto", "androidx.security:security-crypto-ktx:1.1.0-alpha06")
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
