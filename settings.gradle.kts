@@ -100,7 +100,7 @@ dependencyResolutionManagement {
             library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.34.0")
             library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.0.1")
 
-            version("showkase", "1.0.2")
+            version("showkase", "1.0.3")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")
             library("showkase-processor", "com.airbnb.android", "showkase-processor").versionRef("showkase")
 
