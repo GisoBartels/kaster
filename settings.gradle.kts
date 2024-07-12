@@ -108,7 +108,7 @@ dependencyResolutionManagement {
             library("androidx-compose-ui-test-manifest", "androidx.compose.ui", "ui-test-manifest").withoutVersion()
             library("androidx-test-core", "androidx.test:core:1.5.0")
             library("androidx-test-runner", "androidx.test:runner:1.5.2")
-            library("androidx-test-rules", "androidx.test:rules:1.5.0")
+            library("androidx-test-rules", "androidx.test:rules:1.6.1")
             library("androidx-compose-ui-test-junit4", "androidx.compose.ui:ui-test-junit4:1.6.8")
             library("robolectric", "org.robolectric:robolectric:4.12.2")
         }
