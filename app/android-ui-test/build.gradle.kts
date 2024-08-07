@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.compose")
     id("com.google.devtools.ksp")
     id("dev.mokkery")
 }
@@ -22,11 +23,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
 
     sourceSets.getByName("test") {
