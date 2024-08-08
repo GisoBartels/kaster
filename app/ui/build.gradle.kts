@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
@@ -14,10 +15,12 @@ plugins {
 }
 
 kotlin {
-    android()
+    androidTarget()
     jvm("desktop") {
         compilations.all {
-            kotlinOptions.jvmTarget = "17"
+            compilerOptions.configure {
+                jvmTarget.set(JvmTarget.JVM_17)
+            }
         }
     }
     iosArm64()
