@@ -37,18 +37,16 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise") version ("3.17.6")
+    id("com.gradle.develocity") version "3.17.6"
 }
 
-gradleEnterprise {
-    if (runsOnCI) {
-        buildScan {
-            termsOfServiceUrl = "https://gradle.com/terms-of-service"
-            termsOfServiceAgree = "yes"
-            publishAlways()
-            tag("CI")
-            isUploadInBackground = false
-        }
+develocity {
+    buildScan {
+        termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
+        termsOfUseAgree = "yes"
+        tag("CI")
+        publishing.onlyIf { runsOnCI }
+        uploadInBackground = !runsOnCI
     }
 }
 
@@ -71,8 +69,14 @@ dependencyResolutionManagement {
                 "org.jetbrains.kotlinx",
                 "kotlinx-coroutines-core"
             ).versionRef("kotlinx-coroutines")
-            library("kotlinx-collections-immutable", "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
-            library("kotlinx-serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+            library(
+                "kotlinx-collections-immutable",
+                "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
+            )
+            library(
+                "kotlinx-serialization-json",
+                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1"
+            )
 
             // common test
             library(
@@ -89,23 +93,40 @@ dependencyResolutionManagement {
 
             // JVM test
             library("junit4", "junit:junit:4.13.2")
-            library("testparameterinjector", "com.google.testparameterinjector:test-parameter-injector:1.16")
+            library(
+                "testparameterinjector",
+                "com.google.testparameterinjector:test-parameter-injector:1.16"
+            )
 
             // Android
             library("androidx-appcompat", "androidx.appcompat:appcompat:1.7.0")
             library("androidx-activity-compose", "androidx.activity:activity-compose:1.9.1")
-            library("androidx-security-crypto", "androidx.security:security-crypto-ktx:1.1.0-alpha06")
+            library(
+                "androidx-security-crypto",
+                "androidx.security:security-crypto-ktx:1.1.0-alpha06"
+            )
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
             library("androidx-datastore", "androidx.datastore:datastore:1.1.1")
-            library("accompanist-systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+            library(
+                "accompanist-systemuicontroller",
+                "com.google.accompanist:accompanist-systemuicontroller:0.34.0"
+            )
             library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.1.0")
 
             version("showkase", "1.0.3")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")
-            library("showkase-processor", "com.airbnb.android", "showkase-processor").versionRef("showkase")
+            library(
+                "showkase-processor",
+                "com.airbnb.android",
+                "showkase-processor"
+            ).versionRef("showkase")
 
             // Android test
-            library("androidx-compose-ui-test-manifest", "androidx.compose.ui", "ui-test-manifest").withoutVersion()
+            library(
+                "androidx-compose-ui-test-manifest",
+                "androidx.compose.ui",
+                "ui-test-manifest"
+            ).withoutVersion()
             library("androidx-test-core", "androidx.test:core:1.6.1")
             library("androidx-test-runner", "androidx.test:runner:1.6.1")
             library("androidx-test-rules", "androidx.test:rules:1.6.1")
