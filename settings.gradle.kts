@@ -109,7 +109,7 @@ dependencyResolutionManagement {
             library("androidx-datastore", "androidx.datastore:datastore:1.1.1")
             library(
                 "accompanist-systemuicontroller",
-                "com.google.accompanist:accompanist-systemuicontroller:0.34.0"
+                "com.google.accompanist:accompanist-systemuicontroller:0.36.0"
             )
             library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.1.0")
 
