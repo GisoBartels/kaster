@@ -25,7 +25,7 @@ pluginManagement {
     }
     plugins {
         id("app.cash.paparazzi") version "1.3.4"
-        id("dev.mokkery") version "2.2.0"
+        id("dev.mokkery") version "2.3.0"
     }
     resolutionStrategy {
         eachPlugin {
@@ -61,7 +61,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("kotlinx-coroutines", "1.8.1")
+            version("kotlinx-coroutines", "1.9.0")
 
             // common
             library(
@@ -71,11 +71,11 @@ dependencyResolutionManagement {
             ).versionRef("kotlinx-coroutines")
             library(
                 "kotlinx-collections-immutable",
-                "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
+                "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
             )
             library(
                 "kotlinx-serialization-json",
-                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1"
+                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
             )
 
             // common test
