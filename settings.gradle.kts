@@ -95,7 +95,7 @@ dependencyResolutionManagement {
             library("junit4", "junit:junit:4.13.2")
             library(
                 "testparameterinjector",
-                "com.google.testparameterinjector:test-parameter-injector:1.16"
+                "com.google.testparameterinjector:test-parameter-injector:1.18"
             )
 
             // Android
