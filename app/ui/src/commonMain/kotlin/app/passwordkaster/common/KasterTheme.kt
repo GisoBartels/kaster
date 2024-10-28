@@ -4,7 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -21,7 +21,7 @@ fun KasterTheme(
 @OptIn(ExperimentalMaterial3Api::class)
 internal val kasterTopAppBarColors: TopAppBarColors
     @Composable
-    get() = TopAppBarDefaults.smallTopAppBarColors(
+    get() = topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
         navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
