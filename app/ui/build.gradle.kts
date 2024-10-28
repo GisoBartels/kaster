@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     kotlin("plugin.compose")
     kotlin("plugin.serialization")
     id("org.jetbrains.compose")
@@ -23,18 +22,15 @@ kotlin {
             }
         }
     }
-    iosArm64()
-    iosSimulatorArm64()
-
-    cocoapods {
-        version = "1.0.0"
-        summary = "Kaster Common"
-        homepage = "https://passwordkaster.app"
-        ios.deploymentTarget = "14.1"
-        podfile = project.file("../ios/Podfile")
-        framework {
-            baseName = "ui"
-            isStatic = true
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries {
+            framework {
+                baseName = "ui"
+                isStatic = true
+            }
         }
     }
 
