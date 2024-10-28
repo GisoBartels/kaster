@@ -20,8 +20,6 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
     plugins {
         id("app.cash.paparazzi") version "1.3.4"
@@ -55,8 +53,6 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         google()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 
     versionCatalogs {
