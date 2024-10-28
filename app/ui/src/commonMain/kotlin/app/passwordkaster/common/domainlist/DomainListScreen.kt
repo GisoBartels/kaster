@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -32,12 +32,13 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import app.passwordkaster.logic.domainlist.DomainListViewState.SearchState.*
 import app.passwordkaster.common.kasterTopAppBarColors
 import app.passwordkaster.logic.domainentry.DomainEntryPersistence
 import app.passwordkaster.logic.domainlist.DomainListInput
 import app.passwordkaster.logic.domainlist.DomainListViewModel
 import app.passwordkaster.logic.domainlist.DomainListViewState
+import app.passwordkaster.logic.domainlist.DomainListViewState.SearchState.HideSearch
+import app.passwordkaster.logic.domainlist.DomainListViewState.SearchState.ShowSearch
 import app.passwordkaster.logic.login.LoginInteractor
 
 @Composable
@@ -89,7 +90,7 @@ private fun RegularTopAppBar(input: (DomainListInput) -> Unit) = TopAppBar(
             Icon(Icons.Outlined.Search, "Search")
         }
         IconButton(onClick = { input(DomainListInput.Logout) }) {
-            Icon(Icons.Outlined.Logout, "Log out")
+            Icon(Icons.AutoMirrored.Outlined.Logout, "Log out")
         }
     }
 )
