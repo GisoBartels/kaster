@@ -23,7 +23,7 @@ pluginManagement {
     }
     plugins {
         id("app.cash.paparazzi") version "1.3.5"
-        id("dev.mokkery") version "2.6.0"
+        id("dev.mokkery") version "2.6.1"
     }
     resolutionStrategy {
         eachPlugin {
