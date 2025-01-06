@@ -71,7 +71,7 @@ dependencyResolutionManagement {
             )
             library(
                 "kotlinx-serialization-json",
-                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
+                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0"
             )
 
             // common test
