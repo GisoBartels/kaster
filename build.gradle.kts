@@ -24,7 +24,7 @@ subprojects {
     }
 
     dependencies {
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
         detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
     }
 }
