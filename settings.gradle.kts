@@ -23,7 +23,7 @@ pluginManagement {
     }
     plugins {
         id("app.cash.paparazzi") version "1.3.5"
-        id("dev.mokkery") version "2.7.0"
+        id("dev.mokkery") version "2.7.2"
     }
     resolutionStrategy {
         eachPlugin {
@@ -57,7 +57,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("kotlinx-coroutines", "1.10.1")
+            version("kotlinx-coroutines", "1.10.2")
 
             // common
             library(
@@ -71,7 +71,7 @@ dependencyResolutionManagement {
             )
             library(
                 "kotlinx-serialization-json",
-                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0"
+                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1"
             )
 
             // common test
