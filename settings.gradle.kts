@@ -99,7 +99,7 @@ dependencyResolutionManagement {
             library("androidx-activity-compose", "androidx.activity:activity-compose:1.9.3")
             library(
                 "androidx-security-crypto",
-                "androidx.security:security-crypto-ktx:1.1.0-alpha06"
+                "androidx.security:security-crypto-ktx:1.1.0-alpha07"
             )
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
             library("androidx-datastore", "androidx.datastore:datastore:1.1.4")
