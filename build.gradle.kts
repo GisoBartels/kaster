@@ -10,7 +10,7 @@ plugins {
     id("com.android.application") version agp apply false
     id("com.android.library") version agp apply false
     id("org.jetbrains.compose") version compose apply false
-    id("com.google.devtools.ksp") version "2.1.20-1.0.32" apply false
+    id("com.google.devtools.ksp") version "2.1.20-2.0.0" apply false
 
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
