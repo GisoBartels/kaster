@@ -10,11 +10,11 @@ plugins {
 @Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.android.uitest"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         applicationId = "app.passwordkaster.android.uitest"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "UI Test"
 
