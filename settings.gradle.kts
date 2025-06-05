@@ -96,7 +96,7 @@ dependencyResolutionManagement {
 
             // Android
             library("androidx-appcompat", "androidx.appcompat:appcompat:1.7.1")
-            library("androidx-activity-compose", "androidx.activity:activity-compose:1.9.3")
+            library("androidx-activity-compose", "androidx.activity:activity-compose:1.10.1")
             library(
                 "androidx-security-crypto",
                 "androidx.security:security-crypto-ktx:1.1.0-beta01"
