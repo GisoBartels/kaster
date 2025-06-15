@@ -81,7 +81,7 @@ dependencyResolutionManagement {
                 "kotlinx-coroutines-test"
             ).versionRef("kotlinx-coroutines")
 
-            library("turbine", "app.cash.turbine:turbine:1.2.0")
+            library("turbine", "app.cash.turbine:turbine:1.2.1")
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.9.1")
 
             // JVM
