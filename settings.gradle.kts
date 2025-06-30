@@ -85,7 +85,7 @@ dependencyResolutionManagement {
             library("kotest-assertions", "io.kotest:kotest-assertions-core:5.9.1")
 
             // JVM
-            library("password4j", "com.password4j:password4j:1.8.3")
+            library("password4j", "com.password4j:password4j:1.8.4")
 
             // JVM test
             library("junit4", "junit:junit:4.13.2")
