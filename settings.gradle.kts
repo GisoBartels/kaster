@@ -105,7 +105,7 @@ dependencyResolutionManagement {
             library("androidx-datastore", "androidx.datastore:datastore:1.1.7")
             library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.2.1")
 
-            version("showkase", "1.0.4")
+            version("showkase", "1.0.5")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")
             library(
                 "showkase-processor",
