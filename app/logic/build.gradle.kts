@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -9,8 +11,8 @@ plugins {
 kotlin {
     androidTarget()
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = "17"
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
         }
     }
     listOf(

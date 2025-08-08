@@ -45,7 +45,7 @@ fun KotlinNativeTarget.libsodium(libPath: String) {
         val libsodium by cinterops.creating {
             includeDirs(file("libs/$libPath/include"))
         }
-        kotlinOptions.freeCompilerArgs = listOf(
+        compilerOptions.options.freeCompilerArgs.addAll(
             "-include-binary", "$path/libsodium.a"
         )
     }
