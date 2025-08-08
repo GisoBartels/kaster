@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("com.github.triplet.play") version "3.12.1"
-    id("com.google.android.gms.oss-licenses-plugin") version "0.10.6"
+    id("com.google.android.gms.oss-licenses-plugin") version "0.10.7"
 }
 
 android {
