@@ -103,7 +103,7 @@ dependencyResolutionManagement {
             )
             library("androidx-biometric", "androidx.biometric:biometric-ktx:1.2.0-alpha05")
             library("androidx-datastore", "androidx.datastore:datastore:1.1.7")
-            library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.2.1")
+            library("ossLicenses", "com.google.android.gms:play-services-oss-licenses:17.2.2")
 
             version("showkase", "1.0.5")
             library("showkase", "com.airbnb.android", "showkase").versionRef("showkase")
