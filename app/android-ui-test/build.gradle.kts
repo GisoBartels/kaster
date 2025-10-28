@@ -7,14 +7,13 @@ plugins {
     id("dev.mokkery")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "app.passwordkaster.android.uitest"
-    compileSdk = 35
+    compileSdk = AndroidConfig.compileSdk
     defaultConfig {
         applicationId = "app.passwordkaster.android.uitest"
-        minSdk = 24
-        targetSdk = 35
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
         versionCode = 1
         versionName = "UI Test"
 

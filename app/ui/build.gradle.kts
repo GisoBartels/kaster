@@ -83,10 +83,10 @@ dependencies {
 
 android {
     namespace = "app.passwordkaster.common"
-    compileSdk = 35
+    compileSdk = AndroidConfig.compileSdk
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 24
+        minSdk = AndroidConfig.minSdk
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
