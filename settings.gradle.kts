@@ -2,18 +2,13 @@ rootProject.name = "kaster"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-settingsDir.walk()
-    .onEnter { it.name != "buildSrc" && it.name != "build" }
-    .filter { it.name == "build.gradle.kts" }
-    .map { it.parentFile.relativeTo(settingsDir).path }
-    .map { it.replace(File.separatorChar, ':') }
-    .forEach { include(it) }
-
-val runsOnCI = providers.environmentVariable("CI").isPresent
-
-buildCache {
-    local { isEnabled = !runsOnCI }
-}
+include(
+    ":core",
+    ":app:logic",
+    ":app:ui",
+    ":app:android",
+    ":app:android-ui-test",
+)
 
 pluginManagement {
     repositories {
@@ -40,6 +35,7 @@ plugins {
 
 develocity {
     buildScan {
+        val runsOnCI = providers.environmentVariable("CI").isPresent
         termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
         termsOfUseAgree = "yes"
         tag("CI")
