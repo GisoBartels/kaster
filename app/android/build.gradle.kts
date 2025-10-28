@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace = "app.passwordkaster.android"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         applicationId = "app.passwordkaster.android"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = buildNumber
         versionName = gitDescribeBuild
 
