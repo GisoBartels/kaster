@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -10,11 +8,7 @@ plugins {
 
 kotlin {
     androidTarget()
-    jvm("desktop") {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
-    }
+    jvm("desktop")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -51,10 +45,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = AndroidConfig.minSdk
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 

@@ -17,10 +17,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
     signingConfigs {
         providers.environmentVariable("SIGN_KEY_PASSWORD").orNull?.let { signKeyPassword ->
             create("release") {

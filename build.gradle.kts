@@ -27,4 +27,10 @@ subprojects {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
         detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
     }
+
+    plugins.withType<org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin> {
+        extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension> {
+            jvmToolchain(17)
+        }
+    }
 }

@@ -1,7 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
@@ -15,13 +14,7 @@ plugins {
 
 kotlin {
     androidTarget()
-    jvm("desktop") {
-        compilations.all {
-            compilerOptions.configure {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
-        }
-    }
+    jvm("desktop")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -87,10 +80,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = AndroidConfig.minSdk
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
