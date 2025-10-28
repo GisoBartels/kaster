@@ -30,7 +30,7 @@ subprojects {
 
     plugins.withType<org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin> {
         extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension> {
-            jvmToolchain(17)
+            jvmToolchain(21)
         }
     }
 }
