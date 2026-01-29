@@ -17,7 +17,7 @@ pluginManagement {
         mavenCentral()
     }
     plugins {
-        id("app.cash.paparazzi") version "2.0.0-alpha02"
+        id("app.cash.paparazzi") version "2.0.0-alpha04"
         id("dev.mokkery") version "2.10.2"
     }
     resolutionStrategy {
