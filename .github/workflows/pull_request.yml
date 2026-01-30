@@ -33,7 +33,7 @@ jobs:
         files: '**/build/test-results/**/*.xml'
 
     - name: Upload screenshot delta artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: failure()
       with:
         name: screenshot-deltas
