@@ -49,7 +49,7 @@ jobs:
           files: '**/build/test-results/**/*.xml'
 
       - name: Upload screenshot deltas
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: screenshot-deltas
