@@ -53,7 +53,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            version("kotlinx-coroutines", "1.10.2")
+            version("kotlinx-coroutines", "1.11.0")
 
             // common
             library(
