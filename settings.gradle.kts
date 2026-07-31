@@ -63,7 +63,7 @@ dependencyResolutionManagement {
             ).versionRef("kotlinx-coroutines")
             library(
                 "kotlinx-collections-immutable",
-                "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0"
+                "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.1"
             )
             library(
                 "kotlinx-serialization-json",
